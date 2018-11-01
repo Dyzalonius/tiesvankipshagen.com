@@ -11,8 +11,9 @@ h2 {
 h3 {
     font: bold 20px Arial, serif;
 }
-h4 {
+h4, button {
     font: 20px Arial, serif;
+    line-height: 1.8;
 }
 h5 {
     font: bold 15px Arial, serif;
@@ -21,17 +22,22 @@ h5 {
 
 
 /* styles */
+:root {
+    --colorMain: black;
+    --colorDefault: white;
+    --colorAlt: blue;
+}
 .style-main {
-    background-color: black;
-    color: white;
+    background-color: var(--colorMain);
+    color: var(--colorDefault);
 }
 .style-default {
-    background-color: white;
-    color: black;
+    background-color: var(--colorDefault);
+    color: var(--colorMain);
 }
 .style-alt {
-    background-color: lightgray;
-    color: black;
+    background-color: darkslateblue;
+    color: var(--colorDefault);
 }
 
 
@@ -51,24 +57,25 @@ h5 {
 
 /* navbar */
 #navbar {
+    width: 100%;
+    padding: 0px calc(50% - 600px);
     margin: 0px;
-    padding: 0px 340px;
 }
 /* navbar header */
 #navbarHeader {
-    padding: 1rem 0rem 1rem 1rem;
+    padding: 1rem 0rem;
     height: 100%;
 }
 #navbarBrand {
-    padding: 8px 12px;
-    margin: 0px;
+    padding: 8px 25px;
+    margin-left: -25px;
     height: 100%;
-    color: white;
+    color: var(--colorDefault);
     font: bolder 40px Arial, serif;
 }
 #navbarBrand:hover {
-    background-color: white !important;
-    color: black !important;
+    background-color: var(--colorDefault) !important;
+    color: var(--colorMain) !important;
 }
 #navbarMenu {
     padding: 20px;
@@ -77,27 +84,30 @@ h5 {
 }
 /* navbarBody */
 .navbarBodyItem {
-    padding: 1rem;
+    padding: 1rem 0px;
     margin: 0px;
     height: 100%;
-}
-#navbarBodyLeft {
-    padding-left: 0px;
 }
 .navbarBodyItem li,
 .navbarBodyItem a {
     height: 100%;
     line-height: unset !important;
-    color: white;
+    color: var(--colorDefault);
     font-size: 100%;
+}
+#navbarBodyLeft li a {
+    padding: 15px 25px;
+}
+#navbarBodyRight {
+    margin-right: -20px;
 }
 #navbarBodyRight li {
     width: 75px;
 }
 .navbarBodyItem li a:hover,
 .navbarBodyItem li a:focus {
-    background-color: white !important;
-    color: black !important;
+    background-color: var(--colorDefault) !important;
+    color: var(--colorMain) !important;
 }
 /* Icons */
 .iconSocial .icon {
@@ -116,20 +126,52 @@ h5 {
 
 
 
-/* Intro */
-#intro {
+/* Home */
+#home {
     height: calc(100% - 80px);
+    padding-bottom: 80px;
+}
+#homeWrapper {
+    height: 100%;
+    width: 1200px;
+    margin: 0px calc(50% - 600px);
+    display: flex;
+}
+/* Intro */
+#introColumn {
+    width: 50%;
+    margin-right: 50px;
 }
 #introWrapper {
     padding-top: 100px;
 }
-.introButton {
-    height: 40px;
-    width: 80%;
-    margin: 20px 0px;
+#introContent {
+    display: flex;
+    margin-top: 100px;
 }
+#introContentLeft {
+    width: 50%;
+    margin-right: 50px;
+}
+#introContentRight {
+    width: 50%;
+}
+.introButton {
+    height: 50px;
+    width: 100%;
+    margin: 0px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: darkslateblue;
+    font-weight: bold;
+}
+#introButtonAlt {
+    color: darkslateblue;
+    background-color: var(--colorDefault);
+}
+/* Portrait */
 #portraitColumn {
-    height: 100%;
+    width: 50%;
 }
 #portraitImage {
     object-fit: cover;
@@ -146,7 +188,7 @@ h5 {
     height: 100%;
 }
 #projectsTitle {
-    color: white;
+    color: var(--colorDefault);
 }
 /* Carousel */
 #carouselMain {
@@ -184,7 +226,7 @@ h5 {
     margin-bottom: 0px;
 }
 .carousel-indicators .active {
-    background-color: white !important;
+    background-color: var(--colorDefault) !important;
 }
 .carousel-inner a {
     color: lightgreen;
@@ -199,10 +241,10 @@ h5 {
 /* Resume */
 #Resume {
     height: calc(100% - 80px);
-    color: white;
+    color: var(--colorDefault);
 }
 #resumeTitle {
-    color: black;
+    color: var(--colorMain);
 }
 
 
@@ -222,8 +264,8 @@ h5 {
     font-size: 20px;
 }
 .icon {
-    color: white !important;
-    border-color: white !important;
+    color: var(--colorDefault) !important;
+    border-color: var(--colorDefault) !important;
 }
 .slideanim {
     visibility: hidden;
@@ -302,10 +344,7 @@ h5 {
     
 
 
-    /* Loose CSS */
-    .blackBar {
-        height: 66px;
-    }
+    /* Footer */
     #footer {
         padding: 0px 25px;
     }
