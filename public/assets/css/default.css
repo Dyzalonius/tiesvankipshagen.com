@@ -143,9 +143,12 @@ h5 {
 #introColumn {
     width: 50%;
     margin-right: 50px;
+    position: relative;
 }
 #introWrapper {
     padding-top: 100px;
+    position: absolute;
+    bottom: 0px;
 }
 #introContent {
     display: flex;
