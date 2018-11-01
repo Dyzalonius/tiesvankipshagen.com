@@ -1,0 +1,380 @@
+body {
+    font: 15px Arial, serif;
+    line-height: 1.8;
+}
+h1 {
+    font: bolder 80px Arial, serif;
+}
+h2 {
+    font: bolder 40px Arial, serif;
+}
+h3 {
+    font: bold 20px Arial, serif;
+}
+h4 {
+    font: 20px Arial, serif;
+}
+h5 {
+    font: bold 15px Arial, serif;
+}
+
+
+
+/* styles */
+.style-main {
+    background-color: black;
+    color: white;
+}
+.style-default {
+    background-color: white;
+    color: black;
+}
+.style-alt {
+    background-color: lightgray;
+    color: black;
+}
+
+
+
+/* common boxes */
+.common-bar {
+    height: 80px;
+}
+.anchor {
+    padding: 40px;
+}
+.container-fluid {
+    padding: 80px 50px 0px 50px;
+}
+
+
+
+/* navbar */
+#navbar {
+    margin: 0px;
+    padding: 0px 340px;
+}
+/* navbar header */
+#navbarHeader {
+    padding: 1rem 0rem 1rem 1rem;
+    height: 100%;
+}
+#navbarBrand {
+    padding: 8px 12px;
+    margin: 0px;
+    height: 100%;
+    color: white;
+    font: bolder 40px Arial, serif;
+}
+#navbarBrand:hover {
+    background-color: white !important;
+    color: black !important;
+}
+#navbarMenu {
+    padding: 20px;
+    margin: 0px;
+    height: 100%;
+}
+/* navbarBody */
+.navbarBodyItem {
+    padding: 1rem;
+    margin: 0px;
+    height: 100%;
+}
+#navbarBodyLeft {
+    padding-left: 0px;
+}
+.navbarBodyItem li,
+.navbarBodyItem a {
+    height: 100%;
+    line-height: unset !important;
+    color: white;
+    font-size: 100%;
+}
+#navbarBodyRight li {
+    width: 75px;
+}
+.navbarBodyItem li a:hover,
+.navbarBodyItem li a:focus {
+    background-color: white !important;
+    color: black !important;
+}
+/* Icons */
+.iconSocial .icon {
+    height: 100%;
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+}
+.iconSocial {
+    padding: 0px !important;
+}
+.iconSocial:hover img,
+.iconSocial:focus img {
+	filter: invert(100%);
+}
+
+
+
+/* Intro */
+#intro {
+    height: calc(100% - 80px);
+}
+#introWrapper {
+    padding-top: 100px;
+}
+.introButton {
+    height: 40px;
+    width: 80%;
+    margin: 20px 0px;
+}
+#portraitColumn {
+    height: 100%;
+}
+#portraitImage {
+    object-fit: cover;
+    height: 100% !important;
+    width: 100% !important;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+
+
+/* Projects */
+#projects {
+    height: 100%;
+}
+#projectsTitle {
+    color: white;
+}
+/* Carousel */
+#carouselMain {
+    padding: 0px;
+    margin: 0px;
+    height: 50%;
+}
+.carousel-image {
+    object-fit: cover;
+    height: 100% !important;
+    min-width: 100%;
+    min-height: 100%;
+}
+.carousel-text {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 55%;
+    padding: 2%;
+    margin: 0%;
+    
+    position: absolute;
+    bottom: 67px;
+}
+.carousel-inner,
+.carousel .item {
+    height: 100%;
+}
+.carousel-inner .active,
+.carousel-inner .prev,
+.carousel-inner .next {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.carousel-indicators {
+    margin-bottom: 0px;
+}
+.carousel-indicators .active {
+    background-color: white !important;
+}
+.carousel-inner a {
+    color: lightgreen;
+}
+.carousel-inner a:hover {
+    color: green;
+    text-decoration: none;
+}
+
+
+
+/* Resume */
+#Resume {
+    height: calc(100% - 80px);
+    color: white;
+}
+#resumeTitle {
+    color: black;
+}
+
+
+
+/* Footer */
+#footer {
+    padding: 35px;
+}
+#iconBackToTop {
+    font-size: 30px;
+}
+
+
+
+/* Loose css */
+.glyphicon {
+    font-size: 20px;
+}
+.icon {
+    color: white !important;
+    border-color: white !important;
+}
+.slideanim {
+    visibility: hidden;
+}
+.slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+}
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #navbar {
+        padding: 0px 25px;
+    }
+    #navbarBrand {
+        padding: 15px;
+        height: 65px;
+    }
+    #navbarMenu {
+        padding: 15px;
+    }
+    .navbarBodyItem {
+        padding: unset;
+        border: unset;
+        height: unset;
+    }
+    #navbarBody {
+        background-color: rgba(0, 0, 0, 0.9);
+        max-height: unset;
+        padding: 1px;
+    }
+    .navbar-nav li,
+    .navbar-nav a {
+        text-align: center;
+    }
+    #navbarBodyLeft a {
+        height: unset;
+        padding: 19px;
+    }
+    #navbarBodyRight {
+        margin: 0px;
+    }
+    #navbarBodyRight li {
+        float: left;
+        width: calc( (100% - 0.1px) / 7); /* -0.1px fixes Edge bug where elements dont fit */
+        min-width: 75px;
+    }
+    #navbarBodyRight li a{
+        padding: 5px !important;
+        width: 100%;
+    }
+    
+
+
+    /* Loose CSS */
+    .blackBar {
+        height: 66px;
+    }
+    #footer {
+        padding: 0px 25px;
+    }
+    #iconBackToTop {
+        font-size: 20px;
+        padding: 23px;
+    }
+
+
+
+    /* Carousel */
+    .carousel-text {
+        width: 70%;
+    }
+    .carousel-text h1 {
+        font-size: 6vw;
+    }
+    .carousel-text p {
+        font-size: 2.1vw;
+    }
+    .carousel-indicators {
+        margin-bottom: 0px;
+        bottom: 20px;
+    }
+
+
+
+    /* stuff to make the navbar responsive at given size*/
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left, .navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+}
+
+@media screen and (max-width: 1024px) and (orientation:portrait) {
+    .carousel-text h1 {
+        font-size: 8vw;
+    }
+    .carousel-text p {
+        font-size: 3.5vw;
+    }
+}
