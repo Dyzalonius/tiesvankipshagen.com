@@ -22,10 +22,9 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
-    <nav id="navbar" class="navbar navbar-fixed-top common-bar style-main">
+    <nav id="navbar" class="common-bar style-main navbar navbar-fixed-top">
         <div id="navbarHeader" class="navbar-header">
-            <a id="navbarBrand" class="navbar-brand active" href="#home" data-target="#carouselMain" data-slide-to="0">
+            <a id="navbarBrand" class="navbar-brand active" href="#home">
                 TIES
             </a>
             <button id="navbarMenu" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarBody">
@@ -68,8 +67,7 @@
         </div>
     </nav>
 
-    <!-- LANDING PAGE -->
-    <div id="home" class="container-fluid style-default">
+    <div id="home" class="common-container style-default">
         <div id="homeWrapper">
             <div id="introColumn">
                 <div id="introWrapper">
@@ -78,14 +76,14 @@
                         I'm a Dutch game developer. Welcome to my website.
                     </h4>
                     <div id="introContent">
-                        <div id="introContentLeft">
+                        <div id="introContentLeft" class="introContentItem">
                             <h2>Projects</h2>
                             <h4>Browse projects that I worked on for either school or fun.</h4>
-                            <button class="introButton style-alt">Look at projects</button>
+                            <button id="introButtonLeft" class="introButton style-alt">Look at projects</button>
                         </div>
-                        <div id="introContentRight">
+                        <div id="introContentRight" class="introContentItem">
                             <h2>Resume</h2>
-                            <button id="introButtonAlt" class="introButton style-main">Look at resume</button>
+                            <button id="introButtonRight" class="introButton style-main">Look at resume</button>
                         </div>
                     </div>
                 </div>
@@ -96,8 +94,12 @@
         </div>
     </div>
 
-    <!-- PROJECT CAROUSSEL -->
-    <div id="projects" class="container-fluid text-center style-main">
+    <div id="projects" class="common-container style-main text-center">
+        <div class="common-bar">
+            <a id="slideToProjects" href="#projects">
+                <span class="chevron glyphicon glyphicon-chevron-down icon"></span>
+            </a>
+        </div>
         <h2 id="projectsTitle" class="anchor">PROJECTS</h2>
 
         <div id="carouselMain" class="carousel slide style-main" data-ride="carousel" data-pause="false" data-interval="">
@@ -144,18 +146,15 @@
         </div>
     </div>
 
-    <!-- RESUME -->
-    <div id="resume" class="container-fluid text-center style-default">
+    <div id="resume" class="common-container style-default text-center">
         <h2 id="resumeTitle" class="anchor">RESUME</h2>
-
     </div>
 
-    <!-- FOOTER -->
-    <footer id="footer" class="container-fluid text-center style-main common-bar">
-        <a href="#home" data-target="#intro" data-slide-to="0">
-            <span id="iconBackToTop" class="glyphicon glyphicon-chevron-up icon"></span>
+    <div id="footer" class="common-bar style-main text-center">
+        <a id="slideToHome" href="#home">
+            <span class="chevron glyphicon glyphicon-chevron-up icon"></span>
         </a>
-    </footer>
+    </div>
 </body>
 
 </html>

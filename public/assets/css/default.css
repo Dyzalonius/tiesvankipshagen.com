@@ -25,7 +25,7 @@ h5 {
 :root {
     --colorMain: black;
     --colorDefault: white;
-    --colorAlt: blue;
+    --colorAlt: darkslateblue;
 }
 .style-main {
     background-color: var(--colorMain);
@@ -36,7 +36,7 @@ h5 {
     color: var(--colorMain);
 }
 .style-alt {
-    background-color: darkslateblue;
+    background-color: var(--colorAlt);
     color: var(--colorDefault);
 }
 
@@ -45,12 +45,14 @@ h5 {
 /* common boxes */
 .common-bar {
     height: 80px;
+    padding: 0px calc(50% - 600px);
 }
 .anchor {
     padding: 40px;
 }
-.container-fluid {
-    padding: 80px 50px 0px 50px;
+.common-container {
+    width: 100%;
+    padding: 80px calc(50% - 600px) 0px calc(50% - 600px);
 }
 
 
@@ -58,7 +60,6 @@ h5 {
 /* navbar */
 #navbar {
     width: 100%;
-    padding: 0px calc(50% - 600px);
     margin: 0px;
 }
 /* navbar header */
@@ -130,6 +131,7 @@ h5 {
 #home {
     height: calc(100% - 80px);
     padding-bottom: 80px;
+    padding-top: 80px;
 }
 #homeWrapper {
     height: 100%;
@@ -149,29 +151,33 @@ h5 {
     display: flex;
     margin-top: 100px;
 }
-#introContentLeft {
+.introContentItem {
     width: 50%;
-    margin-right: 50px;
 }
 #introContentRight {
-    width: 50%;
+    margin-left: 50px;
+    position: relative;
 }
 .introButton {
     height: 50px;
     width: 100%;
-    margin: 0px;
     border-width: 2px;
     border-style: solid;
     border-color: darkslateblue;
     font-weight: bold;
 }
-#introButtonAlt {
-    color: darkslateblue;
+#introButtonRight {
+    position: absolute;
+    bottom: 0px;
+    color: var(--colorAlt);
     background-color: var(--colorDefault);
 }
 /* Portrait */
 #portraitColumn {
     width: 50%;
+}
+#portraitColumn {
+    background: var(--colorAlt);
 }
 #portraitImage {
     object-fit: cover;
@@ -179,6 +185,7 @@ h5 {
     width: 100% !important;
     min-width: 100%;
     min-height: 100%;
+    opacity: 0.7;
 }
 
 
@@ -186,6 +193,7 @@ h5 {
 /* Projects */
 #projects {
     height: 100%;
+    padding-top: 0px;
 }
 #projectsTitle {
     color: var(--colorDefault);
@@ -249,19 +257,10 @@ h5 {
 
 
 
-/* Footer */
-#footer {
-    padding: 35px;
-}
-#iconBackToTop {
-    font-size: 30px;
-}
-
-
-
 /* Loose css */
-.glyphicon {
-    font-size: 20px;
+.chevron {
+    font-size: 30px;
+    margin-top: 25px;
 }
 .icon {
     color: var(--colorDefault) !important;
