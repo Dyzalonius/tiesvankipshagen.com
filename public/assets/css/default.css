@@ -203,25 +203,32 @@ h5 {
     color: var(--colorDefault);
 }
 /* Carousel */
-#carouselMain {
+#projectsCarousel {
     padding: 0px;
     margin: 0px;
-    height: 50%;
+    height: calc(100% - 370px);
+}
+.item {
+    display: none;
+}
+.carousel-inner {
+    padding-bottom: 60px;
+}
+.carousel-inner .active {
+    display: flex;
+}
+#projectsCarousel .itemLeft {
+    width: 50%;
+    height: 100%;
+    margin-right: 50px;
+}
+#projectsCarousel .itemRight {
+    width: 50%;
+    height: 100%;
 }
 .carousel-image {
     object-fit: cover;
-    height: 100% !important;
-    min-width: 100%;
-    min-height: 100%;
-}
-.carousel-text {
-    background-color: rgba(0, 0, 0, 0.6);
-    width: 55%;
-    padding: 2%;
-    margin: 0%;
-    
-    position: absolute;
-    bottom: 67px;
+    width: 100%;
 }
 .carousel-inner,
 .carousel .item {
