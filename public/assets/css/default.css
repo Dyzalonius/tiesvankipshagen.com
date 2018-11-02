@@ -1,6 +1,7 @@
 body {
     font: 15px Arial, serif;
     line-height: 1.8;
+	height: 100%;
 }
 h1 {
     font: bolder 80px Arial, serif;
