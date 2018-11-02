@@ -6,11 +6,11 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:url" content="https://www.tiesvankipshagen.com/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Ties van Kipshagen" />
-    <meta property="og:image" content="https://www.zeusops.com/content/img_logo_zeusops_black_background.png" />
-    <meta property="og:description" content="Dutch game developer" />
+    <meta property="og:url" content="https://www.tiesvankipshagen.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ties van Kipshagen">
+    <meta property="og:image" content="https://www.zeusops.com/content/img_logo_zeusops_black_background.png">
+    <meta property="og:description" content="Dutch game developer">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -107,54 +107,55 @@
         <h2 id="projectsTitle" class="anchor">PROJECTS</h2>
 
         <div id="projectsCarousel" class="carousel slide style-main" data-ride="carousel" data-pause="false" data-interval="">
-            <ol class="carousel-indicators">
-                <li data-target="#projectsCarousel" data-slide-to="0" class="icon active"></li>
-                <li data-target="#projectsCarousel" data-slide-to="1" class="icon"></li>
-                <li data-target="#projectsCarousel" data-slide-to="2" class="icon"></li>
-            </ol>
-
+            <!-- Carousel content -->
             <div class="carousel-inner">
-                <div class="item active">
+                <div class="item">
                     <div class="itemLeft">
-                        <h1>Sugondese</h1>
-                        <img class="carousel-image" src="/content/img_screenshot_01.jpg" alt="Screenshot">
+                        <h2>Sugondese</h2>
+                        <img class="itemLeftImage" src="./assets/img/img_screenshot_01.jpg" alt="Screenshot">
                     </div>
                     <div class="itemRight">
-                        <p>1v1 dodgeball game made with Unity.</p>
+                        <h4>1v1 dodgeball game made with Unity.</h4>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="itemLeft">
+                        <h2>Ports and Swords</h2>
+                        <img class="itemLeftImage" src="./assets/img/img_screenshot_01.jpg" alt="Screenshot">
+                    </div>
+                    <div class="itemRight">
+                        <h4>1v1 turn based strategy game, written in JavaScript.</h4>
+                    </div>
+                </div>
+
+                <div class="item active">
+                    <div class="itemLeft">
+                        <h2>Extreme Luggage Operator</h2>
+                        <img class="itemLeftImage" src="./assets/img/img_screenshot_01.jpg" alt="Screenshot">
+                    </div>
+
+                    <div class="itemRight">
+                        <h4>Singleplayer top down arcade game, written in Java.</h4>
                     </div>
                 </div>
             </div>
 
-            <div class="item">
-                <div class="itemLeft">
-                    <h1>Ports and Swords</h1>
-                    <img class="carousel-image" src="/content/img_screenshot_01.jpg" alt="Screenshot">
-                </div>
-                <div class="itemRight">
-                    <p>1v1 turn based strategy game, written in JavaScript.</p>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="itemLeft">
-                    <h1>Extreme Luggage Operator</h1>
-                    <img class="carousel-image" src="/content/img_screenshot_01.jpg" alt="Screenshot">
-                </div>
-                <div class="itemRight">
-                    <p>Singleplayer top down arcade game, written in Java.</p>
-                </div>
-            </div>
+            <!-- Carousel controls -->
+            <a class="left carousel-control" href="#projectsCarousel" data-slide="prev">
+                <span class="icon glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#projectsCarousel" data-slide="next">
+                <span class="icon glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+            <ol class="carousel-indicators">
+                <li data-target="#projectsCarousel" data-slide-to="0" class="icon"></li>
+                <li data-target="#projectsCarousel" data-slide-to="1" class="icon"></li>
+                <li data-target="#projectsCarousel" data-slide-to="2" class="icon active"></li>
+            </ol>
         </div>
-
-        <a class="left carousel-control" href="#projectsCarousel" data-slide="prev">
-            <span class="icon glyphicon glyphicon-chevron-left"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#projectsCarousel" data-slide="next">
-            <span class="icon glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
     </div>
 
     <div id="resume" class="common-container style-default text-center">
@@ -166,6 +167,8 @@
             <span class="chevron glyphicon glyphicon-chevron-up icon"></span>
         </a>
     </div>
+
+
 </body>
 
 </html>

@@ -204,55 +204,60 @@ h5 {
 }
 /* Carousel */
 #projectsCarousel {
+    height: calc(100% - 390px);
     padding: 0px;
-    margin: 0px;
-    height: calc(100% - 370px);
-}
-.item {
-    display: none;
 }
 .carousel-inner {
-    padding-bottom: 60px;
-}
-.carousel-inner .active {
-    display: flex;
-}
-#projectsCarousel .itemLeft {
-    width: 50%;
-    height: 100%;
-    margin-right: 50px;
-}
-#projectsCarousel .itemRight {
-    width: 50%;
-    height: 100%;
-}
-.carousel-image {
-    object-fit: cover;
-    width: 100%;
-}
-.carousel-inner,
-.carousel .item {
-    height: 100%;
+    height: calc(100% - 80px);
+    margin-bottom: 80px;
 }
 .carousel-inner .active,
 .carousel-inner .prev,
 .carousel-inner .next {
     display: flex;
-    justify-content: center;
-    align-items: center;
+}
+.item {
+    height: 100%;
+}
+.itemLeft {
+    height: 100%;
+    width: 50%;
+    margin-right: 50px;
+}
+.itemLeftImage {
+    width: 100%;
+}
+.itemRight {
+    height: 100%;
+    width: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.left {
+    height: 80px;
+    top: unset;
+    bottom: 0px;
+    left: 30%;
+}
+.right {
+    height: 80px;
+    top: unset;
+    bottom: 0px;
+    right: 30% !important;
+}
+.carousel-control .icon {
+    margin-top: -17px;
 }
 .carousel-indicators {
+    height: 80px;
+    width: 20%;
+    left: 70%;
     margin-bottom: 0px;
+    position: absolute;
+    top: unset;
+    bottom: 0px;
 }
-.carousel-indicators .active {
-    background-color: var(--colorDefault) !important;
-}
-.carousel-inner a {
-    color: lightgreen;
-}
-.carousel-inner a:hover {
-    color: green;
-    text-decoration: none;
+.carousel-indicators li {
+    margin-top: 34px;
 }
 
 
