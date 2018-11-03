@@ -204,7 +204,7 @@ h5 {
 }
 /* Carousel */
 #projectsCarousel {
-    height: calc(100% - 390px);
+    height: calc(100% - 315px);
     padding: 0px;
 }
 .carousel-inner {
@@ -291,6 +291,10 @@ h5 {
 .chevron {
     font-size: 30px;
     margin-top: 25px;
+    color: gray !important;
+}
+.chevron:hover {
+    color: var(--colorDefault) !important;
 }
 .icon {
     color: var(--colorDefault) !important;
