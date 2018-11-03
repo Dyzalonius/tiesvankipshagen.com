@@ -219,19 +219,33 @@ h5 {
 .item {
     height: 100%;
 }
+/* ItemLeft */
 .itemLeft {
     height: 100%;
     width: 50%;
     margin-right: 50px;
 }
-.itemLeftImage {
+.galleryDisplay {
     width: 100%;
 }
+.galleryItemWrapper {
+    width: 100%;
+}
+.galleryItem {
+    width: 24%;
+    margin-top: 5px;
+    margin-right: 0px;
+}
+/* ItemRight */
 .itemRight {
     height: 100%;
     width: 50%;
     background-color: rgba(0, 0, 0, 0.6);
 }
+.itemRight h2 {
+    margin-top: 0px;
+}
+/* Controls */
 .left {
     height: 80px;
     top: unset;
