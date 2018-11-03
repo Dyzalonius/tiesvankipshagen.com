@@ -288,13 +288,13 @@ h5 {
 
 
 /* Loose css */
-.chevron {
+.chevron, #projectsChevron:hover {
     font-size: 30px;
     margin-top: 25px;
-    color: gray !important;
-}
-.chevron:hover {
     color: var(--colorDefault) !important;
+}
+.chevron:hover, #projectsChevron {
+    color: gray !important;
 }
 .icon {
     color: var(--colorDefault) !important;
