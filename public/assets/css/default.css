@@ -204,11 +204,11 @@ h5 {
 }
 /* Carousel */
 #projectsCarousel {
-    height: calc(100% - 315px);
+    height: calc(100% - 235px);
     padding: 0px;
 }
 .carousel-inner {
-    height: calc(100% - 80px);
+    height: calc(100% - 160px);
     margin-bottom: 80px;
 }
 .carousel-inner .active,
@@ -259,7 +259,7 @@ h5 {
     right: 30% !important;
 }
 .carousel-control .icon {
-    margin-top: -17px;
+    margin-top: -97px;
 }
 .carousel-indicators {
     height: 80px;
@@ -268,7 +268,7 @@ h5 {
     margin-bottom: 0px;
     position: absolute;
     top: unset;
-    bottom: 0px;
+    bottom: 80px;
 }
 .carousel-indicators li {
     margin-top: 34px;
