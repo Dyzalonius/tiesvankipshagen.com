@@ -249,14 +249,14 @@ h5 {
 .left {
     height: 80px;
     top: unset;
-    bottom: 80px;
     left: 30%;
+    margin-bottom: 80px;
 }
 .right {
     height: 80px;
     top: unset;
-    bottom: 80px;
     right: 30% !important;
+    margin-bottom: 80px;
 }
 .carousel-control .icon {
     margin-top: -17px;
