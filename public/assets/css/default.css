@@ -1,3 +1,25 @@
+/* Styles */
+:root {
+    --colorMain: black;
+    --colorDefault: white;
+    --colorAlt: darkslateblue;
+}
+.style-main {
+    background-color: var(--colorMain);
+    color: var(--colorDefault);
+}
+.style-default {
+    background-color: var(--colorDefault);
+    color: var(--colorMain);
+}
+.style-alt {
+    background-color: var(--colorAlt);
+    color: var(--colorDefault);
+}
+
+
+
+/* Texts */
 body {
     font: 15px Arial, serif;
     line-height: 1.8;
@@ -22,28 +44,7 @@ h5 {
 
 
 
-/* styles */
-:root {
-    --colorMain: black;
-    --colorDefault: white;
-    --colorAlt: darkslateblue;
-}
-.style-main {
-    background-color: var(--colorMain);
-    color: var(--colorDefault);
-}
-.style-default {
-    background-color: var(--colorDefault);
-    color: var(--colorMain);
-}
-.style-alt {
-    background-color: var(--colorAlt);
-    color: var(--colorDefault);
-}
-
-
-
-/* common boxes */
+/* Common classes */
 .common-bar {
     height: 80px;
     padding: 0px calc(50% - 600px);
@@ -58,12 +59,12 @@ h5 {
 
 
 
-/* navbar */
+/* Navbar */
 #navbar {
     width: 100%;
     margin: 0px;
 }
-/* navbar header */
+/* Navbar header */
 #navbarHeader {
     padding: 1rem 0rem;
     height: 100%;
@@ -84,7 +85,7 @@ h5 {
     margin: 0px;
     height: 100%;
 }
-/* navbarBody */
+/* NavbarBody */
 .navbarBodyItem {
     padding: 1rem 0px;
     margin: 0px;
@@ -136,8 +137,6 @@ h5 {
 }
 #homeWrapper {
     height: 100%;
-    width: 1200px;
-    margin: 0px calc(50% - 600px);
     display: flex;
 }
 /* Intro */
@@ -230,6 +229,7 @@ h5 {
 }
 .galleryItemWrapper {
     width: 100%;
+    padding-left: 5px;
 }
 .galleryItem {
     width: 24%;
@@ -240,6 +240,7 @@ h5 {
 .itemRight {
     height: 100%;
     width: 50%;
+    text-align: left;
     background-color: rgba(0, 0, 0, 0.6);
 }
 .itemRight h2 {
@@ -330,123 +331,5 @@ h5 {
     100% {
         opacity: 1;
         -webkit-transform: translateY(0%);
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    #navbar {
-        padding: 0px 25px;
-    }
-    #navbarBrand {
-        padding: 15px;
-        height: 65px;
-    }
-    #navbarMenu {
-        padding: 15px;
-    }
-    .navbarBodyItem {
-        padding: unset;
-        border: unset;
-        height: unset;
-    }
-    #navbarBody {
-        background-color: rgba(0, 0, 0, 0.9);
-        max-height: unset;
-        padding: 1px;
-    }
-    .navbar-nav li,
-    .navbar-nav a {
-        text-align: center;
-    }
-    #navbarBodyLeft a {
-        height: unset;
-        padding: 19px;
-    }
-    #navbarBodyRight {
-        margin: 0px;
-    }
-    #navbarBodyRight li {
-        float: left;
-        width: calc( (100% - 0.1px) / 7); /* -0.1px fixes Edge bug where elements dont fit */
-        min-width: 75px;
-    }
-    #navbarBodyRight li a{
-        padding: 5px !important;
-        width: 100%;
-    }
-    
-
-
-    /* Footer */
-    #footer {
-        padding: 0px 25px;
-    }
-    #iconBackToTop {
-        font-size: 20px;
-        padding: 23px;
-    }
-
-
-
-    /* Carousel */
-    .carousel-text {
-        width: 70%;
-    }
-    .carousel-text h1 {
-        font-size: 6vw;
-    }
-    .carousel-text p {
-        font-size: 2.1vw;
-    }
-    .carousel-indicators {
-        margin-bottom: 0px;
-        bottom: 20px;
-    }
-
-
-
-    /* stuff to make the navbar responsive at given size*/
-    .navbar-header {
-        float: none;
-    }
-    .navbar-left, .navbar-right {
-        float: none !important;
-    }
-    .navbar-toggle {
-        display: block;
-    }
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-    .navbar-fixed-top {
-        top: 0;
-        border-width: 0 0 1px;
-    }
-    .navbar-collapse.collapse {
-        display: none!important;
-    }
-    .navbar-nav {
-        float: none!important;
-        margin-top: 7.5px;
-    }
-    .navbar-nav>li {
-        float: none;
-    }
-    .navbar-nav>li>a {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .collapse.in{
-        display:block !important;
-    }
-}
-
-@media screen and (max-width: 1024px) and (orientation:portrait) {
-    .carousel-text h1 {
-        font-size: 8vw;
-    }
-    .carousel-text p {
-        font-size: 3.5vw;
     }
 }
