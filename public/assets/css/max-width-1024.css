@@ -97,7 +97,6 @@
     /* Projects */
     #projects {
         height: unset;
-        /* min-height: 100%; */
     }
     /* Carousel */
     #projectsCarousel {
@@ -115,7 +114,6 @@
     /* ItemLeft */
     .itemLeft {
         width: 100%;
-        height: unset;
         max-height: 50%;
         margin: 0;
     }
@@ -132,9 +130,9 @@
     .galleryItem {
         margin-top: 0;
         padding-top: 5px;
-        max-height: 100%;
         max-width: 24%;
         width: unset;
+        max-height: 100%;
     }
     /* ItemRight */
     .itemRight {
