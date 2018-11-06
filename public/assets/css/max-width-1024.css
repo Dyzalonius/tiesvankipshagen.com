@@ -48,6 +48,9 @@
     .navbar-nav a {
         text-align: center;
     }
+    #navbarBodyLeft li {
+        height: 60px;
+    }
     #navbarBodyLeft a {
         height: unset;
         padding: 19px;
@@ -117,7 +120,8 @@
     /* ItemLeft */
     .itemLeft {
         width: 100%;
-        max-height: 50%;
+        /* max-height: 50%; */
+        height: unset;
         margin: 0;
     }
     .galleryDisplay {
@@ -139,6 +143,7 @@
     /* ItemRight */
     .itemRight {
         width: 100%;
+        padding-top: 20px;
         height: unset;
     }
     
