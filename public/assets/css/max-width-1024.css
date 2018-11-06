@@ -148,6 +148,16 @@
         padding-top: 20px;
         height: unset;
     }
+
+
+
+    /* Resume */
+    #resume {
+        padding-top: 0px;
+    }
+    #resumeWrapper {
+        height: calc(100% - 185px);
+    }
     
 
 
