@@ -291,6 +291,19 @@ h4, button {
 #resumeTitle {
     color: var(--colorMain);
 }
+#resumeWrapper {
+    height: calc(100% - 285px);
+    width: 60%;
+    margin-left: 20%;
+    display: flex;
+}
+#resumeImage {
+    width: 100%;
+    height: 100%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: gray;
+}
 
 
 
