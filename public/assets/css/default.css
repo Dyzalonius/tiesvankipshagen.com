@@ -226,11 +226,18 @@ h4, button {
 }
 .galleryItemWrapper {
     width: 100%;
+    position: relative;
 }
 .galleryItem {
-    width: 24%;
-    margin-top: 5px;
-    margin-right: 0px;
+    width: 25%;
+    margin-top: 0px;
+    margin-right: -8px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+}
+.galleryItemWrapper .current {
+    border-color: white;
 }
 /* ItemRight */
 .itemRight {
