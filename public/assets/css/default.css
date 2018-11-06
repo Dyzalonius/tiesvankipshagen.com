@@ -292,7 +292,7 @@ h4, button {
     color: var(--colorMain);
 }
 #resumeWrapper {
-    height: calc(100% - 285px);
+    height: calc(100% - 225px);
     width: 60%;
     margin-left: 20%;
     display: flex;

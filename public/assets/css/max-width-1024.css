@@ -157,6 +157,8 @@
     }
     #resumeWrapper {
         height: calc(100% - 185px);
+        width: 90%;
+        margin: 0 5%;
     }
     
 
