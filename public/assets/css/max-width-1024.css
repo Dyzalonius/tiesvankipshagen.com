@@ -129,6 +129,9 @@
         max-width: 100%;
         width: unset;
     }
+    .galleryVideo {
+        width: 100%;
+    }
     .galleryItemWrapper {
         max-height: 20%;
         width: unset;
