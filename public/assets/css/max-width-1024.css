@@ -71,19 +71,18 @@
 
 
     /* Home */
-    #home {
+    /*#home {
         height: unset;
         min-height: 100%;
-    }
+    }*/
     #homeWrapper {
         flex-direction: column-reverse;
         width: 90%;
         margin-left: 5%;
-        height: unset;
     }
     #introColumn {
         width: 100%;
-        min-height: 410px;
+        height: 50%;
     }
     #introWrapper {
         height: unset;
@@ -94,8 +93,8 @@
         margin-top: 0;
     }
     #portraitColumn {
-        height: 50%;
         width: 100%;
+        height: 50%;
     }
 
 
@@ -105,7 +104,7 @@
         height: unset;
     }
     /* Carousel */
-    #projectsCarousel {
+    /*#projectsCarousel {
         height: unset;
     }
     .carousel-inner {
@@ -114,35 +113,28 @@
     .item {
         flex-direction: column;
         height: unset;
+        max-height: 100%;
         padding: 0 5%;
         margin-right: 0 !important;
+    }*/
+    /* ItemTop */
+    .itemTop {
+        height: fit-content;
     }
-    /* ItemLeft */
-    .itemLeft {
-        width: 100%;
-        /* max-height: 50%; */
+    .galleryVideoWrapper {
+        position: relative;
         height: unset;
-        margin: 0;
-    }
-    .galleryDisplay {
-        max-height: 80%;
-        max-width: 100%;
-        width: unset;
+        padding-top: 56.25%;
     }
     .galleryVideo {
+        position:absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
     }
-    .galleryItemWrapper {
-        max-height: 20%;
-        width: unset;
-    }
-    .galleryItem {
-        max-width: 24%;
-        width: unset;
-        max-height: 100%;
-    }
-    /* ItemRight */
-    .itemRight {
+    /* ItemBot */
+    .itemBot {
         width: 100%;
         padding-top: 20px;
         height: unset;
@@ -155,11 +147,11 @@
         padding-top: 0px;
     }
     #resumeWrapper {
-        height: calc(100% - 185px);
+        height: 100%;
         width: 90%;
         margin: 0 5%;
     }
-    
+
 
 
     /* Footer */
