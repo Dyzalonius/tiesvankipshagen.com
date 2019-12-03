@@ -18,7 +18,7 @@ $(document).ready(function ()
             var source = $(this).attr("videoSource");
             var gallery = $(this).parent().parent();
             var galleryMain = gallery.find(".galleryMain");
-            $(galleryMain).html("<div class='galleryVideoWrapper'><iframe class='galleryVideo' allowfullscreen></iframe></div>");
+            $(galleryMain).html("<iframe class='galleryVideo' allowfullscreen></iframe>");
             var galleryVideo = galleryMain.find(".galleryVideo");
             galleryVideo.attr("src", source);
         }

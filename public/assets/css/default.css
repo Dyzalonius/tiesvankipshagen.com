@@ -227,19 +227,23 @@ h4, button {
     height: fit-content;
     margin: 0;
 }
-.galleryMain {
+.galleryMainWrapper {
     width: 80%;
     height: 100%;
     float: left;
 }
-.galleryDisplay {
-    max-width: 100%;
-    float: right;
-}
-.galleryVideoWrapper {
+.galleryMain {
     position: relative;
     height: unset;
     padding-top: 56.25%;
+}
+.galleryDisplay {
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    float: right;
 }
 .galleryVideo {
     position:absolute;
