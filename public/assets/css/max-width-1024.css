@@ -117,22 +117,6 @@
         padding: 0 5%;
         margin-right: 0 !important;
     }*/
-    /* ItemTop */
-    .itemTop {
-        height: fit-content;
-    }
-    .galleryVideoWrapper {
-        position: relative;
-        height: unset;
-        padding-top: 56.25%;
-    }
-    .galleryVideo {
-        position:absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
     /* ItemBot */
     .itemBot {
         width: 100%;
