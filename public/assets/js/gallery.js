@@ -17,7 +17,7 @@ $(document).ready(function ()
             // video
             var source = $(this).attr("videoSource");
             var gallery = $(this).parent().parent();
-            var galleryMain = gallery.find(".galleryMain");
+            var galleryMain = gallery.find(".projectGalleryMain");
             $(galleryMain).html("<iframe class='galleryVideo' allowfullscreen></iframe>");
             var galleryVideo = galleryMain.find(".galleryVideo");
             galleryVideo.attr("src", source);
@@ -27,7 +27,7 @@ $(document).ready(function ()
             // image
             var source = $(this).attr("src");
             var gallery = $(this).parent().parent();
-            var galleryMain = gallery.find(".galleryMain");
+            var galleryMain = gallery.find(".projectGalleryMain");
             $(galleryMain).html("<img class='galleryDisplay' alt='Screenshot'>");
             var galleryImage = galleryMain.find(".galleryDisplay");
             $(galleryImage).attr("src", source);

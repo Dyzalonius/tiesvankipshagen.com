@@ -100,28 +100,22 @@
 
 
     /* Projects */
-    #projects {
-        height: unset;
+    .project {
+        width: 80%;
+        margin: 0 auto;
     }
-    /* Carousel */
-    /*#projectsCarousel {
-        height: unset;
+    .projectOne {
+        float: none;
+        margin-right: 0%;
     }
-    .carousel-inner {
-        height: unset;
+    .projectTwo {
+        float: none;
     }
-    .item {
-        flex-direction: column;
-        height: unset;
-        max-height: 100%;
-        padding: 0 5%;
-        margin-right: 0 !important;
-    }*/
-    /* ItemBot */
-    .itemBot {
+    .projectGallery {
         width: 100%;
-        padding-top: 20px;
-        height: unset;
+    }
+    .projectText {
+        width: 100%;
     }
 
 
