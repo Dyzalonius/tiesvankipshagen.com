@@ -60,22 +60,12 @@ h4, button {
 #navbar {
     width: 100%;
     margin: 0px;
+    border-width: 0px;
 }
 /* Navbar header */
 #navbarHeader {
     padding: 1rem 0rem;
     height: 100%;
-}
-#navbarBrand {
-    padding: 8px 25px;
-    margin-left: -25px;
-    height: 100%;
-    color: var(--colorDefault);
-    font: bolder 40px Arial, serif;
-}
-#navbarBrand:hover {
-    background-color: var(--colorDefault) !important;
-    color: var(--colorMain) !important;
 }
 #navbarMenu {
     padding: 20px;
@@ -87,16 +77,17 @@ h4, button {
     padding: 1rem 0px;
     margin: 0px;
     height: 100%;
+    border-width: 0px;
 }
-.navbarBodyItem li,
-.navbarBodyItem a {
+.navbarBodyItem li {
     height: 100%;
-    line-height: auto !important;
     color: var(--colorDefault);
-    font-size: 100%;
+}
+.navbarBodyItem a {
+    color: var(--colorDefault);
 }
 #navbarBodyLeft li a {
-    padding: 15px 25px;
+    padding: 20px 25px;
 }
 #navbarBodyRight {
     margin-right: -20px;
