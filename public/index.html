@@ -17,13 +17,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/scroll.js"></script>
     <script src="./assets/js/gallery.js"></script>
+    <script src="./assets/js/game.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/default.css">
     <link rel="stylesheet" href="./assets/css/max-width-1024.css">
 </head>
 
-<body>
+<body id="home">
     <nav id="navbar" class="common-bar style-main navbar navbar-fixed-top">
         <div id="navbarHeader" class="navbar-header">
             <button id="navbarMenu" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -41,7 +42,7 @@
                     <a href="#projects">Projects</a>
                 </li>
                 <li>
-                    <a href="#resume">Resume</a>
+                    <a href="#about">About</a>
                 </li>
             </ul>
 
@@ -66,7 +67,11 @@
         </div>
     </nav>
 
-    <div id="home" class="common-container style-default">
+    <div id="game">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- <div id="home" class="common-container style-default">
         <div id="homeWrapper">
             <div id="introColumn">
                 <div id="introWrapper">
@@ -95,7 +100,7 @@
                 <img id="portraitImage" src="./assets/img/portrait.JPG" alt="Portrait">
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div id="projects" class="common-container style-main text-center">
         <div class="common-bar">
@@ -284,7 +289,7 @@
         </div>
     </div>
 
-    <div id="resume" class="common-container style-default text-center">
+    <div id="about" class="common-container style-default text-center">
         <div id="resumeWrapper" class="anchor">
             <embed id="resumeImage" src="./assets/img/resume.pdf" alt="Resume">
         </div>

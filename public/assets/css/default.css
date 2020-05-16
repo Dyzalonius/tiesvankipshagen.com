@@ -117,16 +117,19 @@ h4, button {
 
 
 
-/* Home */
-#home {
+/* Game */
+#game {
     height: calc(100% - 80px);
-    padding-bottom: 80px;
     padding-top: 80px;
 }
-#homeWrapper {
+#gameCanvas {
+    width: 100%;
     height: 100%;
-    display: flex;
+    cursor: none;
 }
+
+
+
 /* Intro */
 #introColumn {
     width: 50%;
@@ -263,7 +266,7 @@ h4, button {
 
 
 /* Resume */
-#Resume {
+#about {
     height: calc(100% - 80px);
     color: var(--colorDefault);
 }
