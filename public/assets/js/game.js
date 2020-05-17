@@ -5,19 +5,19 @@
 // Settings
 var bulletMaxTimeAlive = 30; // in seconds
 var bulletSpeed = 1000; // in pixels per second
-var bulletSize = {x:20, y:20};
+var bulletSize = {x:10, y:10};
 var gunBarrelSize = {x:100, y:25};
-var gunFireDelay = 0.05; // in seconds
+var gunFireDelay = 0.02; // in seconds
 var gunFireBloomMin = 0; // in degrees
 var gunFireBloomMax = 20; // in degrees
-var gunFireBloomCurrentStep = 0.15; // in percentages
-var gunFireBloomIncrease = 0.5; // in degrees per bullet
-var gunFireBloomDecrease = 0.07; // in degrees per bullet
+var gunFireBloomCurrentStep = 0.1; // in percentages
+var gunFireBloomIncrease = 1; // in degrees per bullet
+var gunFireBloomDecrease = 30; // in degrees per second
 var gunReloadTimeMax = 1.5; // in seconds
 var gunAngleMin = -89; // in degrees
 var gunAngleMax = -8; // in degrees
-var bulletCapacity = 60; // in bullets
-var gravity = 350; // in ??
+var bulletCapacity = 90; // in bullets
+var gravity = 350; // in pixels per second per second
 
 // References
 var canvas;
@@ -89,7 +89,7 @@ function CheckCollision() {
         for (var j = bullets.length - 1; j >= 0; j--) {
             var bullet = bullets[j];
 
-            if (enemy.collider.IntersectsWith(bullet.collider)) {
+            if (enemy != null && enemy.collider.IntersectsWith(bullet.collider)) {
                 bullet.Destroy();
                 enemy.Hit(1);
             }
@@ -132,7 +132,10 @@ class Behaviour {
     }
 
     Destroy() {
-        behaviours.splice(behaviours.indexOf(this), 1);
+        var index = behaviours.indexOf(this);
+        if (index != -1) {
+            behaviours.splice(index, 1);
+        }
     }
 }
 
@@ -167,9 +170,9 @@ class Bullet extends GameObject {
     constructor(pos, velocity, size, color, maxTimeAlive, angle = 0, src = '') {
         super(pos, velocity, true);
         this.size = size; // Only x is used for circle
+        this.collider = new CircleCollider(this.pos, this.size.x / 2);
         this.timeAlive = 0;
         this.color = color;
-        this.collider = new CircleCollider(this.pos, this.size.x / 2);
         this.angle = angle; // Only used for image
         this.src = src; // Only used for image
         this.image; // Only used for image
@@ -203,8 +206,11 @@ class Bullet extends GameObject {
     }
 
     Destroy() {
+        var index = bullets.indexOf(this);
+        if (index != -1) {
+            bullets.splice(index, 1);
+        }
         super.Destroy();
-        bullets.splice(bullets.indexOf(this), 1);
     }
 }
 
@@ -213,11 +219,11 @@ class Enemy extends GameObject {
         super(pos, {x:0, y:0});
         this.pos = pos;
         this.size = size;
+        this.collider = new CircleCollider(this.pos, this.size.x / 2);
         this.color = color;
         this.healthBarSize = {x:60, y:5};
         this.healthPointsMax = 25;
         this.healthPoints = this.healthPointsMax;
-        this.collider = new CircleCollider(this.pos, this.size.x / 2);
         enemies.push(this);
     }
 
@@ -238,8 +244,11 @@ class Enemy extends GameObject {
     }
 
     Destroy() {
+        var index = enemies.indexOf(this);
+        if (index != -1) {
+            enemies.splice(index, 1);
+        }
         super.Destroy();
-        enemies.splice(enemies.indexOf(this), 1);
     }
 
     Hit(damagePoints) {
@@ -315,7 +324,7 @@ class Turret extends GameObject {
         }
         else {
             // Reduce bloom
-            this.currentBloomMax -= gunFireBloomDecrease;
+            this.currentBloomMax -= gunFireBloomDecrease * deltaTime;
             if (this.currentBloomMax <= gunFireBloomMin) {
                 this.currentBloomMax = gunFireBloomMin;
             }
@@ -351,11 +360,11 @@ class Hopper extends GameObject {
     constructor(width, color, turret) {
         super({x:0, y:0}, {x:0, y:0});
         this.color = color;
-        this.columnCount = 4;
+        this.columnCount = 6;
         this.turret = turret;
         this.rowCount = Math.ceil(turret.bulletCapacity / this.columnCount);
-        this.ammoRadius = 3;
-        this.spacing = { x: 10, y: 10 };
+        this.ammoRadius = 2;
+        this.spacing = { x: 6, y: 6 };
         this.size = { x: width, y: this.spacing.y * (this.rowCount + 1) };
     }
 
@@ -384,7 +393,7 @@ class Crosshair extends GameObject {
         this.lineThickness = 3;
         this.lineLength = 20;
         this.lineOffset = 10;
-        this.lineOffsetBloomFactor = 5;
+        this.lineOffsetBloomFactor = 3;
         this.showDot = false;
         this.showLines = true;
         this.color = 'black';
@@ -408,16 +417,6 @@ class Crosshair extends GameObject {
             DrawRect({ x: this.pos.x, y: this.pos.y - lineOffsets }, { x: this.lineThickness, y: this.lineLength }, this.color, 0, { x: 0.5, y: 1 });
             DrawRect({ x: this.pos.x, y: this.pos.y + lineOffsets }, { x: this.lineThickness, y: this.lineLength }, this.color, 0, { x: 0.5, y: 0 });
         }
-    }
-}
-
-class Time {
-    constructor() {
-
-    }
-
-    Update() {
-
     }
 }
 
