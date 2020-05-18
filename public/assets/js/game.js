@@ -51,7 +51,7 @@ function Start() {
     new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
     new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
     new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
-    new Bomb({x:1200, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
+    //new Bomb({x:1200, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
 
     Update(0);
 }
