@@ -125,6 +125,8 @@ h4, button {
 #gameCanvas {
     width: 100%;
     height: 100%;
+}
+.noCursor {
     cursor: none;
 }
 

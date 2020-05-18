@@ -22,7 +22,7 @@ var debugMode = false;
 var canvas;
 var ctx;
 var canvasSize = {x:0, y:0};
-var mousePos = {x:0, y:0};
+var mousePos = {x:500, y:-100};
 var mouseDown = false;
 var oldTimeStamp = 0;
 var deltaTime = 0;
@@ -41,24 +41,31 @@ $(document).ready(function () {
 function Start() {
     canvas = document.getElementById("gameCanvas");
     ctx = canvas.getContext("2d");
+
+    turret = new Turret({x:130, y:500}, {min:-60, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 1, true);
+    crosshair = new Crosshair(turret);
+    $("#gameCanvas").addClass("noCursor");
     document.addEventListener('mousemove', MouseMove);
     canvas.addEventListener("mousedown", MouseDown);
     canvas.addEventListener("mouseup", MouseUp);
 
-    turret = new Turret({x:130, y:500}, {min:-89, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 1, true);
-    crosshair = new Crosshair(turret);
-    new ShootingTarget({x:700, y:200}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
-    //new Bomb({x:1200, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
-
     Update(0);
+
+    new Intro(5);
+}
+
+function StartGame() {
+    //new ShootingTarget({x:700, y:200}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+    //new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+    //new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+    //new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
+    //new Bomb({x:350, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
 }
 
 function Update(timeStamp) {
     CalculateDeltaTime(timeStamp);
     UpdateCanvasSize();
+
     for (var i = behaviours.length - 1; i >= 0; i--) {
         behaviours[i].Update();
     }
@@ -150,6 +157,55 @@ class Behaviour {
     }
 }
 
+class Intro extends Behaviour {
+    constructor(timeLimit) {
+        super();
+
+        this.tempGunFireBloomMax = gunFireBloomMax;
+        this.tempbulletSpeed = bulletSpeed;
+        this.tempGravity = gravity;
+        this.tempGunFireDelay = gunFireDelay;
+        this.tempAngleMinMax = {min:-89, max:-8};
+        gunFireBloomMax = 0;
+        bulletSpeed = 600;
+        gravity = 250;
+        gunFireDelay = 0.05;
+        this.timeLimit = timeLimit;
+        this.timeCurrent = 0;
+        this.text = 'Welcome to my websit e!'
+        turret.bulletsRemaining = this.text.length;
+    }
+
+    Update() {
+        super.Update();
+        this.timeCurrent += deltaTime;
+
+        if (this.text.length > 0) {
+            if (turret.CheckFire(this.text.charAt(this.text.length - 1))) {
+                this.text = this.text.substring(0, this.text.length - 1);
+            }
+        }
+
+        if (this.timeCurrent >= this.timeLimit) {
+            this.Destroy();
+        }
+    }
+
+    Draw() {
+        super.Draw();
+    }
+
+    Destroy() {
+        gunFireBloomMax = this.tempGunFireBloomMax;
+        bulletSpeed = this.tempbulletSpeed;
+        gravity = this.tempGravity;
+        gunFireDelay = this.tempGunFireDelay;
+        turret.angleMinMax = this.tempAngleMinMax;
+        StartGame();
+        super.Destroy();
+    }
+}
+
 class GameObject extends Behaviour {
     constructor(pos, velocity, enableGravity = false) {
         super();
@@ -178,7 +234,7 @@ class GameObject extends Behaviour {
 }
 
 class Bullet extends GameObject {
-    constructor(pos, velocity, size, color, maxTimeAlive, angle = 0, src = '') {
+    constructor(pos, velocity, size, color, maxTimeAlive, angle = 0, src = '', text = '', font = '30px Arial') {
         super(pos, velocity, true);
         this.size = size; // Only x is used for circle
         this.collider = new CircleCollider(this.pos, this.size.x / 2);
@@ -192,6 +248,7 @@ class Bullet extends GameObject {
             this.image = new Image();
             this.image.src = this.src;
         }
+        this.text = text;
         bullets.push(this);
     }
 
@@ -208,7 +265,10 @@ class Bullet extends GameObject {
 
     Draw() {
         super.Draw();
-        if (this.src != '') {
+        if (this.text != '') {
+            DrawText(this.pos, 'bold 30px Arial', VectorToAngle(this.velocity, {x:0, y:0}), this.text, this.color);
+        }
+        else if (this.src != '') {
             DrawImage(this.pos, this.size, this.angle, this.image);
         }
         else {
@@ -441,7 +501,34 @@ class Turret extends Entity {
             this.pos.y = canvasSize.y;
         }
         this.hopper.SetPos({ x: this.pos.x + this.hopperOffset.x, y: this.pos.y + this.hopperOffset.y });
-        this.CheckFire();
+
+        if (mouseDown) {
+            this.CheckFire();
+        }
+
+        // Reduce fire delay if delay is bigger than 0
+        if (this.fireDelay > 0) {
+            this.fireDelay -= deltaTime;
+            if (this.fireDelay < 0) {
+                this.fireDelay = 0;
+            }
+        }
+        // Reload if empty magazine
+        if (this.bulletsRemaining <= 0) {
+            this.reloadTime += deltaTime;
+            if (this.reloadTime >= gunReloadTimeMax) {
+                this.bulletsRemaining = this.bulletCapacity;
+                this.reloadTime = 0;
+            }
+        }
+        // Reduce bloom
+        if (!mouseDown || this.bulletsRemaining <= 0) {
+            this.currentBloomMax -= gunFireBloomDecrease * deltaTime;
+            if (this.currentBloomMax <= gunFireBloomMin) {
+                this.currentBloomMax = gunFireBloomMin;
+            }
+            this.currentBloom -= this.currentBloom / 10;
+        }
     }
 
     Draw() {
@@ -466,59 +553,42 @@ class Turret extends Entity {
         DrawRect(this.pos, gunBarrelSize, 'black', this.barrelAngle, {x:0, y:0.5});
     }
 
-    CheckFire() {
-        if (mouseDown && this.bulletsRemaining > 0) {
-            // Fire
-            if (this.fireDelay == 0) {
-                var pos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
-                this.Fire(this.barrelAngle, pos);
-                this.fireDelay = gunFireDelay;
-                this.bulletsRemaining--;
-                this.currentBloomMax += gunFireBloomIncrease;
-                if (this.currentBloomMax >= gunFireBloomMax) {
-                    this.currentBloomMax = gunFireBloomMax;
-                }
-                // Calculate current bloom
-                this.currentBloom += this.currentBloomMax * gunFireBloomCurrentStep * (Math.random() * 2 - 1);
-                if (this.currentBloom > this.currentBloomMax) {
-                    this.currentBloom = this.currentBloomMax;
-                }
-                if (this.currentBloom < -this.currentBloomMax) {
-                    this.currentBloom = -this.currentBloomMax;
-                }
-            }
+    CheckFire(text = '') {
+        if (this.bulletsRemaining > 0 && this.fireDelay == 0) {
+            var pos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
+            this.Fire(this.barrelAngle, pos, text);
+            return true;
         }
-        else {
-            // Reduce bloom
-            this.currentBloomMax -= gunFireBloomDecrease * deltaTime;
-            if (this.currentBloomMax <= gunFireBloomMin) {
-                this.currentBloomMax = gunFireBloomMin;
-            }
-            this.currentBloom -= this.currentBloom / 10;
-        }
-        // Reduce fire delay if delay is bigger than 0
-        if (this.fireDelay > 0) {
-            this.fireDelay -= deltaTime;
-            if (this.fireDelay < 0) {
-                this.fireDelay = 0;
-            }
-        }
-        // Reload if empty magazine
-        if (this.bulletsRemaining == 0) {
-            this.reloadTime += deltaTime;
-            if (this.reloadTime >= gunReloadTimeMax) {
-                this.bulletsRemaining = this.bulletCapacity;
-                this.reloadTime = 0;
-            }
-        }
+        return false;
     }
 
-    Fire(angle, pos) {
+    Fire(angle, pos, text) {
         var color = 'rgb(0, 0, 0'; //GetRandomColor();
         var finalAngle = angle;
         var velocity = AngleToVector(finalAngle, bulletSpeed);
         var size = { x: bulletSize.x, y: bulletSize.y };
-        new Bullet(pos, velocity, size, color, bulletMaxTimeAlive); //new Bullet(pos, velocity, size, color, 0, './assets/img/game/face.png');
+
+        if (text != '') {
+            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive, finalAngle, '', text);
+        }
+        else {
+            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive); //new Bullet(pos, velocity, size, color, 0, './assets/img/game/face.png');
+        }
+
+        this.fireDelay = gunFireDelay;
+        this.bulletsRemaining--;
+        this.currentBloomMax += gunFireBloomIncrease;
+        if (this.currentBloomMax >= gunFireBloomMax) {
+            this.currentBloomMax = gunFireBloomMax;
+        }
+        // Calculate current bloom
+        this.currentBloom += this.currentBloomMax * gunFireBloomCurrentStep * (Math.random() * 2 - 1);
+        if (this.currentBloom > this.currentBloomMax) {
+            this.currentBloom = this.currentBloomMax;
+        }
+        if (this.currentBloom < -this.currentBloomMax) {
+            this.currentBloom = -this.currentBloomMax;
+        }
     }
 }
 
@@ -709,6 +779,23 @@ function DrawRect(pos, size, color, angle, anchor={x:0.5, y:0.5}) {
     // draw
     ctx.fillStyle = color;
     ctx.fillRect(pos.x - size.x * anchor.x, pos.y - size.y * anchor.y, size.x, size.y);
+
+    // undo transform
+    ctx.setTransform(1,0,0,1,0,0);
+}
+
+function DrawText(pos, font, angle, text, color, textAlign = 'center', textBaseline = 'middle') {
+    // transform
+    ctx.translate(pos.x, pos.y);
+    ctx.rotate(ToRad(angle));
+    ctx.translate(-pos.x, -pos.y);
+
+    // draw
+    ctx.fillStyle = color;
+    ctx.font = font;
+    ctx.textAlign = textAlign;
+    ctx.textBaseline = textBaseline;
+    ctx.fillText(text, pos.x, pos.y);
 
     // undo transform
     ctx.setTransform(1,0,0,1,0,0);
