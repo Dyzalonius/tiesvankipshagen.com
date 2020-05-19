@@ -54,14 +54,6 @@ function Start() {
     new Intro(5);
 }
 
-function StartGame() {
-    new ShootingTarget({x:700, y:200}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-    new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
-    new Bomb({x:350, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
-}
-
 function Update(timeStamp) {
     CalculateDeltaTime(timeStamp);
     UpdateCanvasSize();
@@ -201,7 +193,35 @@ class Intro extends Behaviour {
         gravity = this.tempGravity;
         gunFireDelay = this.tempGunFireDelay;
         turret.angleMinMax = this.tempAngleMinMax;
-        StartGame();
+        new Level();
+        super.Destroy();
+    }
+}
+
+class Level extends Behaviour {
+    constructor() {
+        super();
+        new ShootingTarget({x:700, y:200}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+        new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+        new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+        //new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
+        //new Bomb({x:350, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
+    }
+
+    Update() {
+        super.Update();
+
+        if (enemies.length <= 0) {
+            this.Destroy();
+        }
+    }
+
+    Draw() {
+        super.Draw();
+    }
+
+    Destroy() {
+        new Level();
         super.Destroy();
     }
 }
