@@ -26,11 +26,13 @@ var mousePos = {x:500, y:-100};
 var mouseDown = false;
 var oldTimeStamp = 0;
 var deltaTime = 0;
+var levelID = 0;
 
 var behaviours = [];
 var bullets = [];
 var enemies = [];
 var projectiles = [];
+var levels = [];
 var crosshair;
 var turret;
 
@@ -51,12 +53,33 @@ function Start() {
 
     Update(0);
 
-    new Intro(5);
+    new Intro(2);
+    var level = new Level();
+    level.AddShootingTarget({x:700, y:200});
+    level = new Level();
+    level.AddPlane({x: 1800, y:300});
+    level = new Level();
+    level.AddFlyingMortar({x: 1500, y:200});
+    level = new Level();
+    level.AddPlane({x:1800, y:300});
+    level.AddFlyingMortar({x:1500, y:200});
+    level = new Level();
+    level.AddPlane({x:1800, y:300});
+    level.AddFlyingMortar({x:1200, y:100});
+    level.AddFlyingMortar({x:1500, y:200});
+    level = new Level();
+    level.AddPlane({x:1800, y:300});
+    level.AddFlyingMortar({x:1200, y:100});
+    level.AddFlyingMortar({x:1800, y:200});
+    level.AddFlyingMortar({x:1500, y:400});
 }
 
 function Update(timeStamp) {
     CalculateDeltaTime(timeStamp);
     UpdateCanvasSize();
+    if (levels.length > 0) {
+        levels[0].Update();
+    }
 
     for (var i = behaviours.length - 1; i >= 0; i--) {
         behaviours[i].Update();
@@ -107,6 +130,10 @@ function CheckCollision() {
     }
 }
 
+function NextLevel() {
+    levels.shift();
+}
+
 ////////////////////////////////////////
 //              Classes               //
 ////////////////////////////////////////
@@ -149,10 +176,8 @@ class Behaviour {
     }
 }
 
-class Intro extends Behaviour {
+class Intro {
     constructor(timeLimit) {
-        super();
-
         this.tempGunFireBloomMax = gunFireBloomMax;
         this.tempbulletSpeed = bulletSpeed;
         this.tempGravity = gravity;
@@ -166,10 +191,10 @@ class Intro extends Behaviour {
         this.timeCurrent = 0;
         this.text = 'Welcome to my websit e!'
         turret.bulletsRemaining = this.text.length;
+        levels.push(this);
     }
 
     Update() {
-        super.Update();
         this.timeCurrent += deltaTime;
 
         if (this.text.length > 0) {
@@ -183,46 +208,76 @@ class Intro extends Behaviour {
         }
     }
 
-    Draw() {
-        super.Draw();
-    }
-
     Destroy() {
         gunFireBloomMax = this.tempGunFireBloomMax;
         bulletSpeed = this.tempbulletSpeed;
         gravity = this.tempGravity;
         gunFireDelay = this.tempGunFireDelay;
         turret.angleMinMax = this.tempAngleMinMax;
-        new Level();
-        super.Destroy();
+        NextLevel();
     }
 }
 
-class Level extends Behaviour {
+class Level {
     constructor() {
-        super();
-        new ShootingTarget({x:700, y:200}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-        new ShootingTarget({x:1300, y:700}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-        new ShootingTarget({x:1400, y:300}, {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
-        //new Rocket({x:1000, y:500}, 270, turret, 500, 120, {x:50, y:50}, 10, 'blue', './assets/img/game/missile.png');
-        //new Bomb({x:350, y:200}, 270, 300, 180, {x:50, y:50}, 10, 'black', './assets/img/game/bomb.png');
+        this.textTimeLength = 3;
+        levelID++;
+        this.id = levelID;
+        levels.push(this);
+        this.shootingTargets = [];
+        this.flyingMortars = [];
+        this.planes = [];
     }
 
     Update() {
-        super.Update();
+        // spawn level text, when over spawn enemies
+        if (this.textTimeLength > 0) {
+            this.textTimeLength -= deltaTime;
 
-        if (enemies.length <= 0) {
+            if (this.textTimeLength <= 0) {
+                this.SpawnEnemies();
+            }
+        }
+
+        this.Draw();
+
+        if (this.textTimeLength <= 0 && enemies.length <= 0) {
             this.Destroy();
         }
     }
 
+    AddShootingTarget(pos) {
+        this.shootingTargets.push(pos);
+    }
+
+    AddFlyingMortar(pos) {
+        this.flyingMortars.push(pos);
+    }
+
+    AddPlane(pos) {
+        this.planes.push(pos);
+    }
+
+    SpawnEnemies() {
+        for (var i = 0; i < this.shootingTargets.length; i++) {
+            new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+        }
+        for (var i = 0; i < this.flyingMortars.length; i++) {
+            new FlyingMortar(this.flyingMortars[i], {x:100, y:100}, 100, 'black');
+        }
+        for (var i = 0; i < this.planes.length; i++) {
+            new Plane(this.planes[i], {x:200, y:50}, 100, 'black');
+        }
+    }
+
     Draw() {
-        super.Draw();
+        if (this.textTimeLength > 0) {
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Level ' + this.id, 'black');
+        }
     }
 
     Destroy() {
-        new Level();
-        super.Destroy();
+        NextLevel();
     }
 }
 
@@ -389,6 +444,123 @@ class ShootingTarget extends Enemy {
     }
 }
 
+class FlyingMortar extends Enemy {
+    constructor(pos, size, healthPointsMax, color) {
+        super(pos, {x:0, y:0}, false, size, healthPointsMax);
+        this.color = color;
+        this.barrelAngle = 190;
+        this.rotorWidthMax = 100;
+        this.rotorWidthMin = 40;
+        this.rotorWidthTime = 1;
+        this.rotorWidth = this.rotorWidthMax;
+        this.fireDelay = 3;
+        this.fireDelayCurrent = this.fireDelay;
+        this.barrelSize = {x:65, y:50};
+        this.bombSize = {x:50, y:50};
+    }
+
+    Update() {
+        super.Update();
+        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / 100)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
+
+        this.velocity = {x:-50, y:0};
+
+        // Reduce fire delay if delay is bigger than 0
+        if (this.fireDelayCurrent > 0) {
+            this.fireDelayCurrent -= deltaTime;
+            if (this.fireDelayCurrent < 0) {
+                this.fireDelayCurrent = 0;
+                this.Fire();
+            }
+        }
+
+        // Destroy rocket if off-canvas
+        if (IsOffCanvas(this.pos, this.size)) {
+            this.Destroy();
+        }
+    }
+
+    Fire() {
+        var projectilePos = { x: this.pos.x + (this.barrelSize.x - this.bombSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (this.barrelSize.x - this.bombSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
+        //new Bomb(projectilePos, this.barrelAngle, 250, 180, this.bombSize, 10, 'black', './assets/img/game/bomb.png');
+        new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 10, 'blue', './assets/img/game/missile.png');
+
+        this.fireDelayCurrent = this.fireDelay;
+    }
+
+    Draw() {
+        DrawCircle(this.pos, this.size.x / 2, this.color);
+        DrawRect(this.pos, this.barrelSize, this.color, this.barrelAngle, {x:0, y:0.5});
+        DrawRect(this.pos, {x:10, y:60}, this.color, 0, {x:0.5, y:1});
+        DrawRect({x:this.pos.x, y:this.pos.y - 60}, {x:this.rotorWidth, y:10}, this.color, 0, {x:0.5, y:1});
+
+        super.Draw();
+    }
+}
+
+class Plane extends Enemy {
+    constructor(pos, size, healthPointsMax, color) {
+        super(pos, {x:0, y:0}, false, size, healthPointsMax);
+        this.color = color;
+        this.angle = 0;
+        this.barrelAngle = 90;
+        this.rotorWidthMax = 40;
+        this.rotorWidthMin = 10;
+        this.rotorWidthTime = 1;
+        this.rotorWidth = this.rotorWidthMax;
+        this.fireDelay = 1;
+        this.fireDelayCurrent = this.fireDelay;
+        this.barrelSize = {x:30, y:50};
+        this.bombSize = {x:50, y:50};
+        this.src = './assets/img/game/plane.png'; // Only used for image
+        this.image; // Only used for image
+        if (this.src != '') {
+            this.image = new Image();
+            this.image.src = this.src;
+        }
+    }
+
+    Update() {
+        super.Update();
+        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / 100)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
+
+        this.velocity = {x:-200, y:0};
+
+        // Reduce fire delay if delay is bigger than 0
+        if (this.fireDelayCurrent > 0) {
+            this.fireDelayCurrent -= deltaTime;
+            if (this.fireDelayCurrent < 0) {
+                this.fireDelayCurrent = 0;
+                this.Fire();
+            }
+        }
+
+        // Destroy rocket if off-canvas
+        if (IsOffCanvas(this.pos, this.size)) {
+            this.Destroy();
+        }
+    }
+
+    Fire() {
+        var projectilePos = { x: this.pos.x + (this.barrelSize.x - this.bombSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (this.barrelSize.x - this.bombSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
+        new Bomb(projectilePos, 180, 190, 180, this.bombSize, 10, 'black', './assets/img/game/bomb.png');
+        //new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 10, 'blue', './assets/img/game/missile.png');
+
+        this.fireDelayCurrent = this.fireDelay;
+    }
+
+    Draw() {
+        DrawImage(this.pos, {x:this.size.x, y:this.size.x}, this.angle, this.image);
+        DrawRect(this.pos, this.barrelSize, this.color, this.barrelAngle, {x:0, y:0.5});
+        var nosePos = {x:this.pos.x - this.size.x / 2, y: this.pos.y};
+        DrawRect(nosePos, {x:10, y:5}, this.color, 0, {x:1, y:0.5});
+        var propellerPos = {x:nosePos.x - 10, y:nosePos.y};
+        DrawRect(propellerPos, {x:5, y:this.rotorWidth}, this.color, 0, {x:1, y:0.5});
+
+        super.Draw();
+    }
+}
+
 class Projectile extends Enemy {
     constructor(pos, velocity, enableGravity, size, healthPointsMax) {
         super(pos, velocity, enableGravity, size, healthPointsMax);
@@ -436,7 +608,6 @@ class Rocket extends Projectile {
         var angleToTarget = VectorToAngle(this.target.pos, this.pos);
         var angleDelta = this.angle - angleToTarget;
         var rotation = this.steeringSpeed * (angleDelta < 0 ? -1 : 1) * deltaTime;
-        rotation = Clamp(rotation, -angleDelta, angleDelta);
 
         this.angle -= rotation;
         this.velocity = AngleToVector(this.angle, this.speed);
@@ -828,7 +999,7 @@ function GetRandomColor() {
     return 'rgb('+r+','+g+','+b+')';
 }
 
-function IsOffCanvas(pos, ignoreUp = true, size = {x:0, y:0}) {
+function IsOffCanvas(pos, size = {x:0, y:0}, ignoreUp = true) {
     var isOffCanvas = pos.x + size.x < 0 || pos.x - size.x > canvasSize.x || pos.y - size.y > canvasSize.y || (!ignoreUp && pos.y + size.y < 0);
     return isOffCanvas;
 }
