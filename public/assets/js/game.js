@@ -263,10 +263,10 @@ class Level {
             new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
         }
         for (var i = 0; i < this.flyingMortars.length; i++) {
-            new FlyingMortar(this.flyingMortars[i], {x:100, y:100}, 100, 'black');
+            new FlyingMortar(this.flyingMortars[i], {x:100, y:100}, 100, {x:0, y:30}, 'black');
         }
         for (var i = 0; i < this.planes.length; i++) {
-            new Plane(this.planes[i], {x:200, y:50}, 100, 'black');
+            new Plane(this.planes[i], {x:200, y:50}, 100, {x:0, y:-50}, 'black');
         }
     }
 
@@ -393,8 +393,9 @@ class Entity extends GameObject {
 }
 
 class Enemy extends Entity {
-    constructor(pos, velocity, enableGravity, size, healthPointsMax) {
+    constructor(pos, velocity, enableGravity, size, healthPointsMax, healthPosOffset = {x:0, y:10}) {
         super(pos, velocity, enableGravity, size, healthPointsMax);
+        this.healthPosOffset = healthPosOffset;
         enemies.push(this);
     }
 
@@ -408,7 +409,7 @@ class Enemy extends Entity {
 
         // Only draw health bar if health is not at max
         if (this.healthPoints < this.healthPointsMax) {
-            var healthPos = { x: this.pos.x + 0, y: this.pos.y - this.size.x / 2 - 10 };
+            var healthPos = { x: this.pos.x + this.healthPosOffset.x, y: this.pos.y - this.size.x / 2 - this.healthPosOffset.y };
             DrawRect(healthPos, { x:this.healthBarSize.x * this.healthPoints / this.healthPointsMax, y:this.healthBarSize.y }, 'green', 0);
         }
     }
@@ -445,8 +446,8 @@ class ShootingTarget extends Enemy {
 }
 
 class FlyingMortar extends Enemy {
-    constructor(pos, size, healthPointsMax, color) {
-        super(pos, {x:0, y:0}, false, size, healthPointsMax);
+    constructor(pos, size, healthPointsMax, healthPosOffset, color) {
+        super(pos, {x:0, y:0}, false, size, healthPointsMax, healthPosOffset);
         this.color = color;
         this.barrelAngle = 190;
         this.rotorWidthMax = 100;
@@ -499,8 +500,8 @@ class FlyingMortar extends Enemy {
 }
 
 class Plane extends Enemy {
-    constructor(pos, size, healthPointsMax, color) {
-        super(pos, {x:0, y:0}, false, size, healthPointsMax);
+    constructor(pos, size, healthPointsMax, healthPosOffset, color) {
+        super(pos, {x:0, y:0}, false, size, healthPointsMax, healthPosOffset);
         this.color = color;
         this.angle = 0;
         this.barrelAngle = 90;
