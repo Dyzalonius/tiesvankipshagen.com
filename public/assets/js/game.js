@@ -16,7 +16,7 @@ var gunFireBloomDecrease = 30; // in degrees per second
 var gunReloadTimeMax = 1.5; // in seconds
 var bulletCapacity = 90; // in bullets
 var gravity = 350; // in pixels per second per second
-var debugMode = false;
+var debugMode = true;
 
 // References
 var canvas;
@@ -53,7 +53,7 @@ function Start() {
 
     Update(0);
 
-    new Intro(2);
+    new Intro(0);
     var level = new Level();
     level.AddShootingTarget({x:700, y:200});
     level = new Level();
@@ -365,7 +365,8 @@ class Entity extends GameObject {
     constructor(pos, velocity, enableGravity, size, healthPointsMax) {
         super(pos, velocity, enableGravity);
         this.size = size;
-        this.collider = new CircleCollider(this.pos, this.size.x / 2);
+        //this.collider = new CircleCollider(this.pos, this.size.x / 2);
+        this.collider = new BoxCollider(this.pos, this.size, 0);
         this.healthBarSize = {x:60, y:5};
         this.healthPointsMax = healthPointsMax;
         this.healthPoints = this.healthPointsMax;
@@ -503,6 +504,7 @@ class Plane extends Enemy {
         super(pos, {x:0, y:0}, false, size, healthPointsMax);
         this.color = color;
         this.angle = 0;
+        this.collider = new BoxCollider(this.pos, this.size, this.angle);
         this.barrelAngle = 90;
         this.rotorWidthMax = 40;
         this.rotorWidthMin = 10;
@@ -873,7 +875,7 @@ class CircleCollider extends Behaviour {
 
     IntersectsWith(collider) {
         if (collider.colliderType == 0) {
-            return true; // CircleRect
+            return IntersectCircleRectangle(this.pos, this.radius, collider.pos, collider.size, collider.angle); // CircleRect
         }
         else {
             var distance = Math.sqrt(Math.pow(this.pos.x - collider.pos.x, 2) + Math.pow(this.pos.y - collider.pos.y, 2));
@@ -883,20 +885,37 @@ class CircleCollider extends Behaviour {
 }
 
 // NOT USED
-class BoxCollider {
-    constructor(pos, size, angle, anchor) {
+class BoxCollider extends Behaviour {
+    constructor(pos, size, angle, anchor = {x:0.5, y:0.5}) {
+        super();
         this.pos = pos; // calc using anchor & angle
         this.size = size;
         this.angle = angle;
         this.colliderType = 0; // 0 = box
     }
 
+    Update() {
+        super.Update();
+    }
+
+    Draw() {
+        super.Draw();
+
+        if (debugMode) {
+            DrawRect(this.pos, this.size, 'blue', this.angle);
+        }
+    }
+
+    Destroy() {
+        super.Destroy();
+    }
+
     IntersectsWith(collider) {
         if (collider.colliderType == 0) {
-            return true; // RectRect
+            return false; // RectRect
         }
         else {
-            return true; // RectCircle
+            return IntersectCircleRectangle(collider.pos, collider.radius, this.pos, this.size, this.angle); // CircleRect
         }
     }
 }
@@ -1004,25 +1023,45 @@ function IsOffCanvas(pos, size = {x:0, y:0}, ignoreUp = true) {
     return isOffCanvas;
 }
 
-function IntersectCircleRectangle(circleCenter, circleRadius, rectanglePos, rectangleSize, rectangleAngleCircle) {
-    var vertex1 = {x:0, y:0}; //TODO: Calculate
-    var vertex2 = {x:0, y:0};
-    var vertex3 = {x:0, y:0};
-    var vertex4 = {x:0, y:0};
-    return (pointInRectangle(P, Rectangle(A, B, C, D)) ||
+function IntersectCircleRectangle(circleCenter, circleRadius, rectPos, rectSize, rectAngleCircle) {
+    var angleInRad = ToRad(rectAngleCircle);
+    var vertex1 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y - rectSize.y / 2}; //TODO: Calculate vertices at angle
+    var vertex2 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y - rectSize.y / 2};
+    var vertex3 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
+    var vertex4 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
+    vertex1 = {x:vertex1.x * Math.cos(angleInRad) - vertex1.y * Math.sin(angleInRad), y:vertex1.x * Math.sin(angleInRad) + vertex1.y * Math.cos(angleInRad)};
+    vertex2 = {x:vertex2.x * Math.cos(angleInRad) - vertex2.y * Math.sin(angleInRad), y:vertex2.x * Math.sin(angleInRad) + vertex2.y * Math.cos(angleInRad)};
+    vertex3 = {x:vertex3.x * Math.cos(angleInRad) - vertex3.y * Math.sin(angleInRad), y:vertex3.x * Math.sin(angleInRad) + vertex3.y * Math.cos(angleInRad)};
+    vertex4 = {x:vertex4.x * Math.cos(angleInRad) - vertex4.y * Math.sin(angleInRad), y:vertex4.x * Math.sin(angleInRad) + vertex4.y * Math.cos(angleInRad)};
+
+    var intersect = (pointInRectangle(circleCenter, circleRadius, vertex1, vertex2, vertex3, vertex4) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex1, vertex2) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex2, vertex3) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex3, vertex4) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex4, vertex1));
+
+    //console.log(intersect);
+    return intersect;
 }
 
-function pointInRectangle(circleCenter, circleRadius, vertex1, vertex2, vertex3, vertex4) {
-    return true; //TODO: Calculate
+function pointInRectangle(circleCenter, vertex1, vertex2, vertex3, vertex4) {
+    var AP = Math.sqrt(Math.pow(vertex1.x - circleCenter.x, 2) + Math.pow(vertex1.y - circleCenter.y, 2));
+    var AB = Math.sqrt(Math.pow(vertex1.x - vertex2.x, 2) + Math.pow(vertex1.y - vertex2.y, 2));
+    var AD = Math.sqrt(Math.pow(vertex1.x - vertex4.x, 2) + Math.pow(vertex1.y - vertex4.y, 2));
+
+    return Dot(AP, AB) > 0 && Dot(AB, AB) > Dot(AP, AB) && Dot(AP, AD) > 0 && Dot(AD, AD) > Dot(AP, AD);
+    //return AP*AB > 0 && AB*AB > AP*AB && AP*AD > 0 && AD*AD > AP*AD;
     //0 ≤ AP·AB ≤ AB·AB and 0 ≤ AP·AD ≤ AD·AD
 }
 
 function IntersectCircleLine(circleCenter, circleRadius, lineStart, lineEnd) {
-    return true; //TODO: Calculate
+    return false;
+    var dist = Math.abs((lineEnd.y - lineStart.y) * circleCenter.x - (lineEnd.x - lineStart.x) * circleCenter.y + lineEnd.x * lineStart.y - lineEnd.y * lineStart.x)
+            / Math.sqrt(Math.pow(lineEnd.y - lineStart.y, 2) + Math.pow(lineEnd.x - lineStart.x, 2));
+    if (circleRadius >= dist) {
+        console.log(circleRadius + ' >= ' + dist);
+    }
+    return circleRadius >= dist;
 }
 
 function MouseDown() {
@@ -1065,4 +1104,8 @@ function AngleToVector(angle, magnitude = 1) {
 
 function VectorToAngle(vector1, vector2) {
     return ToDeg(Math.atan2(vector1.y - vector2.y,vector1.x - vector2.x));
+}
+
+function Dot(vector1, vector2) {
+    return vector1.x * vector2.x + vector1.y * vector2.y;
 }
