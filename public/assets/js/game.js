@@ -189,7 +189,7 @@ class Intro {
         gunFireDelay = 0.05;
         this.timeLimit = timeLimit;
         this.timeCurrent = 0;
-        this.text = 'Welcome to my websit e!'
+        this.text = 'Welcome to my website!'
         turret.bulletsRemaining = this.text.length;
         levels.push(this);
     }
@@ -449,10 +449,13 @@ class FlyingMortar extends Enemy {
     constructor(pos, size, healthPointsMax, healthPosOffset, color) {
         super(pos, {x:0, y:0}, false, size, healthPointsMax, healthPosOffset);
         this.color = color;
-        this.barrelAngle = 190;
+        this.barrelAngle = 90;
+        this.barrelAngleMin = -20;
+        this.barrelAngleMax = 200;
+        this.barrelAngleNext = Math.random() * (this.barrelAngleMax - this.barrelAngleMin) + this.barrelAngleMin;
         this.rotorWidthMax = 100;
         this.rotorWidthMin = 40;
-        this.rotorWidthTime = 1;
+        this.rotorWidthTime = 60;
         this.rotorWidth = this.rotorWidthMax;
         this.fireDelay = 3;
         this.fireDelayCurrent = this.fireDelay;
@@ -462,13 +465,14 @@ class FlyingMortar extends Enemy {
 
     Update() {
         super.Update();
-        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / 100)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
+        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
 
         this.velocity = {x:-50, y:0};
 
         // Reduce fire delay if delay is bigger than 0
         if (this.fireDelayCurrent > 0) {
             this.fireDelayCurrent -= deltaTime;
+            this.barrelAngle += (this.barrelAngleNext - this.barrelAngle) * this.fireDelay * deltaTime;
             if (this.fireDelayCurrent < 0) {
                 this.fireDelayCurrent = 0;
                 this.Fire();
@@ -484,9 +488,10 @@ class FlyingMortar extends Enemy {
     Fire() {
         var projectilePos = { x: this.pos.x + (this.barrelSize.x - this.bombSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (this.barrelSize.x - this.bombSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
         //new Bomb(projectilePos, this.barrelAngle, 250, 180, this.bombSize, 10, 'black', './assets/img/game/bomb.png');
-        new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 10, 'blue', './assets/img/game/missile.png');
+        new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 8, 'blue', './assets/img/game/missile.png');
 
         this.fireDelayCurrent = this.fireDelay;
+        this.barrelAngleNext = Math.random() * (this.barrelAngleMax - this.barrelAngleMin) + this.barrelAngleMin;
     }
 
     Draw() {
@@ -507,7 +512,7 @@ class Plane extends Enemy {
         this.barrelAngle = 90;
         this.rotorWidthMax = 40;
         this.rotorWidthMin = 10;
-        this.rotorWidthTime = 1;
+        this.rotorWidthTime = 40;
         this.rotorWidth = this.rotorWidthMax;
         this.fireDelay = 1;
         this.fireDelayCurrent = this.fireDelay;
@@ -523,7 +528,7 @@ class Plane extends Enemy {
 
     Update() {
         super.Update();
-        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / 100)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
+        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
 
         this.velocity = {x:-200, y:0};
 
@@ -554,8 +559,8 @@ class Plane extends Enemy {
         DrawImage(this.pos, {x:this.size.x, y:this.size.x}, this.angle, this.image);
         DrawRect(this.pos, this.barrelSize, this.color, this.barrelAngle, {x:0, y:0.5});
         var nosePos = {x:this.pos.x - this.size.x / 2, y: this.pos.y};
-        DrawRect(nosePos, {x:10, y:5}, this.color, 0, {x:1, y:0.5});
-        var propellerPos = {x:nosePos.x - 10, y:nosePos.y};
+        DrawRect(nosePos, {x:5, y:5}, this.color, 0, {x:1, y:0.5});
+        var propellerPos = {x:nosePos.x - 5, y:nosePos.y};
         DrawRect(propellerPos, {x:5, y:this.rotorWidth}, this.color, 0, {x:1, y:0.5});
 
         super.Draw();
