@@ -506,7 +506,7 @@ class Helicopter extends Enemy {
 
 class Plane extends Enemy {
     constructor(pos, size, healthPointsMax, healthPosOffset, color) {
-        super(pos, {x:0, y:0}, false, size, 1, healthPointsMax, healthPosOffset);
+        super(pos, {x:0, y:0}, false, size, 0, healthPointsMax, healthPosOffset);
         this.color = color;
         this.angle = 0;
         this.barrelAngle = 90;
@@ -677,7 +677,7 @@ class Bomb extends Projectile {
 
 class Turret extends Entity {
     constructor(pos, angleMinMax, turretDiameter, hopperOffset, hopperWidth, bulletCapacity, color, healthPointsMax, stickToBottomOfCanvas = false) {
-        super(pos, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, healthPointsMax);
+        super(pos, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
         this.color = color;
         this.hopperOffset = hopperOffset;
         this.bulletCapacity = bulletCapacity;
@@ -879,7 +879,7 @@ class CircleCollider extends Behaviour {
 
     IntersectsWith(collider) {
         if (collider.colliderType == 0) {
-            return true; // CircleRect
+            return IntersectCircleRectangle(this.pos, this.radius, collider.pos, collider.size, collider.angle); // CircleRect
         }
         else {
             var distance = Math.sqrt(Math.pow(this.pos.x - collider.pos.x, 2) + Math.pow(this.pos.y - collider.pos.y, 2));
@@ -888,50 +888,38 @@ class CircleCollider extends Behaviour {
     }
 }
 
-// NOT USED
-class BoxCollider {
-    constructor(pos, size, angle, anchor) {
+class BoxCollider extends Behaviour {
+    constructor(pos, size, angle, anchor = {x:0.5, y:0.5}) {
+        super();
         this.pos = pos; // calc using anchor & angle
         this.size = size;
         this.angle = angle;
         this.colliderType = 0; // 0 = box
     }
 
-    IntersectsWith(collider) {
-        if (collider.colliderType == 0) {
-            return true; // RectRect
-        }
-        else {
-            return true; // RectCircle
-        }
-    }
-}
-
-// NOT USED
-class Bucket {
-    constructor(pos, widthBottom, widthTop, height, thickness, color, angle = 0) {
-        this.pos = pos;
-        this.widthBottom = widthBottom;
-        this.widthTop = widthTop;
-        this.thickness = thickness;
-        this.height = height;
-        this.color = color;
-        this.angle = angle;
+    Update() {
+        super.Update();
     }
 
     Draw() {
-        ctx.fillStyle = this.color;
-        var angle = ToDeg(Math.atan2(((this.widthTop - this.widthBottom) / 2), this.height));
-        var posBottomLeft = { x: this.pos.x + (this.widthBottom / 2) * -Math.cos(ToRad(this.angle)), y: this.pos.y + (this.widthBottom / 2) * -Math.sin(ToRad(this.angle)) };
-        var posBottomRight = { x: this.pos.x + (this.widthBottom / 2) * Math.cos(ToRad(this.angle)), y: this.pos.y + (this.widthBottom / 2) * Math.sin(ToRad(this.angle)) };
-        DrawRect(posBottomLeft, { x: this.thickness, y: this.height }, 'black', this.angle - angle, { x: 0, y: 1 });
-        DrawRect(this.pos, { x: this.widthBottom, y: this.thickness }, 'black', this.angle, { x: 0.5, y: 1 });
-        DrawRect(posBottomRight, { x: this.thickness, y: this.height }, 'black', this.angle + angle, { x: 1, y: 1 });
+        super.Draw();
+
+        if (debugMode) {
+            DrawRect(this.pos, this.size, 'blue', this.angle);
+        }
     }
 
-    UpdateData(angle, widthTop) {
-        this.angle = parseInt(angle);
-        this.widthTop = widthTop;
+    Destroy() {
+        super.Destroy();
+    }
+
+    IntersectsWith(collider) {
+        if (collider.colliderType == 0) {
+            return false; // RectRect
+        }
+        else {
+            return IntersectCircleRectangle(collider.pos, collider.radius, this.pos, this.size, this.angle); // CircleRect
+        }
     }
 }
 
@@ -1010,25 +998,118 @@ function IsOffCanvas(pos, size = {x:0, y:0}, ignoreUp = true) {
     return isOffCanvas;
 }
 
-function IntersectCircleRectangle(circleCenter, circleRadius, rectanglePos, rectangleSize, rectangleAngleCircle) {
-    var vertex1 = {x:0, y:0}; //TODO: Calculate
-    var vertex2 = {x:0, y:0};
-    var vertex3 = {x:0, y:0};
-    var vertex4 = {x:0, y:0};
-    return (pointInRectangle(P, Rectangle(A, B, C, D)) ||
+// Return if given circle and given rectangle intersect
+function IntersectCircleRectangle(circleCenter, circleRadius, rectPos, rectSize, rectAngleCircle) {
+    var angleInRad = ToRad(rectAngleCircle);
+    var vertex1 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y - rectSize.y / 2};
+    var vertex2 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y - rectSize.y / 2};
+    var vertex3 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
+    var vertex4 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
+    vertex1 = {x:vertex1.x * Math.cos(angleInRad) - vertex1.y * Math.sin(angleInRad), y:vertex1.x * Math.sin(angleInRad) + vertex1.y * Math.cos(angleInRad)};
+    vertex2 = {x:vertex2.x * Math.cos(angleInRad) - vertex2.y * Math.sin(angleInRad), y:vertex2.x * Math.sin(angleInRad) + vertex2.y * Math.cos(angleInRad)};
+    vertex3 = {x:vertex3.x * Math.cos(angleInRad) - vertex3.y * Math.sin(angleInRad), y:vertex3.x * Math.sin(angleInRad) + vertex3.y * Math.cos(angleInRad)};
+    vertex4 = {x:vertex4.x * Math.cos(angleInRad) - vertex4.y * Math.sin(angleInRad), y:vertex4.x * Math.sin(angleInRad) + vertex4.y * Math.cos(angleInRad)};
+
+    return (pointInRectangle(circleCenter, vertex1, vertex2, vertex3, vertex4) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex1, vertex2) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex2, vertex3) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex3, vertex4) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex4, vertex1));
 }
 
-function pointInRectangle(circleCenter, circleRadius, vertex1, vertex2, vertex3, vertex4) {
-    return true; //TODO: Calculate
-    //0 ≤ AP·AB ≤ AB·AB and 0 ≤ AP·AD ≤ AD·AD
+// Return if given point is in the area of the rectangle of given 4 vertices
+function pointInRectangle(point, vertex1, vertex2, vertex3, vertex4) {
+	return pointInTriangle(vertex1, vertex2, vertex3, point) || pointInTriangle(vertex3, vertex4, vertex1, point);
 }
 
-function IntersectCircleLine(circleCenter, circleRadius, lineStart, lineEnd) {
-    return true; //TODO: Calculate
+// Return if given point is in the area of the triangle of given 3 vertices
+function pointInTriangle(vertex1, vertex2, vertex3, point) {
+    var side1 = onSameSide(point,vertex1, vertex2,vertex3);
+    var side2 = onSameSide(point,vertex2, vertex1,vertex3);
+    var side3 = onSameSide(point,vertex3, vertex1,vertex2);
+    return side1 && side2 && side3;
+}
+
+// Return if given points 1 and 2 are on the same side of given line
+function onSameSide(point1, point2, lineStart, lineEnd) {
+    var px = lineEnd.x-lineStart.x;
+    var py = lineEnd.y-lineStart.y;
+	var l = Crossproduct(px,py,  point1.x-lineStart.x, point1.y-lineStart.y);
+    var m = Crossproduct(px,py,  point2.x-lineStart.x, point2.y-lineStart.y);
+
+    return l * m >= 0;
+}
+
+// Return if given circle C with radius R intersects with given line from A to B
+function IntersectCircleLine(C, R, A, B) {
+    // Calculate distance AB
+    var lengthAB = Math.sqrt( Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2) );
+
+    // Calculate Vector AB normalized called D
+    var D = {x:(B.x - A.x) / lengthAB, y:(B.y - A.y) / lengthAB};
+
+    // t is 'x' in function of line AB: ax+b
+    var t = D.x * (C.x - A.x) + D.y * (C.y - A.y);
+
+    // Calculate vector AE called E (E is the point of AB closest the circle center (Cx, Cy))
+    var E = {x:t * D.x + A.x, y:t * D.y + A.y};
+
+    // Calculate distances EC, AE and BE
+    var lengthEC = Math.sqrt( Math.pow(E.x - C.x, 2) + Math.pow(E.y - C.y, 2) );
+    var lengthAE = Math.sqrt( Math.pow(A.x - E.x, 2) + Math.pow(A.y - E.y, 2) );
+    var lengthBE = Math.sqrt( Math.pow(B.x - E.x, 2) + Math.pow(B.y - E.y, 2) );
+
+    // E is outside of AB on B side, and shortest distance is BC
+    if (lengthAE > lengthAB) {
+        var lengthBC = Math.sqrt( Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2) );
+        return lengthBC <= R;
+    }
+    // E is outside of AB on A side, and shortest distance is AC
+    else if (lengthBE > lengthAB) {
+        var lengthAC = Math.sqrt( Math.pow(A.x - C.x, 2) + Math.pow(A.y - C.y, 2) );
+        return lengthAC <= R;
+    }
+    // E is inside AB, and shortest distance is EC
+    else {
+        return lengthEC <= R;
+    }
+}
+
+// Convert angle from degrees to radians
+function ToRad(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+// Convert angle from radians to degrees
+function ToDeg(radians) {
+    return radians / Math.PI * 180;
+}
+
+// Clamp value between min and max
+function Clamp(value, min, max) {
+    value = Math.max(value, min);
+    value = Math.min(value, max);
+    return value;
+}
+
+// Convert angle to vector with given magnitude
+function AngleToVector(angle, magnitude = 1) {
+    return {x:Math.cos(ToRad(angle)) * magnitude, y:Math.sin(ToRad(angle)) * magnitude};
+}
+
+// Return angle between two given vectors
+function VectorToAngle(vector1, vector2) {
+    return ToDeg(Math.atan2(vector1.y - vector2.y,vector1.x - vector2.x));
+}
+
+// Return dot product of given two vectors
+function Dot(vector1, vector2) {
+    return vector1.x * vector2.x + vector1.y * vector2.y;
+}
+
+// Return cross product of given two vectors
+function Crossproduct(x1,y1, x2,y2) {
+    return x1*y2 - y1*x2;
 }
 
 function MouseDown() {
@@ -1049,26 +1130,4 @@ function GetMousePos(canvas, event) {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top
     };
-}
-
-function ToRad(degrees) {
-    return degrees * Math.PI / 180;
-}
-
-function ToDeg(radians) {
-    return radians / Math.PI * 180;
-}
-
-function Clamp(value, min, max) {
-    value = Math.max(value, min);
-    value = Math.min(value, max);
-    return value;
-}
-
-function AngleToVector(angle, magnitude = 1) {
-    return {x:Math.cos(ToRad(angle)) * magnitude, y:Math.sin(ToRad(angle)) * magnitude};
-}
-
-function VectorToAngle(vector1, vector2) {
-    return ToDeg(Math.atan2(vector1.y - vector2.y,vector1.x - vector2.x));
 }
