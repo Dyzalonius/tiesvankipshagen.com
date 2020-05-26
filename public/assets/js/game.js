@@ -59,19 +59,19 @@ function Start() {
     level = new Level();
     level.AddPlane({x: 1800, y:300});
     level = new Level();
-    level.AddFlyingMortar({x: 1500, y:200});
+    level.AddHelicopter({x: 1500, y:200});
     level = new Level();
     level.AddPlane({x:1800, y:300});
-    level.AddFlyingMortar({x:1500, y:200});
+    level.AddHelicopter({x:1500, y:200});
     level = new Level();
     level.AddPlane({x:1800, y:300});
-    level.AddFlyingMortar({x:1200, y:100});
-    level.AddFlyingMortar({x:1500, y:200});
+    level.AddHelicopter({x:1200, y:100});
+    level.AddHelicopter({x:1500, y:200});
     level = new Level();
     level.AddPlane({x:1800, y:300});
-    level.AddFlyingMortar({x:1200, y:100});
-    level.AddFlyingMortar({x:1800, y:200});
-    level.AddFlyingMortar({x:1500, y:400});
+    level.AddHelicopter({x:1200, y:100});
+    level.AddHelicopter({x:1800, y:200});
+    level.AddHelicopter({x:1500, y:400});
 }
 
 function Update(timeStamp) {
@@ -225,7 +225,7 @@ class Level {
         this.id = levelID;
         levels.push(this);
         this.shootingTargets = [];
-        this.flyingMortars = [];
+        this.helicopters = [];
         this.planes = [];
     }
 
@@ -250,8 +250,8 @@ class Level {
         this.shootingTargets.push(pos);
     }
 
-    AddFlyingMortar(pos) {
-        this.flyingMortars.push(pos);
+    AddHelicopter(pos) {
+        this.helicopters.push(pos);
     }
 
     AddPlane(pos) {
@@ -262,8 +262,8 @@ class Level {
         for (var i = 0; i < this.shootingTargets.length; i++) {
             new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
         }
-        for (var i = 0; i < this.flyingMortars.length; i++) {
-            new FlyingMortar(this.flyingMortars[i], {x:100, y:100}, 100, {x:0, y:30}, 'black');
+        for (var i = 0; i < this.helicopters.length; i++) {
+            new Helicopter(this.helicopters[i], {x:100, y:100}, 100, {x:0, y:30}, 'black');
         }
         for (var i = 0; i < this.planes.length; i++) {
             new Plane(this.planes[i], {x:200, y:50}, 100, {x:0, y:-50}, 'black');
@@ -362,10 +362,10 @@ class Bullet extends GameObject {
 }
 
 class Entity extends GameObject {
-    constructor(pos, velocity, enableGravity, size, healthPointsMax) {
+    constructor(pos, velocity, enableGravity, size, colliderType, healthPointsMax) {
         super(pos, velocity, enableGravity);
         this.size = size;
-        this.collider = new CircleCollider(this.pos, this.size.x / 2);
+        this.collider = colliderType == 0 ? new BoxCollider(this.pos, this.size, 0) : new CircleCollider(this.pos, this.size.x / 2);
         this.healthBarSize = {x:60, y:5};
         this.healthPointsMax = healthPointsMax;
         this.healthPoints = this.healthPointsMax;
@@ -393,8 +393,8 @@ class Entity extends GameObject {
 }
 
 class Enemy extends Entity {
-    constructor(pos, velocity, enableGravity, size, healthPointsMax, healthPosOffset = {x:0, y:10}) {
-        super(pos, velocity, enableGravity, size, healthPointsMax);
+    constructor(pos, velocity, enableGravity, size, colliderType, healthPointsMax, healthPosOffset = {x:0, y:10}) {
+        super(pos, velocity, enableGravity, size, colliderType, healthPointsMax);
         this.healthPosOffset = healthPosOffset;
         enemies.push(this);
     }
@@ -425,7 +425,7 @@ class Enemy extends Entity {
 
 class ShootingTarget extends Enemy {
     constructor(pos, size, healthPointsMax, color1, color2) {
-        super(pos, {x:0, y:0}, false, size, healthPointsMax);
+        super(pos, {x:0, y:0}, false, size, 1, healthPointsMax);
         this.color1 = color1;
         this.color2 = color2;
     }
@@ -445,9 +445,9 @@ class ShootingTarget extends Enemy {
     }
 }
 
-class FlyingMortar extends Enemy {
+class Helicopter extends Enemy {
     constructor(pos, size, healthPointsMax, healthPosOffset, color) {
-        super(pos, {x:0, y:0}, false, size, healthPointsMax, healthPosOffset);
+        super(pos, {x:0, y:0}, false, size, 1, healthPointsMax, healthPosOffset);
         this.color = color;
         this.barrelAngle = 90;
         this.barrelAngleMin = -20;
@@ -506,7 +506,7 @@ class FlyingMortar extends Enemy {
 
 class Plane extends Enemy {
     constructor(pos, size, healthPointsMax, healthPosOffset, color) {
-        super(pos, {x:0, y:0}, false, size, healthPointsMax, healthPosOffset);
+        super(pos, {x:0, y:0}, false, size, 1, healthPointsMax, healthPosOffset);
         this.color = color;
         this.angle = 0;
         this.barrelAngle = 90;
@@ -569,7 +569,7 @@ class Plane extends Enemy {
 
 class Projectile extends Enemy {
     constructor(pos, velocity, enableGravity, size, healthPointsMax) {
-        super(pos, velocity, enableGravity, size, healthPointsMax);
+        super(pos, velocity, enableGravity, size, 1, healthPointsMax);
         projectiles.push(this);
     }
 
