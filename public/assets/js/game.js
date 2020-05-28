@@ -19,41 +19,57 @@ var gravity = 350; // in pixels per second per second
 var debugMode = false;
 
 // References
-var canvas;
-var ctx;
 var canvasSize = {x:0, y:0};
 var mousePos = {x:500, y:-100};
 var mouseDown = false;
-var oldTimeStamp = 0;
-var deltaTime = 0;
-var levelID = 0;
 
-var behaviours = [];
-var bullets = [];
-var enemies = [];
-var projectiles = [];
-var levels = [];
+var canvas;
+var ctx;
+var behaviours;
+var bullets;
+var enemies;
+var projectiles;
+var levels;
+var levelID;
 var crosshair;
 var turret;
+var loop;
+var playing;
+var oldTimeStamp;
+var deltaTime;
 
 $(document).ready(function () {
-    Start();
-});
-
-function Start() {
     canvas = document.getElementById("gameCanvas");
     ctx = canvas.getContext("2d");
-
-    turret = new Turret({x:130, y:500}, {min:-60, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 1, true);
-    crosshair = new Crosshair(turret);
     $("#gameCanvas").addClass("noCursor");
     document.addEventListener('mousemove', MouseMove);
     canvas.addEventListener("mousedown", MouseDown);
     canvas.addEventListener("mouseup", MouseUp);
+    loop = false;
+    oldTimeStamp = 0;
+    deltaTime = 0;
 
-    Update(0);
+    Start();
+});
 
-    new Intro(2);
+function Start() {
+    behaviours = [];
+    bullets = [];
+    enemies = [];
+    projectiles = [];
+    levels = [];
+    levelID = 0;
+    turret = new Turret({x:130, y:500}, {min:-89, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 1, true);
+    crosshair = new Crosshair(turret);
+    playing = true;
+
+    // Start update loop if not running
+    if (loop == false) {
+        loop = true;
+        Update(0);
+    }
+
+    new Intro(0.5, 2.5);
     var level = new Level();
     level.AddShootingTarget({x:700, y:200});
     level = new Level();
@@ -72,6 +88,7 @@ function Start() {
     level.AddHelicopter({x:1200, y:100});
     level.AddHelicopter({x:1800, y:200});
     level.AddHelicopter({x:1500, y:400});
+    new Outro(5);
 }
 
 function Update(timeStamp) {
@@ -92,7 +109,9 @@ function Update(timeStamp) {
     CheckCollision();
 
     // Recursive call Update()
-    requestAnimationFrame(Update);
+    if (loop) {
+        requestAnimationFrame(Update);
+    }
 }
 
 function CalculateDeltaTime(timeStamp) {
@@ -177,17 +196,20 @@ class Behaviour {
 }
 
 class Intro {
-    constructor(timeLimit) {
+    constructor(timeBeforeStart, timeBeforeEnd) {
         this.tempGunFireBloomMax = gunFireBloomMax;
         this.tempbulletSpeed = bulletSpeed;
         this.tempGravity = gravity;
         this.tempGunFireDelay = gunFireDelay;
-        this.tempAngleMinMax = {min:-89, max:-8};
+        this.tempAngleMinMax = turret.angleMinMax;
         gunFireBloomMax = 0;
         bulletSpeed = 600;
         gravity = 250;
         gunFireDelay = 0.05;
-        this.timeLimit = timeLimit;
+        turret.angleMinMax = {min:-60, max:-40};
+
+        this.timeBeforeStart = timeBeforeStart;
+        this.timeBeforeEnd = timeBeforeEnd;
         this.timeCurrent = 0;
         this.text = 'Welcome to my website!'
         turret.bulletsRemaining = this.text.length;
@@ -197,13 +219,13 @@ class Intro {
     Update() {
         this.timeCurrent += deltaTime;
 
-        if (this.text.length > 0) {
+        if (this.timeCurrent >= this.timeBeforeStart && this.text.length > 0) {
             if (turret.CheckFire(this.text.charAt(this.text.length - 1))) {
                 this.text = this.text.substring(0, this.text.length - 1);
             }
         }
 
-        if (this.timeCurrent >= this.timeLimit) {
+        if (this.timeCurrent >= this.timeBeforeEnd) {
             this.Destroy();
         }
     }
@@ -281,6 +303,68 @@ class Level {
     }
 }
 
+class Outro {
+    constructor(textTimeLength) {
+        this.textTimeLength = textTimeLength;
+        levels.push(this);
+    }
+
+    Update() {
+        // spawn level text, when over spawn enemies
+        if (this.textTimeLength > 0) {
+            this.textTimeLength -= deltaTime;
+        }
+
+        this.Draw();
+
+        if (this.textTimeLength <= 0) {
+            this.Destroy();
+        }
+    }
+
+    Draw() {
+        if (this.textTimeLength > 0) {
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game completed', 'black');
+        }
+    }
+
+    Destroy() {
+        Start();
+    }
+}
+
+class GameOver {
+    constructor(textTimeLength) {
+        this.textTimeLength = textTimeLength;
+        levels = [];
+        levels.push(this);
+        playing = false;
+    }
+
+    Update() {
+        // spawn level text, when over spawn enemies
+        if (this.textTimeLength > 0) {
+            this.textTimeLength -= deltaTime;
+        }
+
+        this.Draw();
+
+        if (this.textTimeLength <= 0) {
+            this.Destroy();
+        }
+    }
+
+    Draw() {
+        if (this.textTimeLength > 0) {
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game over', 'black');
+        }
+    }
+
+    Destroy() {
+        Start();
+    }
+}
+
 class GameObject extends Behaviour {
     constructor(pos, velocity, enableGravity = false) {
         super();
@@ -291,6 +375,7 @@ class GameObject extends Behaviour {
 
     Update() {
         super.Update();
+
         this.pos.x += this.velocity.x * deltaTime;
         this.pos.y += this.velocity.y * deltaTime;
 
@@ -470,7 +555,7 @@ class Helicopter extends Enemy {
         this.velocity = {x:-50, y:0};
 
         // Reduce fire delay if delay is bigger than 0
-        if (this.fireDelayCurrent > 0) {
+        if (this.fireDelayCurrent > 0 && playing) {
             this.fireDelayCurrent -= deltaTime;
             this.barrelAngle += (this.barrelAngleNext - this.barrelAngle) * this.fireDelay * deltaTime;
             if (this.fireDelayCurrent < 0) {
@@ -533,7 +618,7 @@ class Plane extends Enemy {
         this.velocity = {x:-200, y:0};
 
         // Reduce fire delay if delay is bigger than 0
-        if (this.fireDelayCurrent > 0) {
+        if (this.fireDelayCurrent > 0 && playing) {
             this.fireDelayCurrent -= deltaTime;
             if (this.fireDelayCurrent < 0) {
                 this.fireDelayCurrent = 0;
@@ -786,6 +871,11 @@ class Turret extends Entity {
         if (this.currentBloom < -this.currentBloomMax) {
             this.currentBloom = -this.currentBloomMax;
         }
+    }
+
+    Destroy() {
+        new GameOver(5);
+        super.Destroy();
     }
 }
 
