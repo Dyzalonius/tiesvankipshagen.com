@@ -71,7 +71,7 @@ function Start() {
 
     new Intro(0.5, 2.5);
     var level = new Level();
-    level.AddShootingTarget({x:700, y:200});
+    level.AddShootingTarget({x:800, y:400});
     level = new Level();
     level.AddPlane({x: 1800, y:300});
     level = new Level();
