@@ -24,13 +24,27 @@ $(document).ready(function ()
         }
         else
         {
-            // image
-            var source = $(this).attr("src");
-            var gallery = $(this).parent().parent();
-            var galleryMain = gallery.find(".projectGalleryMain");
-            $(galleryMain).html("<img class='galleryDisplay' alt='Screenshot'>");
-            var galleryImage = galleryMain.find(".galleryDisplay");
-            $(galleryImage).attr("src", source);
+            var isGif = $(this).hasClass("galleryItemGif");
+            if (isGif)
+            {
+                // gif
+                var source = $(this).attr("gifSource");
+                var gallery = $(this).parent().parent();
+                var galleryMain = gallery.find(".projectGalleryMain");
+                $(galleryMain).html("<img class='galleryDisplay' alt='Gif'>");
+                var galleryImage = galleryMain.find(".galleryDisplay");
+                $(galleryImage).attr("src", source);
+            }
+            else
+            {
+                // image
+                var source = $(this).attr("src");
+                var gallery = $(this).parent().parent();
+                var galleryMain = gallery.find(".projectGalleryMain");
+                $(galleryMain).html("<img class='galleryDisplay' alt='Screenshot'>");
+                var galleryImage = galleryMain.find(".galleryDisplay");
+                $(galleryImage).attr("src", source);
+            }
         }
     });
 });
