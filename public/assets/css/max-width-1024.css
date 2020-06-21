@@ -150,3 +150,9 @@
         display:block !important;
     }
 }
+
+@media screen and (max-height: 640px) {
+    #homeMobile {
+        height: unset;
+    }
+}
