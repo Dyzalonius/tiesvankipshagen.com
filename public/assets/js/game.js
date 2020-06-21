@@ -39,6 +39,14 @@ var oldTimeStamp;
 var deltaTime;
 
 $(document).ready(function () {
+    // Exit if on mobile
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Exit and enable alternative landing page
+        $("#game").addClass('disabled');
+        $("#homeMobile").removeClass('disabled');
+        return;
+    }
+
     canvas = document.getElementById("gameCanvas");
     ctx = canvas.getContext("2d");
     $("#gameCanvas").addClass("noCursor");

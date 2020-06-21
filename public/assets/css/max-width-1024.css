@@ -70,35 +70,6 @@
 
 
 
-    /* Home */
-    /*#home {
-        height: unset;
-        min-height: 100%;
-    }*/
-    #homeWrapper {
-        flex-direction: column-reverse;
-        width: 90%;
-        margin-left: 5%;
-    }
-    #introColumn {
-        width: 100%;
-        height: 50%;
-    }
-    #introWrapper {
-        height: unset;
-        padding-top: 0;
-        margin-bottom: 40px;
-    }
-    #introContent {
-        margin-top: 0;
-    }
-    #portraitColumn {
-        width: 100%;
-        height: 50%;
-    }
-
-
-
     /* Projects */
     .project {
         width: 80%;
