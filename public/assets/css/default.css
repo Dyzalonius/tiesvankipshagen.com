@@ -21,6 +21,7 @@
 
 /* Texts */
 body {
+    background-color: var(--colorMain);
     font: 15px Arial, serif;
     line-height: 1.8;
 	height: 100%;
@@ -123,6 +124,7 @@ h4, button {
 
 /* Game */
 #game {
+    background-color: var(--colorDefault);
     height: calc(100% - 80px);
     padding-top: 80px;
 }
