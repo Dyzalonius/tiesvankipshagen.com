@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/default.css">
     <link rel="stylesheet" href="./assets/css/max-width-1024.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body id="home">
@@ -43,7 +44,7 @@
                     <a href="#projects">Projects</a>
                 </li>
                 <li>
-                    <a href="#about">About</a>
+                    <a href="#resume">Resume</a>
                 </li>
             </ul>
 
@@ -334,16 +335,121 @@
             </div>
         </div>
 
-        <div class="common-bar">
+        <div id="about" class="common-bar">
             <a class="scroll" href="#about">
-                <span id="projectsChevron" class="chevron glyphicon glyphicon-chevron-down"></span>
+                <span class="chevron glyphicon glyphicon-chevron-down"></span>
             </a>
         </div>
     </div>
 
-    <div id="about" class="common-container style-default text-center">
-        <div id="resumeWrapper" class="anchor">
-            <embed id="resumeImage" src="./assets/img/resume_200622.pdf" alt="Resume">
+    <div id="resumeContainer" class="common-container style-default text-center">
+        <div id="resume">
+            <div id="resumeHeader">
+                <div class="resumeColumnLeft">
+                    <div id="resumeImageContainer">
+                        <img id="resumeImage" src="./assets/img/portraitResume.jpg" alt="Screenshot">
+                    </div>
+                </div>
+                <div class="resumeColumnRightHeader">
+                    <div id="resumeTitleContainer">
+                        <h2 id="resumeTitle">Ties van Kipshagen</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="resumeBody">
+                <div class="resumeColumnLeft">
+                    <div id="resumeContact">
+                        <h3>Contact</h3>
+                        <hr>
+                        <p>
+                            T.O. van Kipshagen</br>
+                            ties-vk@hotmail.com</br>
+                            +31 6 2325 9036</br>
+                            <a href="https://www.tiesvankipshagen.com/" target="_blank">tiesvankipshagen.com</a></br>
+                            <a href="./assets/img/resume_200622.pdf" target="_blank" download="Resume_TiesVanKipshagen.pdf">Download this resume</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="resumeColumnRight">
+                    <div id="resumePersonalStatement">
+                        <h3>Personal statement</h3>
+                        <hr>
+                        <p>
+                            I always get enthusiastic about projects. I'm self-critical and eager to learn, and I go for the
+                            best results using good communication. I do well independently and as part of a team, and I have
+                            skills in leadership and giving guidance to a team. People know me as a driven, open and well spoken
+                            colleague.
+                        </p>
+                    </div>
+                    <div id="resumeSkills">
+                        <h3>Skills</h2>
+                        <hr>
+                        <div id="resumeSkillsWrapper">
+                            <ul class="resumeSkillsList">
+                                <li>C#</li>
+                                <li>Unity</li>
+                                <li>Game design</li>
+                                <li>Scrum</li>
+                                <li>Git</li>
+                            </ul>
+                            <ul class="resumeSkillsList">
+                                <li>Java</li>
+                                <li>Kotlin</li>
+                                <li>HTML & CSS</li>
+                                <li>JavaScript</li>
+                                <li>TypeScript</li>
+                            </ul>
+                            <ul class="resumeSkillsList">
+                                <li>Android Studio</li>
+                                <li>Web Design</li>
+                                <li>Presenting</li>
+                                <li>Google Docs, Sheets, Slides</li>
+                                <li>Dutch and English (both C2)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="resumeEducation">
+                        <h3>Education</h3>
+                        <hr>
+                        <ul class="resumeList">
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2017 – Current</div>
+                                <div class="resumeListItemTitle">ICT Game Development - Hogeschool van Amsterdam</div>
+                            </li>
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2016 – 2017</div>
+                                <div class="resumeListItemTitle">Computer Science - Delft University of Technology</div>
+                            </li>
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2009 – 2016</div>
+                                <div class="resumeListItemTitle">Murmellius Gymnasium</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="resumeExperience">
+                        <h3>Experience</h3>
+                        <hr>
+                        <ul class="resumeList">
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2017 – Current</div>
+                                <div class="resumeListItemTitle">Game developer intern - Gamious</div>
+                            </li>
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2016 – 2017</div>
+                                <div class="resumeListItemTitle">Android developer intern - Plat4mation</div>
+                            </li>
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2014 – Current</div>
+                                <div class="resumeListItemTitle">Owner and administrator - Zeus Operations</div>
+                            </li>
+                            <li class="resumeListItem">
+                                <div class="resumeListItemDate">2011 – 2015</div>
+                                <div class="resumeListItemTitle">Event organizer - Murmellius Gymnasium event committee</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

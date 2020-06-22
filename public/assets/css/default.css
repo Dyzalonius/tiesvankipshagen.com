@@ -2,7 +2,7 @@
 :root {
     --colorMain: black;
     --colorDefault: white;
-    --colorAlt: darkslateblue;
+    --colorAlt: rgb(0, 102, 223);
 }
 .style-main {
     background-color: var(--colorMain);
@@ -52,7 +52,7 @@ h4, button {
 }
 .common-container {
     width: 100%;
-    padding: 80px calc(50% - 600px) 0px calc(50% - 600px);
+    padding: 0px calc(50% - 600px) 0px calc(50% - 600px);
 }
 .disabled {
     height: 0 !important;
@@ -157,9 +157,6 @@ h4, button {
 
 
 /* Projects */
-#projects {
-    padding-top: 0px;
-}
 #projectsTitle {
     color: var(--colorDefault);
 }
@@ -237,32 +234,106 @@ h4, button {
 
 
 /* Resume */
-#about {
-    height: calc(100% - 80px);
+#resumeContainer {
+    min-height: calc(100% - 160px);
+    color: var(--colorMain);
+    text-align: left;
+    padding: 0px calc(50% - 500px) 0px calc(50% - 500px);
+}
+#resume {
+    padding: 5% 0;
+}
+#resume h2 {
     color: var(--colorDefault);
 }
-#resumeWrapper {
-    height: 100%;
-    width: 50%;
-    margin: auto;
+#resume h3 {
+    color: var(--colorAlt);
+}
+#resume hr {
+    margin: 0;
+    border-color: var(--colorMain);
+    border-width: 2px;
+}
+/* Resume header */
+#resumeHeader {
+    display: block;
+    overflow: auto;
+    height: 20%;
+}
+#resumeImageContainer {
+    width: 100%;
 }
 #resumeImage {
-    width: 100%;
     height: 100%;
-    border-width: 2px;
-    border-style: solid;
-    border-color: gray;
+}
+#resumeTitleContainer {
+    padding-top: 30px;
+    height: 100%;
+    background-color: var(--colorAlt);
+    position: relative;
+}
+#resumeTitle {
+    position: absolute;
+    bottom: 0;
+    margin: 30;
+}
+/* Resume columns */
+.resumeColumnLeft {
+    float: left;
+    margin-right: 5%;
+    width: 17.5%;
+}
+.resumeColumnRight {
+    float: left;
+    width: 67.5%;
+}
+.resumeColumnRightHeader {
+    float: left;
+    width: 77.5%;
+}
+/* Resume body */
+#resumeBody {
+    display: block;
+    overflow: auto;
+}
+#resumeSkillsWrapper {
+    display: block;
+    overflow: auto;
+}
+.resumeSkillsList {
+    float: left;
+    min-width: 20%;
+    margin-right: 5%;
+    padding: 0;
+    list-style-type: none;
+}
+.resumeList {
+    padding: 0;
+}
+.resumeListItem {
+    display: block;
+    overflow: auto;
+}
+.resumeListItemDate {
+    float: left;
+    margin-right: 5%;
+    width: 20%;
+}
+.resumeListItemTitle {
+    float: left;
+    width: 75%;
+    font-weight: bold;
 }
 
 
 
 /* Loose css */
-.chevron, #projectsChevron:hover {
+.chevron {
     font-size: 30px;
     margin-top: 25px;
     color: var(--colorDefault) !important;
 }
-.chevron:hover, #projectsChevron {
+.chevron:hover {
     color: gray !important;
 }
 .icon {

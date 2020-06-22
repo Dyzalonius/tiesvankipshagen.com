@@ -93,12 +93,38 @@
 
     /* Resume */
     #resume {
-        padding-top: 0px;
+        padding: 0;
     }
-    #resumeWrapper {
-        height: 100%;
-        width: 90%;
-        margin: 0 5%;
+    #resumeHeader {
+        height: 10%;
+    }
+    #resumeImageContainer {
+        display: none;
+        height: 0;
+    }
+    #resumeBody {
+        margin: 0 auto;
+    }
+    .resumeColumnLeft,
+    .resumeColumnRight {
+        width: 80%;
+        margin: 0 10%;
+    }
+    .resumeColumnRightHeader {
+        width: 100%;
+    }
+    #resumeSkillsWrapper {
+        margin-bottom: 10px;
+    }
+    .resumeSkillsList {
+        width: 100%;
+        margin: 0;
+    }
+    .resumeListItemDate {
+        width: unset;
+    }
+    .resumeListItemTitle {
+        width: unset;
     }
 
 
