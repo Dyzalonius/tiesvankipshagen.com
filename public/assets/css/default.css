@@ -164,7 +164,7 @@ h4, button {
     color: var(--colorDefault);
 }
 .projectSpacer {
-    height: 160px;
+    height: 120px;
     padding: 0px calc(50% - 600px);
 }
 /* Project */
