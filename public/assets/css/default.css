@@ -240,16 +240,16 @@ h4, button {
     text-align: left;
     padding: 0px calc(50% - 500px) 0px calc(50% - 500px);
 }
-#resume {
+#resumeWrapper {
     padding: 5% 0;
 }
-#resume h2 {
+#resumeWrapper h2 {
     color: var(--colorDefault);
 }
-#resume h3 {
+#resumeWrapper h3 {
     color: var(--colorAlt);
 }
-#resume hr {
+#resumeWrapper hr {
     margin: 0;
     border-color: var(--colorMain);
     border-width: 2px;

@@ -92,15 +92,23 @@
 
 
     /* Resume */
-    #resume {
+    #resumeWrapper {
         padding: 0;
     }
     #resumeHeader {
-        height: 10%;
+        height: 60px;
     }
     #resumeImageContainer {
         display: none;
         height: 0;
+    }
+    #resumeTitleContainer {
+        padding-top: 10px;
+    }
+    #resumeTitle {
+        text-align: center;
+        position: relative;
+        margin: 0;
     }
     #resumeBody {
         margin: 0 auto;
