@@ -71,7 +71,7 @@ function Start() {
     obstacles = [];
     levels = [];
     levelID = 0;
-    turret = new Turret({x:130, y:500}, {min:-89, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 1, true);
+    turret = new Turret({x:130, y:500}, {min:-89, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 3, true);
     crosshair = new Crosshair(turret);
     new Obstacle({x:0, y:-9}, {x:10000, y:20}, 0, 0);
     playing = false;
@@ -197,7 +197,6 @@ function CheckCollision() {
 
         if (turret != null && turret.healthPoints > 0 && turret.collider.IntersectsWith(projectile.collider)) {
             projectile.Detonate();
-            turret.Hit(1);
         }
 
         for (var j = obstacles.length - 1; j >= 0; j--) {
@@ -213,7 +212,8 @@ function CheckCollision() {
     for (var i = explosions.length - 1; i >= 0; i--) {
         var explosion = explosions[i];
 
-        if (turret != null && turret.healthPoints > 0 && turret.collider.IntersectsWith(explosion.collider)) {
+        if (turret != null && turret.healthPoints > 0 && turret.collider.IntersectsWith(explosion.collider) && !explosion.hasDamagedPlayer) {
+            explosion.hasDamagedPlayer = true;
             turret.Hit(1);
         }
     }
@@ -386,8 +386,9 @@ class Level {
 }
 
 class Outro {
-    constructor(textTimeLength) {
-        this.textTimeLength = textTimeLength;
+    constructor(textTimeLengthMax) {
+        this.textTimeLengthMax = textTimeLengthMax;
+        this.textTimeLength = this.textTimeLengthMax;
         levels.push(this);
     }
 
@@ -407,6 +408,7 @@ class Outro {
     Draw() {
         if (this.textTimeLength > 0) {
             DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game completed', 'black');
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, 'black', -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -416,8 +418,9 @@ class Outro {
 }
 
 class GameOver {
-    constructor(textTimeLength) {
-        this.textTimeLength = textTimeLength;
+    constructor(textTimeLengthMax) {
+        this.textTimeLengthMax = textTimeLengthMax;
+        this.textTimeLength = this.textTimeLengthMax;
         levels = [];
         levels.push(this);
         playing = false;
@@ -439,6 +442,7 @@ class GameOver {
     Draw() {
         if (this.textTimeLength > 0) {
             DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game over', 'black');
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, 'black', -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -1022,6 +1026,7 @@ class Explosion extends GameObject {
         this.maxTimeAlive = this.timeToGrow + maxTimeAlive;
         this.timeAlive = 0;
         this.collider = new CircleCollider(this.pos, this.radius);
+        this.hasDamagedPlayer = false;
         explosions.push(this);
     }
 
@@ -1041,7 +1046,6 @@ class Explosion extends GameObject {
     Draw() {
         super.Draw();
         var alpha = Math.cos(this.timeAlive / this.maxTimeAlive * Math.PI * 0.5);
-        console.log(alpha);
         DrawCircle(this.pos, this.radius, this.color, alpha);
     }
 
@@ -1058,10 +1062,13 @@ class Turret extends Entity {
     constructor(pos, angleMinMax, turretDiameter, hopperOffset, hopperWidth, bulletCapacity, color, healthPointsMax, stickToBottomOfCanvas = false) {
         super(pos, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
         this.color = color;
-        this.hopperOffset = hopperOffset;
         this.bulletCapacity = bulletCapacity;
         this.bulletsRemaining = this.bulletCapacity;
-        this.hopper = new Hopper(hopperWidth, color, this);
+        this.hitInvulnerabilityDurationMax = 2;
+        this.hitInvulnerabilityBlinkInterval = 0.1;
+        this.hitInvulnerabilityDuration = 0;
+        this.hopper = new Hopper(hopperWidth, hopperOffset, color, this);
+        this.healthBar = new HealthBar({x:hopperWidth, y:15}, {x:0, y:0}, this, this.hopper);
         this.fireDelay = 0;
         this.reloadTime = 0;
         this.currentBloom = 0;
@@ -1069,6 +1076,7 @@ class Turret extends Entity {
         this.barrelAngle = 0;
         this.angleMinMax = angleMinMax;
         this.stickToBottomOfCanvas = stickToBottomOfCanvas;
+        this.alpha = 1;
     }
 
     Update() {
@@ -1076,7 +1084,6 @@ class Turret extends Entity {
         if (this.stickToBottomOfCanvas) {
             this.pos.y = canvasSize.y;
         }
-        this.hopper.SetPos({ x: this.pos.x + this.hopperOffset.x, y: this.pos.y + this.hopperOffset.y });
 
         if (mouseDown && playing) {
             this.CheckFire();
@@ -1105,6 +1112,16 @@ class Turret extends Entity {
             }
             this.currentBloom -= this.currentBloom / 10;
         }
+
+        // Blink if hit
+        if (this.hitInvulnerabilityDuration > 0) {
+            this.hitInvulnerabilityDuration -= deltaTime;
+            this.alpha = Math.sin(this.hitInvulnerabilityDuration * Math.PI / this.hitInvulnerabilityBlinkInterval) > 0.3 ? 1 : 0;
+        }
+        if (this.hitInvulnerabilityDuration < 0) {
+            this.hitInvulnerabilityDuration = 0;
+            this.alpha = 1;
+        }
     }
 
     Draw() {
@@ -1125,8 +1142,8 @@ class Turret extends Entity {
             DrawRect(this.pos, {x:10000, y:2}, 'red', minBloomMax, {x:0, y:0.5});
             DrawRect(this.pos, {x:10000, y:2}, 'blue', this.barrelAngle, {x:0, y:0.5});
         }
-        DrawCircle(this.pos, this.size.x / 2, 'black');
-        DrawRect(this.pos, gunBarrelSize, 'black', this.barrelAngle, {x:0, y:0.5});
+        DrawCircle(this.pos, this.size.x / 2, 'black', this.alpha);
+        DrawRect(this.pos, gunBarrelSize, 'black', this.barrelAngle, {x:0, y:0.5}, this.alpha);
     }
 
     CheckFire(text = '') {
@@ -1172,18 +1189,32 @@ class Turret extends Entity {
         new Explosion({x:this.pos.x, y:this.pos.y}, 100, 'black', 1);
         super.Destroy();
     }
+
+    Hit(damagePoints) {
+        // Only get hit if we didn't get hit in the last 2 seconds
+        if (this.hitInvulnerabilityDuration <= 0) {
+            super.Hit(damagePoints);
+            this.hitInvulnerabilityDuration = this.hitInvulnerabilityDurationMax;
+        }
+    }
 }
 
 class Hopper extends GameObject {
-    constructor(width, color, turret) {
+    constructor(width, offsetFromTurret, color, turret) {
         super({x:0, y:0}, {x:0, y:0});
         this.color = color;
         this.columnCount = 6;
         this.turret = turret;
+        this.offsetFromTurret = offsetFromTurret;
         this.rowCount = Math.ceil(turret.bulletCapacity / this.columnCount);
         this.ammoRadius = 2;
         this.spacing = { x: 6, y: 6 };
         this.size = { x: width, y: this.spacing.y * (this.rowCount + 1) };
+    }
+
+    Update() {
+        super.Update();
+        this.pos = {x:this.turret.pos.x + this.offsetFromTurret.x, y:this.turret.pos.y - this.offsetFromTurret.y};
     }
 
     Draw() {
@@ -1200,6 +1231,37 @@ class Hopper extends GameObject {
 
     SetPos(newPos) {
         this.pos = newPos;
+    }
+}
+
+class HealthBar extends GameObject {
+    constructor(size, offsetFromHopper, turret, hopper) {
+        super({x:0, y:0}, {x:0, y:0});
+        this.size = size;
+        this.offsetFromHopper = offsetFromHopper;
+        this.margin = 5;
+        this.padding = 1;
+        this.turret = turret;
+        this.hopper = hopper;
+    }
+
+    Update() {
+        super.Update();
+        this.pos = {x:this.hopper.pos.x + this.offsetFromHopper.x, y:this.hopper.pos.y - this.hopper.size.y + this.offsetFromHopper.y};
+    }
+
+    Draw() {
+        super.Draw();
+        DrawRect(this.pos, this.size, 'black', 0, {x:0.5, y:1});
+        var healthBarStartPos = {x:this.pos.x - this.size.x / 2 + this.margin, y:this.pos.y};
+        var healthBarWidth = this.size.x - 2 * this.margin;
+        var healthBlobWidth = (healthBarWidth - (this.padding * (this.turret.healthPointsMax - 1))) / this.turret.healthPointsMax; // single health blob
+
+        for (var i = 0; i < this.turret.healthPointsMax; i++) {
+            var color = i < this.turret.healthPoints ? 'white' : 'rgb(51, 51, 51)';
+            var posX = healthBarStartPos.x + (i * (healthBlobWidth + this.padding));
+            DrawRect({x:posX, y:healthBarStartPos.y}, {x:healthBlobWidth, y:this.size.y - this.margin}, color, 0, {x:0, y:1});
+        }
     }
 }
 
@@ -1324,7 +1386,7 @@ function DrawRing(pos, radius, lineWidth, color, percentage = 1) {
     ctx.beginPath();
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = color;
-    ctx.arc(pos.x, pos.y, radius, -0.5 * Math.PI, -0.5 + (percentage * 2) * Math.PI);
+    ctx.arc(pos.x, pos.y, radius, -0.5 * Math.PI, (-0.5 + (percentage * 2)) * Math.PI);
     ctx.stroke();
 
     // undo transform
@@ -1348,7 +1410,7 @@ function DrawCircle(pos, radius, color, alpha = 1) {
     ctx.setTransform(1,0,0,1,0,0);
 }
 
-function DrawImage(pos, size, angle, image, anchor={x:0.5, y:0.5}, scale={x:1, y:1}) {
+function DrawImage(pos, size, angle, image, anchor={x:0.5, y:0.5}, scale={x:1, y:1}, alpha = 1) {
     // transform
     ctx.translate(pos.x, pos.y);
     ctx.rotate(ToRad(angle));
@@ -1356,13 +1418,15 @@ function DrawImage(pos, size, angle, image, anchor={x:0.5, y:0.5}, scale={x:1, y
     ctx.translate(-pos.x, -pos.y);
 
     // draw
+    ctx.globalAlpha = alpha;
     ctx.drawImage(image, pos.x - size.x * anchor.x, pos.y - size.y * anchor.y, size.x, size.y);
+    ctx.globalAlpha = 1;
 
     // undo transform
     ctx.setTransform(1,0,0,1,0,0);
 }
 
-function DrawRect(pos, size, color, angle, anchor={x:0.5, y:0.5}) {
+function DrawRect(pos, size, color, angle, anchor={x:0.5, y:0.5}, alpha = 1) {
     // transform
     ctx.translate(pos.x, pos.y);
     ctx.rotate(ToRad(angle));
@@ -1370,7 +1434,9 @@ function DrawRect(pos, size, color, angle, anchor={x:0.5, y:0.5}) {
 
     // draw
     ctx.fillStyle = color;
+    ctx.globalAlpha = alpha;
     ctx.fillRect(pos.x - size.x * anchor.x, pos.y - size.y * anchor.y, size.x, size.y);
+    ctx.globalAlpha = 1;
 
     // undo transform
     ctx.setTransform(1,0,0,1,0,0);
