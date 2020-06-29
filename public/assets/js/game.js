@@ -71,7 +71,7 @@ function Start() {
     obstacles = [];
     levels = [];
     levelID = 0;
-    turret = new Turret({x:130, y:500}, {min:-89, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 3, true);
+    turret = new Turret({x:130, y:500}, {min:-115, max:-8}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 3, true);
     crosshair = new Crosshair(turret);
     new Obstacle({x:0, y:-9}, {x:10000, y:20}, 0, 0);
     playing = false;
@@ -709,6 +709,7 @@ class Helicopter extends Enemy {
         this.maxPosMargin = {x:100, y:400};
         this.maxPos = {x:canvasSize.x - this.maxPosMargin.x, y:canvasSize.y - this.maxPosMargin.y};
         this.waypoint = this.pos;
+        this.verticalWiggleOffset = Math.random() * 100;
     }
 
     Update() {
@@ -747,7 +748,8 @@ class Helicopter extends Enemy {
             this.FindNewWaypoint();
         }
         else {
-            this.velocity = {x:vector.x / vectorMagnitude * this.moveSpeed, y:vector.y / vectorMagnitude * this.moveSpeed};
+            var verticalWiggle = Math.sin(oldTimeStamp / 300 + this.verticalWiggleOffset) * 40;
+            this.velocity = {x:vector.x / vectorMagnitude * this.moveSpeed, y:vector.y / vectorMagnitude * this.moveSpeed + verticalWiggle};
         }
     }
 
@@ -768,7 +770,7 @@ class Helicopter extends Enemy {
         DrawCircle(this.pos, this.size.x / 2, this.color);
         DrawRect(this.pos, this.barrelSize, this.color, this.barrelAngle, {x:0, y:0.5});
         DrawRect(this.pos, {x:this.rotorThickness, y:this.rotorHeight}, this.color, 0, {x:0.5, y:1});
-        DrawRect({x:this.pos.x, y:this.pos.y - this.rotorHeight}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
+        DrawRect({x:this.pos.x, y:this.pos.y - this.rotorHeight + 1}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
 
         super.Draw();
     }
@@ -823,6 +825,7 @@ class Plane extends Enemy {
 
     Update() {
         super.Update();
+        this.collider.angle = this.angle;
         this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
 
         this.velocity = AngleToVector(this.angle, this.movementSpeed);
@@ -923,7 +926,7 @@ class Rocket extends Projectile {
         this.size = size;
         this.speed = speed;
         this.target = target;
-        this.targetOffset = {x:0, y:-20};
+        this.targetOffset = {x:0, y:-40};
         this.steeringSpeed = steeringSpeed;
         this.color = color;
         this.src = src; // Only used for image
@@ -1010,8 +1013,7 @@ class Bomb extends Projectile {
     }
 
     Detonate() {
-        var explosionRadius = 90 + 20 * Math.random();
-        new Explosion({x:this.pos.x, y:this.pos.y}, explosionRadius, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 80, 'black', 1);
         super.Detonate();
     }
 }
@@ -1054,6 +1056,7 @@ class Explosion extends GameObject {
         if (index != -1) {
             explosions.splice(index, 1);
         }
+        this.collider.Destroy();
         super.Destroy();
     }
 }
@@ -1474,14 +1477,14 @@ function IsOffCanvas(pos, size = {x:0, y:0}, ignoreUp = true) {
 // Return if given circle and given rectangle intersect
 function IntersectCircleRectangle(circleCenter, circleRadius, rectPos, rectSize, rectAngleCircle) {
     var angleInRad = ToRad(rectAngleCircle);
-    var vertex1 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y - rectSize.y / 2};
-    var vertex2 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y - rectSize.y / 2};
-    var vertex3 = {x:rectPos.x + rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
-    var vertex4 = {x:rectPos.x - rectSize.x / 2, y:rectPos.y + rectSize.y / 2};
-    vertex1 = {x:vertex1.x * Math.cos(angleInRad) - vertex1.y * Math.sin(angleInRad), y:vertex1.x * Math.sin(angleInRad) + vertex1.y * Math.cos(angleInRad)};
-    vertex2 = {x:vertex2.x * Math.cos(angleInRad) - vertex2.y * Math.sin(angleInRad), y:vertex2.x * Math.sin(angleInRad) + vertex2.y * Math.cos(angleInRad)};
-    vertex3 = {x:vertex3.x * Math.cos(angleInRad) - vertex3.y * Math.sin(angleInRad), y:vertex3.x * Math.sin(angleInRad) + vertex3.y * Math.cos(angleInRad)};
-    vertex4 = {x:vertex4.x * Math.cos(angleInRad) - vertex4.y * Math.sin(angleInRad), y:vertex4.x * Math.sin(angleInRad) + vertex4.y * Math.cos(angleInRad)};
+    var vertex1 = {x:-rectSize.x / 2, y:-rectSize.y / 2};
+    var vertex2 = {x:rectSize.x / 2, y:-rectSize.y / 2};
+    var vertex3 = {x:rectSize.x / 2, y:rectSize.y / 2};
+    var vertex4 = {x:-rectSize.x / 2, y:rectSize.y / 2};
+    vertex1 = {x:rectPos.x + vertex1.x * Math.cos(angleInRad) - vertex1.y * Math.sin(angleInRad), y:rectPos.y + vertex1.x * Math.sin(angleInRad) + vertex1.y * Math.cos(angleInRad)};
+    vertex2 = {x:rectPos.x + vertex2.x * Math.cos(angleInRad) - vertex2.y * Math.sin(angleInRad), y:rectPos.y + vertex2.x * Math.sin(angleInRad) + vertex2.y * Math.cos(angleInRad)};
+    vertex3 = {x:rectPos.x + vertex3.x * Math.cos(angleInRad) - vertex3.y * Math.sin(angleInRad), y:rectPos.y + vertex3.x * Math.sin(angleInRad) + vertex3.y * Math.cos(angleInRad)};
+    vertex4 = {x:rectPos.x + vertex4.x * Math.cos(angleInRad) - vertex4.y * Math.sin(angleInRad), y:rectPos.y + vertex4.x * Math.sin(angleInRad) + vertex4.y * Math.cos(angleInRad)};
 
     return (pointInRectangle(circleCenter, vertex1, vertex2, vertex3, vertex4) ||
             IntersectCircleLine(circleCenter, circleRadius, vertex1, vertex2) ||
