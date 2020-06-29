@@ -640,6 +640,10 @@ class Enemy extends Entity {
     Update() {
         super.Update();
         this.collider.pos = this.pos;
+
+        if (IsOffCanvas(this.pos, this.size, true)) {
+            this.Destroy();
+        }
     }
 
     Draw() {
@@ -661,7 +665,6 @@ class Enemy extends Entity {
         if (index != -1) {
             enemies.splice(index, 1);
         }
-        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
         super.Destroy();
     }
 }
@@ -779,6 +782,11 @@ class Helicopter extends Enemy {
 
         super.Draw();
     }
+
+    Destroy() {
+        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        super.Destroy();
+    }
 }
 
 class MegaHelicopter extends Helicopter {
@@ -891,6 +899,11 @@ class Plane extends Enemy {
         this.angle += this.rotationSpeed * deltaTime;
         this.angle = ClampAngle(this.angle);
     }
+
+    Destroy() {
+        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        super.Destroy();
+    }
 }
 
 class Projectile extends Enemy {
@@ -912,13 +925,16 @@ class Projectile extends Enemy {
     }
 
     Detonate() {
-        this.Destroy();
-    }
-
-    Destroy() {
         var index = projectiles.indexOf(this);
         if (index != -1) {
             projectiles.splice(index, 1);
+        }
+        this.Destroy(false);
+    }
+
+    Destroy(spawnExplosion = true) {
+        if (spawnExplosion) {
+            new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
         }
         super.Destroy();
     }
@@ -974,8 +990,7 @@ class Rocket extends Projectile {
     }
 
     Detonate() {
-        var explosionRadius = 45 + 10 * Math.random();
-        new Explosion({x:this.pos.x, y:this.pos.y}, explosionRadius, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 50, 'black', 1);
         super.Detonate();
     }
 }
