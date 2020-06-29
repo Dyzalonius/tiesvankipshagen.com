@@ -554,7 +554,7 @@ class Bullet extends GameObject {
         this.Destroy();
         for (var i = 0; i < 1; i++) {
             var newVelocity = AngleToVector(VectorToAngle({x:0, y:0}, this.velocity) - 90 + Math.random() * 180, (GetMagnitude(this.velocity) / 4));
-            new BulletFragment({x:this.pos.x, y:this.pos.y}, newVelocity, {x:this.size.x/2, y:this.size.y/2}, 'black', 0.2);
+            new Particle({x:this.pos.x, y:this.pos.y}, newVelocity, {x:this.size.x/2, y:this.size.y/2}, 'black', 0.2, 1, true);
         }
     }
 
@@ -569,13 +569,14 @@ class Bullet extends GameObject {
     }
 }
 
-class BulletFragment extends GameObject {
-    constructor(pos, velocity, size, color, maxTimeAlive) {
-        super(pos, velocity, true);
+class Particle extends GameObject {
+    constructor(pos, velocity, size, color, maxTimeAlive, startAlpha, enableGravity) {
+        super(pos, velocity, enableGravity);
         this.size = size;
         this.color = color;
         this.maxTimeAlive = maxTimeAlive;
         this.timeAlive = 0;
+        this.alphaMax = startAlpha;
     }
 
     Update() {
@@ -590,7 +591,7 @@ class BulletFragment extends GameObject {
 
     Draw() {
         super.Draw();
-        DrawCircle(this.pos, this.size.x / 2, this.color, 1 - this.timeAlive / this.maxTimeAlive);
+        DrawCircle(this.pos, this.size.x / 2, this.color, (1 - (this.timeAlive / this.maxTimeAlive)) * this.alphaMax);
     }
 
     Destroy() {
@@ -660,6 +661,7 @@ class Enemy extends Entity {
         if (index != -1) {
             enemies.splice(index, 1);
         }
+        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
         super.Destroy();
     }
 }
@@ -744,12 +746,15 @@ class Helicopter extends Enemy {
             vectorMagnitude = Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
         }
 
-        if (vectorMagnitude <= 1) {
+        if (vectorMagnitude <= this.size.x) {
             this.FindNewWaypoint();
         }
         else {
             var verticalWiggle = Math.sin(oldTimeStamp / 300 + this.verticalWiggleOffset) * 40;
-            this.velocity = {x:vector.x / vectorMagnitude * this.moveSpeed, y:vector.y / vectorMagnitude * this.moveSpeed + verticalWiggle};
+            var targetVelocity = {x:vector.x / vectorMagnitude * this.moveSpeed, y:vector.y / vectorMagnitude * this.moveSpeed + verticalWiggle};
+            var deltaX = Clamp(targetVelocity.x - this.velocity.x, -1, 1);
+            var deltaY = Clamp(targetVelocity.y - this.velocity.y, -1, 1);
+            this.velocity = {x:this.velocity.x + deltaX, y:this.velocity.y + deltaY};
         }
     }
 
@@ -764,7 +769,7 @@ class Helicopter extends Enemy {
             //var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
             //DrawRect(pos, size, 'green', 0);
 
-            DrawCircle(this.waypoint, 25, 'red', 0);
+            DrawCircle(this.waypoint, 25, 'red', 1);
         }
 
         DrawCircle(this.pos, this.size.x / 2, this.color);
@@ -939,6 +944,8 @@ class Rocket extends Projectile {
 
     Update() {
         super.Update();
+
+        new Particle({x:this.pos.x, y:this.pos.y}, {x:0, y:0}, {x:15, y:15}, 'black', 0.5, 0.2, false);
 
         // steer the rocket towards the target
         var targetPos = {x:this.target.pos.x + this.targetOffset.x, y:this.target.pos.y + this.targetOffset.y};
