@@ -55,6 +55,7 @@ $(document).ready(function () {
     document.addEventListener('mousemove', MouseMove);
     canvas.addEventListener("mousedown", MouseDown);
     canvas.addEventListener("mouseup", MouseUp);
+    document.addEventListener('keydown',KeyDown,false);
     loop = false;
     oldTimeStamp = 0;
     deltaTime = 0;
@@ -227,23 +228,6 @@ function NextLevel() {
 //              Classes               //
 ////////////////////////////////////////
 
-/*class Sound {
-    constructor(src) {
-        this.sound = document.createElement("audio");
-        this.sound.src = src;
-        this.sound.setAttribute("preload", "auto");
-        this.sound.setAttribute("controls", "none");
-        this.sound.style.display = "none";
-        document.body.appendChild(this.sound);
-        this.play = function () {
-            this.sound.play();
-        };
-        this.stop = function () {
-            this.sound.pause();
-        };
-    }
-}*/
-
 class Behaviour {
     constructor() {
         behaviours.push(this);
@@ -407,7 +391,7 @@ class Outro {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game completed', 'black');
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'You win!', 'black');
             DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, 'black', -this.textTimeLength / this.textTimeLengthMax);
         }
     }
@@ -714,7 +698,7 @@ class Helicopter extends Enemy {
         this.maxPosMargin = {x:100, y:400};
         this.maxPos = {x:canvasSize.x - this.maxPosMargin.x, y:canvasSize.y - this.maxPosMargin.y};
         this.waypoint = this.pos;
-        this.verticalWiggleOffset = Math.random() * 100;
+        this.verticalWiggleOffset = Math.random() * Math.PI * 2;
     }
 
     Update() {
@@ -753,7 +737,7 @@ class Helicopter extends Enemy {
             this.FindNewWaypoint();
         }
         else {
-            var verticalWiggle = Math.sin(oldTimeStamp / 300 + this.verticalWiggleOffset) * 40;
+            var verticalWiggle = Math.sin(oldTimeStamp / 300 + this.verticalWiggleOffset) * 30;
             var targetVelocity = {x:vector.x / vectorMagnitude * this.moveSpeed, y:vector.y / vectorMagnitude * this.moveSpeed + verticalWiggle};
             var deltaX = Clamp(targetVelocity.x - this.velocity.x, -1, 1);
             var deltaY = Clamp(targetVelocity.y - this.velocity.y, -1, 1);
@@ -825,7 +809,9 @@ class Plane extends Enemy {
         this.fireDelayCurrent = 1 + Math.random() * this.fireDelay;
         this.barrelSize = {x:30, y:50};
         this.bombSize = {x:50, y:50};
-        this.rotationSpeed = 90; // degrees per second
+        this.rotationSpeedMax = 135; // degrees per second
+        this.rotationSpeedMin = 15; // degrees per second
+        this.rotationSpeed = 0;
         this.movementSpeed = 200;
         this.src = './assets/img/game/plane.png'; // Only used for image
         this.image; // Only used for image
@@ -850,12 +836,14 @@ class Plane extends Enemy {
         this.velocity = AngleToVector(this.angle, this.movementSpeed);
 
         // Reduce fire delay if delay is bigger than 0
-        if (this.fireDelayCurrent > 0 && playing && !this.isTurning && this.angle > 90 && this.angle < 270) {
+        if (this.fireDelayCurrent > 0) {
             this.fireDelayCurrent -= deltaTime;
-            if (this.fireDelayCurrent < 0) {
-                this.fireDelayCurrent = 0;
-                this.Fire();
-            }
+        }
+
+        // Check fire
+        if (this.fireDelayCurrent < 0 && playing && this.angle > 90 && this.angle < 270 && !this.isTurning) {
+            this.fireDelayCurrent = 0;
+            this.Fire();
         }
 
         // Start turning when close to edge
@@ -900,6 +888,8 @@ class Plane extends Enemy {
     }
 
     Turn() {
+        var minAngle = Math.min(this.angle % 180, 180 - (this.angle % 180));
+        this.rotationSpeed = this.rotationSpeedMin + Math.sin(minAngle / 90 * Math.PI / 2) * this.rotationSpeedMax;
         this.angle += this.rotationSpeed * deltaTime;
         this.angle = ClampAngle(this.angle);
     }
@@ -994,7 +984,7 @@ class Rocket extends Projectile {
     }
 
     Detonate() {
-        new Explosion({x:this.pos.x, y:this.pos.y}, 50, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 70, 'black', 1);
         super.Detonate();
     }
 }
@@ -1106,6 +1096,7 @@ class Turret extends Entity {
         this.angleMinMax = angleMinMax;
         this.stickToBottomOfCanvas = stickToBottomOfCanvas;
         this.alpha = 1;
+        this.isReloading = false;
     }
 
     Update() {
@@ -1126,12 +1117,8 @@ class Turret extends Entity {
             }
         }
         // Reload if empty magazine
-        if (this.bulletsRemaining <= 0) {
-            this.reloadTime += deltaTime;
-            if (this.reloadTime >= gunReloadTimeMax) {
-                this.bulletsRemaining = this.bulletCapacity;
-                this.reloadTime = 0;
-            }
+        if (this.bulletsRemaining <= 0 && !this.isReloading) {
+            this.Reload();
         }
         // Reduce bloom
         if (!mouseDown || this.bulletsRemaining <= 0) {
@@ -1150,6 +1137,16 @@ class Turret extends Entity {
         if (this.hitInvulnerabilityDuration < 0) {
             this.hitInvulnerabilityDuration = 0;
             this.alpha = 1;
+        }
+
+        // Handle reloading
+        if (this.isReloading) {
+            this.reloadTime += deltaTime;
+            if (this.reloadTime >= gunReloadTimeMax) {
+                this.bulletsRemaining = this.bulletCapacity;
+                this.reloadTime = 0;
+                this.isReloading = false;
+            }
         }
     }
 
@@ -1225,6 +1222,12 @@ class Turret extends Entity {
             super.Hit(damagePoints);
             this.hitInvulnerabilityDuration = this.hitInvulnerabilityDurationMax;
         }
+    }
+
+    Reload() {
+        console.log('reload');
+        this.bulletsRemaining = 0;
+        this.isReloading = true;
     }
 }
 
@@ -1401,6 +1404,23 @@ class BoxCollider extends Behaviour {
         }
     }
 }
+
+/*class Sound {
+    constructor(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function () {
+            this.sound.play();
+        };
+        this.stop = function () {
+            this.sound.pause();
+        };
+    }
+}*/
 
 ////////////////////////////////////////
 //         Utility functions          //
@@ -1635,6 +1655,15 @@ function MouseDown() {
 
 function MouseUp() {
     mouseDown = false;
+}
+
+function KeyDown(event) {
+    console.log('keydown');
+    var keyCode = event.keyCode;
+
+    switch (keyCode) {
+        case 82: turret.Reload(); break; // R
+    }
 }
 
 function MouseMove() {
