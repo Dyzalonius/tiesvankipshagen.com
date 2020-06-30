@@ -624,10 +624,6 @@ class Enemy extends Entity {
     Update() {
         super.Update();
         this.collider.pos = this.pos;
-
-        if (IsOffCanvas(this.pos, this.size, true)) {
-            this.Destroy();
-        }
     }
 
     Draw() {
@@ -715,6 +711,11 @@ class Helicopter extends Enemy {
                 this.fireDelayCurrent = 0;
                 this.Fire();
             }
+        }
+
+        // Destroy if off canvas
+        if (IsOffCanvas(this.pos, this.size, false)) {
+            this.Destroy();
         }
     }
 
@@ -854,6 +855,11 @@ class Plane extends Enemy {
         else {
             this.isTurning = false;
         }
+
+        // Destroy if off canvas
+        if (IsOffCanvas(this.pos, this.size, false)) {
+            this.Destroy();
+        }
     }
 
     Fire() {
@@ -908,6 +914,11 @@ class Projectile extends Enemy {
 
     Update() {
         super.Update();
+
+        // Destroy if off canvas
+        if (IsOffCanvas(this.pos, this.size, true)) {
+            this.Destroy();
+        }
     }
 
     Draw() {
@@ -1658,9 +1669,11 @@ function MouseUp() {
 }
 
 function KeyDown(event) {
-    console.log('keydown');
-    var keyCode = event.keyCode;
+    if (!playing) {
+        return;
+    }
 
+    var keyCode = event.keyCode;
     switch (keyCode) {
         case 82: turret.Reload(); break; // R
     }
