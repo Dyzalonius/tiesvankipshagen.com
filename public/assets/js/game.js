@@ -829,10 +829,16 @@ class Plane extends Enemy {
         this.movementSpeed = 200;
         this.src = './assets/img/game/plane.png'; // Only used for image
         this.image; // Only used for image
+        this.src2 = './assets/img/game/plane2.png'; // Only used for image2
+        this.imageWings; // Only used for image2
         this.isTurning = false;
         if (this.src != '') {
             this.image = new Image();
             this.image.src = this.src;
+        }
+        if (this.src2 != '') {
+            this.image2 = new Image();
+            this.image2.src = this.src2;
         }
     }
 
@@ -853,7 +859,7 @@ class Plane extends Enemy {
         }
 
         // Start turning when close to edge
-        if ((this.pos.x < 300 && this.angle != 0) || (this.pos.x > canvasSize.x - 300 && this.angle != 180)) {
+        if ((this.pos.x < 300 && this.angle != 0) || (this.pos.x > canvasSize.x - 600 && this.angle != 180)) {
             this.isTurning = true;
             this.Turn();
         }
@@ -874,15 +880,13 @@ class Plane extends Enemy {
         // Draw plane
         var scale = this.angle < 90 || this.angle > 270 ? {x:1, y:-1} : {x:1, y:1};
         var minAngle = Math.min(this.angle % 180, 180 - (this.angle % 180));
-        var thickness = this.size.x * (0.5 + 0.5 * ((90 - minAngle) / 90));
-        var secondaryPlaneThickness = 0.9;
-        DrawImage(this.pos, {x:this.size.x, y:thickness}, this.angle + 180, this.image, {x:0.5, y:0.5}, scale);
-        DrawRect(this.pos, {x:this.size.x * 0.75, y:this.size.y * secondaryPlaneThickness}, 'black', this.angle);
-        DrawCircle({x:this.pos.x + Math.cos(ToRad(this.angle)) * (this.size.x / 2 - this.size.y * secondaryPlaneThickness / 2), y:this.pos.y + Math.sin(ToRad(this.angle)) * (this.size.x / 2 - this.size.y * secondaryPlaneThickness / 2)}, this.size.y * secondaryPlaneThickness / 2, 'black');
-        DrawCircle({x:this.pos.x - Math.cos(ToRad(this.angle)) * (this.size.x / 2 - this.size.y * secondaryPlaneThickness / 2), y:this.pos.y - Math.sin(ToRad(this.angle)) * (this.size.x / 2 - this.size.y * secondaryPlaneThickness / 2)}, this.size.y * secondaryPlaneThickness / 2, 'black');
+        var thicknessSide = Math.cos(minAngle / 90 * Math.PI / 2) * this.size.x;
+        DrawImage(this.pos, {x:this.size.x, y:thicknessSide}, this.angle + 180, this.image, {x:0.5, y:0.5}, scale);
+        var thicknessWings = Math.sin(minAngle / 90 * Math.PI / 2) * this.size.x;
+        DrawImage(this.pos, {x:this.size.x, y:thicknessWings}, this.angle + 180, this.image2, {x:0.5, y:0.5}, scale);
 
         // Draw barrel
-        var barrelThickness = this.barrelSize.x * (0.3 + 0.7 * ((90 - minAngle) / 90));
+        var barrelThickness = Math.cos(minAngle / 90 * Math.PI / 2) * this.barrelSize.x;
         var barrelAngle = this.angle < 90 || this.angle > 270 ? this.angle + this.barrelAngle : this.angle - this.barrelAngle;
         DrawRect(this.pos, {x:barrelThickness, y:this.barrelSize.y}, this.color, barrelAngle, {x:0, y:0.5});
 
@@ -934,7 +938,7 @@ class Projectile extends Enemy {
 
     Destroy(spawnExplosion = true) {
         if (spawnExplosion) {
-            new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+            new Explosion(this.pos, this.size.x / 2 + 10, 'black', 1);
         }
         super.Destroy();
     }
