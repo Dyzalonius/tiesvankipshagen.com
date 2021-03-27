@@ -167,7 +167,7 @@ h4, button {
 /* Project */
 .project {
     display: block;
-    overflow: auto;
+    overflow: hidden;
 }
 .projectOne {
     float: left;
