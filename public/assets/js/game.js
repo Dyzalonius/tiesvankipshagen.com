@@ -141,6 +141,8 @@ function Start() {
 function Update(timeStamp) {
     CalculateDeltaTime(timeStamp);
     UpdateCanvasSize();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
     if (levels.length > 0) {
         levels[0].Update();
     }
@@ -167,6 +169,7 @@ function CalculateDeltaTime(timeStamp) {
 }
 
 function UpdateCanvasSize() {
+    if (canvasSize.x > 0 && canvasSize.y > 0 && canvasSize.x == $('#gameCanvas').width() && canvasSize.y == $('#gameCanvas').height()) { return; }
     canvasSize = {x:$('#gameCanvas').width(), y:$('#gameCanvas').height()};
     $('#gameCanvas').attr({
         width: canvasSize.x,
@@ -255,7 +258,7 @@ class Behaviour {
 }
 
 class Level {
-    constructor(skipIntro) {
+    constructor(skipIntro = false) {
         this.skipIntro = skipIntro;
         this.textTimeLength = 3;
         levelID++;
@@ -657,9 +660,8 @@ class Helicopter extends Enemy {
         this.barrelSize = {x:60, y:40};
         this.bombSize = {x:50, y:50};
         this.minPos = {x:400, y:400};
-        this.maxPosMargin = {x:100, y:100};
         this.maxPosMax = {x:2000, y:1000};
-        this.maxPos = {x:Math.min(canvasSize.x - this.maxPosMargin.x, this.maxPosMax.x), y:Math.min(canvasSize.y - this.maxPosMargin.y, this.maxPosMax.y)};
+        this.maxPos = {x:1800, y:700};
         this.waypoint = this.pos;
         this.verticalWiggleOffset = Math.random() * Math.PI * 2;
     }
@@ -714,7 +716,6 @@ class Helicopter extends Enemy {
     }
 
     FindNewWaypoint() {
-        this.maxPos = {x:Math.min(canvasSize.x - this.maxPosMargin.x, this.maxPosMax.x), y:Math.min(canvasSize.y - this.maxPosMargin.y, this.maxPosMax.y)}
         this.waypoint = {x:this.minPos.x + Math.random() * (this.maxPos.x - this.minPos.x), y:this.minPos.y + Math.random() * (this.maxPos.y - this.minPos.y)};
     }
 
@@ -743,7 +744,6 @@ class Helicopter extends Enemy {
 
 class Lettercopter extends Enemy {
     constructor(pos, healthPointsMax, healthPosOffset, color, letter) {
-        console.log(healthPointsMax + ", " + healthPosOffset);
         super(pos, {x:0, y:0}, false, {x:60, y:60}, 0, healthPointsMax, healthPosOffset);
         this.color = color;
         this.letter = letter;
@@ -853,7 +853,7 @@ class Plane extends Enemy {
         }
 
         // Start turning when close to edge
-        if ((this.pos.x < 300 && this.angle != 0) || (this.pos.x > canvasSize.x - 600 && this.angle != 180)) {
+        if ((this.pos.x < 300 && this.angle != 0) || (this.pos.x > 1300 && this.angle != 180)) {
             this.isTurning = true;
             this.Turn();
         }
