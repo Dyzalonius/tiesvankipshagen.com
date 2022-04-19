@@ -75,7 +75,7 @@ function Start() {
     turret = new Turret({x:130, y:0}, {min:8, max:115}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 3);
     crosshair = new Crosshair(turret);
     new Obstacle({x:0, y:-9}, {x:10000, y:20}, 0, 0);
-    playing = false;
+    playing = true;
 
     // Start update loop if not running
     if (loop == false) {
@@ -83,9 +83,14 @@ function Start() {
         Update(0);
     }
 
-    new Intro(0.5, 2.5);
-    var level = new Level();
-    level.AddShootingTarget({x:800, y:400});
+    var level = new Level(true);
+    var lettercopterword = "welcome";
+    var startPos = {x:400, y:500};
+    var deltaX = 80;
+    for (var i = 0; i < lettercopterword.length; i++) {
+        level.AddLettercopter({x:startPos.x + deltaX * i, y:startPos.y});
+    }
+    level.SetLettercopterWord(lettercopterword);
     level = new Level();
     level.AddPlane({x:1800, y:500});
     level = new Level();
@@ -249,61 +254,15 @@ class Behaviour {
     }
 }
 
-class Intro {
-    constructor(timeBeforeStart, timeBeforeEnd) {
-        this.tempGunFireBloomMax = gunFireBloomMax;
-        this.tempbulletSpeed = bulletSpeed;
-        this.tempGravity = gravity;
-        this.tempGunFireDelay = gunFireDelay;
-        this.tempAngleMinMax = turret.angleMinMax;
-        this.tempGunReloadTimeMax = gunReloadTimeMax;
-        gunFireBloomMax = 0;
-        bulletSpeed = 600;
-        gravity = 250;
-        gunFireDelay = 0.05;
-        turret.angleMinMax = {min:40, max:60};
-        gunReloadTimeMax = 4;
-
-        this.timeBeforeStart = timeBeforeStart;
-        this.timeBeforeEnd = timeBeforeEnd;
-        this.timeCurrent = 0;
-        this.text = 'Welcome to my website!'
-        turret.bulletsRemaining = this.text.length;
-        levels.push(this);
-    }
-
-    Update() {
-        this.timeCurrent += deltaTime;
-
-        if (this.timeCurrent >= this.timeBeforeStart && this.text.length > 0) {
-            if (turret.CheckFire(this.text.charAt(this.text.length - 1))) {
-                this.text = this.text.substring(0, this.text.length - 1);
-            }
-        }
-
-        if (this.timeCurrent >= this.timeBeforeEnd) {
-            this.Destroy();
-        }
-    }
-
-    Destroy() {
-        gunFireBloomMax = this.tempGunFireBloomMax;
-        bulletSpeed = this.tempbulletSpeed;
-        gravity = this.tempGravity;
-        gunFireDelay = this.tempGunFireDelay;
-        turret.angleMinMax = this.tempAngleMinMax;
-        gunReloadTimeMax = this.tempGunReloadTimeMax;
-        playing = true;
-        NextLevel();
-    }
-}
-
 class Level {
-    constructor() {
+    constructor(skipIntro) {
+        this.skipIntro = skipIntro;
         this.textTimeLength = 3;
         levelID++;
         this.id = levelID;
         levels.push(this);
+        this.lettercopters = [];
+        this.lettercopterword = '';
         this.shootingTargets = [];
         this.helicopters = [];
         this.megaHelicopters = [];
@@ -315,7 +274,8 @@ class Level {
         if (this.textTimeLength > 0) {
             this.textTimeLength -= deltaTime;
 
-            if (this.textTimeLength <= 0) {
+            if (this.textTimeLength <= 0 || this.skipIntro) {
+                this.textTimeLength = 0;
                 this.SpawnEnemies();
             }
         }
@@ -325,6 +285,14 @@ class Level {
         if (this.textTimeLength <= 0 && enemies.length <= 0) {
             this.Destroy();
         }
+    }
+
+    AddLettercopter(pos) {
+        this.lettercopters.push(pos);
+    }
+
+    SetLettercopterWord(word) {
+        this.lettercopterword = word;
     }
 
     AddShootingTarget(pos) {
@@ -344,6 +312,9 @@ class Level {
     }
 
     SpawnEnemies() {
+        for (var i = 0; i < this.lettercopters.length; i++) {
+            new Lettercopter(this.lettercopters[i], 5, {x:0, y:40}, 'black', this.lettercopterword[i]);
+        }
         for (var i = 0; i < this.shootingTargets.length; i++) {
             new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
         }
@@ -760,6 +731,66 @@ class Helicopter extends Enemy {
         DrawRect(this.pos, this.barrelSize, this.color, this.barrelAngle, {x:0, y:0.5});
         DrawRect(this.pos, {x:this.rotorThickness, y:this.rotorHeight}, this.color, 0, {x:0.5, y:1});
         DrawRect({x:this.pos.x, y:this.pos.y + this.rotorHeight - 1}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
+
+        super.Draw();
+    }
+
+    Destroy() {
+        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        super.Destroy();
+    }
+}
+
+class Lettercopter extends Enemy {
+    constructor(pos, healthPointsMax, healthPosOffset, color, letter) {
+        console.log(healthPointsMax + ", " + healthPosOffset);
+        super(pos, {x:0, y:0}, false, {x:60, y:60}, 0, healthPointsMax, healthPosOffset);
+        this.color = color;
+        this.letter = letter;
+        this.rotorWidthMax = 80;
+        this.rotorWidthMin = 10;
+        this.rotorWidthTime = 60;
+        this.rotorHeight = 50;
+        this.rotorThickness = 10;
+        this.rotorWidth = this.rotorWidthMax;
+        this.verticalWiggleOffset = Math.random() * Math.PI * 2;
+    }
+
+    Update() {
+        super.Update();
+        this.rotorWidth = Math.abs(Math.sin(oldTimeStamp / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
+
+        this.Move();
+
+        // Destroy if off canvas
+        if (IsOffCanvas(this.pos, this.size, false)) {
+            this.Destroy();
+        }
+    }
+
+    Move() {
+        var verticalWiggle = Math.sin(oldTimeStamp / 300 + this.verticalWiggleOffset) * 30;
+        var targetVelocity = {x:0, y:verticalWiggle};
+        var deltaX = Clamp(targetVelocity.x - this.velocity.x, -1, 1);
+        var deltaY = Clamp(targetVelocity.y - this.velocity.y, -1, 1);
+        this.velocity = {x:this.velocity.x + deltaX, y:this.velocity.y + deltaY};
+    }
+
+    Draw() {
+        if (debugMode) {
+            //var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
+            //var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
+            //DrawRect(pos, size, 'green', 0);
+
+            DrawCircle(this.waypoint, 25, 'red', 1);
+        }
+
+        //DrawCircle(this.pos, this.size.x / 2, this.color);
+        DrawRect(this.pos, {x:this.rotorThickness, y:this.rotorHeight}, this.color, 0, {x:0.5, y:1});
+        DrawRect({x:this.pos.x, y:this.pos.y + this.rotorHeight - 1}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
+        DrawRect(this.pos, {x:this.size.x, y:this.size.x}, this.color, 0);
+        DrawRect(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, 'white', 0);
+        DrawText(this.pos, 'bold 30px Arial', 0, this.letter, this.color);
 
         super.Draw();
     }
