@@ -29,5 +29,12 @@ $(document).ready(function () {
                 $(this).addClass("slide");
             }
         });
+
+        var height = $('#game').height(); + $('.common-bar').height();
+        if ($(this).scrollTop() > height) {
+            $('#navbar').addClass('navbarFix');
+        } else {
+            $('#navbar').removeClass('navbarFix');
+        }
     });
 });

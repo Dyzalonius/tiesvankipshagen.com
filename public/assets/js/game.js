@@ -17,6 +17,8 @@ var gunReloadTimeMax = 1; // in seconds
 var bulletCapacity = 90; // in bullets
 var gravity = 350; // in pixels per second per second
 var debugMode = false;
+var primaryColor = '#111111';
+var secondaryColor = '#EFEFEF';
 
 // References
 var canvasSize = {x:0, y:0};
@@ -72,8 +74,8 @@ function Start() {
     obstacles = [];
     levels = [];
     levelID = 0;
-    turret = new Turret({x:130, y:0}, {min:8, max:115}, 100, {x:-90, y:0}, 50, bulletCapacity, 'black', 3);
-    crosshair = new Crosshair(turret);
+    turret = new Turret({x:130, y:0}, {min:8, max:115}, 100, {x:-90, y:0}, 50, bulletCapacity, primaryColor, 3);
+    crosshair = new Crosshair(turret, primaryColor);
     new Obstacle({x:0, y:-9}, {x:10000, y:20}, 0, 0);
     playing = true;
 
@@ -165,6 +167,9 @@ function Update(timeStamp) {
 
 function CalculateDeltaTime(timeStamp) {
     deltaTime = (timeStamp - oldTimeStamp) / 1000;
+    if (deltaTime > 0.1) {
+        deltaTime = 0.1;
+    }
     oldTimeStamp = timeStamp;
 }
 
@@ -316,25 +321,25 @@ class Level {
 
     SpawnEnemies() {
         for (var i = 0; i < this.lettercopters.length; i++) {
-            new Lettercopter(this.lettercopters[i], 5, {x:0, y:40}, 'black', this.lettercopterword[i]);
+            new Lettercopter(this.lettercopters[i], 5, {x:0, y:40}, primaryColor, this.lettercopterword[i]);
         }
         for (var i = 0; i < this.shootingTargets.length; i++) {
             new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
         }
         for (var i = 0; i < this.helicopters.length; i++) {
-            new Helicopter(this.helicopters[i], 50, {x:0, y:30}, 'black');
+            new Helicopter(this.helicopters[i], 50, {x:0, y:30}, primaryColor);
         }
         for (var i = 0; i < this.megaHelicopters.length; i++) {
-            new MegaHelicopter(this.megaHelicopters[i], 100, {x:0, y:50}, 'black');
+            new MegaHelicopter(this.megaHelicopters[i], 100, {x:0, y:50}, primaryColor);
         }
         for (var i = 0; i < this.planes.length; i++) {
-            new Plane(this.planes[i], {x:120, y:30}, 50, {x:0, y:-30}, 'black');
+            new Plane(this.planes[i], {x:120, y:30}, 50, {x:0, y:-30}, primaryColor);
         }
     }
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Level ' + this.id, 'black');
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Level ' + this.id, primaryColor);
         }
     }
 
@@ -365,8 +370,8 @@ class Outro {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'You win!', 'black');
-            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, 'black', -this.textTimeLength / this.textTimeLengthMax);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'You win!', this.color);
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -399,8 +404,8 @@ class GameOver {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game over', 'black');
-            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, 'black', -this.textTimeLength / this.textTimeLengthMax);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game over', this.color);
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -507,7 +512,7 @@ class Bullet extends GameObject {
         this.Destroy();
         for (var i = 0; i < 1; i++) {
             var newVelocity = AngleToVector(VectorToAngle({x:0, y:0}, this.velocity) - 90 + Math.random() * 180, (GetMagnitude(this.velocity) / 4));
-            new Particle({x:this.pos.x, y:this.pos.y}, newVelocity, {x:this.size.x/2, y:this.size.y/2}, 'black', 0.2, 1, true);
+            new Particle({x:this.pos.x, y:this.pos.y}, newVelocity, {x:this.size.x/2, y:this.size.y/2}, this.color, 0.2, 1, true);
         }
     }
 
@@ -690,7 +695,7 @@ class Helicopter extends Enemy {
 
     Fire() {
         var projectilePos = { x: this.pos.x + (this.barrelSize.x - this.bombSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (this.barrelSize.x - this.bombSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
-        new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 6, 'blue', './assets/img/game/missile.png');
+        new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 6, this.color, './assets/img/game/missile.png');
 
         this.fireDelayCurrent = this.fireDelay;
         this.barrelAngleNext = Math.random() * (this.barrelAngleMax - this.barrelAngleMin) + this.barrelAngleMin;
@@ -737,7 +742,7 @@ class Helicopter extends Enemy {
     }
 
     Destroy() {
-        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        new Explosion(this.pos, this.size.x / 2 + 40, this.color, 1);
         super.Destroy();
     }
 }
@@ -789,14 +794,14 @@ class Lettercopter extends Enemy {
         DrawRect(this.pos, {x:this.rotorThickness, y:this.rotorHeight}, this.color, 0, {x:0.5, y:1});
         DrawRect({x:this.pos.x, y:this.pos.y + this.rotorHeight - 1}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
         DrawRect(this.pos, {x:this.size.x, y:this.size.x}, this.color, 0);
-        DrawRect(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, 'white', 0);
+        DrawRect(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, secondaryColor, 0);
         DrawText(this.pos, 'bold 30px Arial', 0, this.letter, this.color);
 
         super.Draw();
     }
 
     Destroy() {
-        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        new Explosion(this.pos, this.size.x / 2 + 40, this.color, 1);
         super.Destroy();
     }
 }
@@ -869,7 +874,7 @@ class Plane extends Enemy {
 
     Fire() {
         var projectilePos = { x: this.pos.x + (this.barrelSize.x - this.bombSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (this.barrelSize.x - this.bombSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
-        new Bomb(projectilePos, this.angle, 190, 180, 90, this.bombSize, 5, 'black', './assets/img/game/bomb.png');
+        new Bomb(projectilePos, this.angle, 190, 180, 90, this.bombSize, 5, this.color, './assets/img/game/bomb.png');
         //new Rocket(projectilePos, this.barrelAngle, turret, 500, 120, this.bombSize, 10, 'blue', './assets/img/game/missile.png');
 
         this.fireDelayCurrent = this.fireDelay;
@@ -906,7 +911,7 @@ class Plane extends Enemy {
     }
 
     Destroy() {
-        new Explosion(this.pos, this.size.x / 2 + 40, 'black', 1);
+        new Explosion(this.pos, this.size.x / 2 + 40, this.color, 1);
         super.Destroy();
     }
 }
@@ -944,7 +949,7 @@ class Projectile extends Enemy {
 
     Destroy(spawnExplosion = true) {
         if (spawnExplosion) {
-            new Explosion(this.pos, this.size.x / 2 + 10, 'black', 1);
+            new Explosion(this.pos, this.size.x / 2 + 10, this.color, 1);
         }
         super.Destroy();
     }
@@ -971,7 +976,7 @@ class Rocket extends Projectile {
     Update() {
         super.Update();
 
-        new Particle({x:this.pos.x, y:this.pos.y}, {x:0, y:0}, {x:15, y:15}, 'black', 0.5, 0.2, false);
+        new Particle({x:this.pos.x, y:this.pos.y}, {x:0, y:0}, {x:15, y:15}, this.color, 0.5, 0.2, false);
 
         // steer the rocket towards the target
         var targetPos = {x:this.target.pos.x + this.targetOffset.x, y:this.target.pos.y + this.targetOffset.y};
@@ -1000,7 +1005,7 @@ class Rocket extends Projectile {
     }
 
     Detonate() {
-        new Explosion({x:this.pos.x, y:this.pos.y}, 70, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 70, this.color, 1);
         super.Detonate();
     }
 }
@@ -1045,7 +1050,7 @@ class Bomb extends Projectile {
     }
 
     Detonate() {
-        new Explosion({x:this.pos.x, y:this.pos.y}, 80, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 80, this.color, 1);
         super.Detonate();
     }
 }
@@ -1180,8 +1185,8 @@ class Turret extends Entity {
             DrawRect(this.pos, {x:10000, y:2}, 'red', minBloomMax, {x:0, y:0.5});
             DrawRect(this.pos, {x:10000, y:2}, 'blue', this.barrelAngle, {x:0, y:0.5});
         }
-        DrawCircle(this.pos, this.size.x / 2, 'black', this.alpha);
-        DrawRect(this.pos, gunBarrelSize, 'black', this.barrelAngle, {x:0, y:0.5}, this.alpha);
+        DrawCircle(this.pos, this.size.x / 2, this.color, this.alpha);
+        DrawRect(this.pos, gunBarrelSize, this.color, this.barrelAngle, {x:0, y:0.5}, this.alpha);
     }
 
     CheckFire(text = '') {
@@ -1194,16 +1199,15 @@ class Turret extends Entity {
     }
 
     Fire(angle, pos, text) {
-        var color = 'rgb(0, 0, 0)'; //GetRandomColor();
+        var color = this.color;
         var finalAngle = angle;
         var velocity = AngleToVector(finalAngle, bulletSpeed);
         var size = { x: bulletSize.x, y: bulletSize.y };
 
         if (text != '') {
             new Bullet(pos, velocity, size, color, bulletMaxTimeAlive, finalAngle, '', text);
-        }
-        else {
-            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive); //new Bullet(pos, velocity, size, color, 0, './assets/img/game/face.png');
+        } else {
+            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive);
         }
 
         this.fireDelay = gunFireDelay;
@@ -1224,7 +1228,7 @@ class Turret extends Entity {
 
     Destroy() {
         new GameOver(5);
-        new Explosion({x:this.pos.x, y:this.pos.y}, 100, 'black', 1);
+        new Explosion({x:this.pos.x, y:this.pos.y}, 100, this.color, 1);
         super.Destroy();
     }
 
@@ -1262,13 +1266,13 @@ class Hopper extends GameObject {
 
     Draw() {
         super.Draw();
-        DrawRect(this.pos, this.size, 'black', 0, { x: 0.5, y: 1 });
+        DrawRect(this.pos, this.size, this.color, 0, { x: 0.5, y: 1 });
         for (var i = 0; i < this.turret.bulletsRemaining; i++) {
             var rowN = Math.floor(i / this.columnCount);
             var columnN = i % this.columnCount;
             var strangevarthing = columnN + 0.5 - this.columnCount / 2;
             var pos = { x: this.pos.x - strangevarthing * this.spacing.x, y: this.pos.y + (rowN + 1) * this.spacing.y };
-            DrawCircle(pos, this.ammoRadius, 'white');
+            DrawCircle(pos, this.ammoRadius, secondaryColor);
         }
     }
 
@@ -1295,13 +1299,13 @@ class HealthBar extends GameObject {
 
     Draw() {
         super.Draw();
-        DrawRect(this.pos, this.size, 'black', 0, {x:0.5, y:1});
+        DrawRect(this.pos, this.size, this.color, 0, {x:0.5, y:1});
         var healthBarStartPos = {x:this.pos.x - this.size.x / 2 + this.margin, y:this.pos.y};
         var healthBarWidth = this.size.x - 2 * this.margin;
         var healthBlobWidth = (healthBarWidth - (this.padding * (this.turret.healthPointsMax - 1))) / this.turret.healthPointsMax; // single health blob
 
         for (var i = 0; i < this.turret.healthPointsMax; i++) {
-            var color = i < this.turret.healthPoints ? 'white' : 'rgb(51, 51, 51)';
+            var color = i < this.turret.healthPoints ? secondaryColor : 'rgb(51, 51, 51)';
             var posX = healthBarStartPos.x + (i * (healthBlobWidth + this.padding));
             DrawRect({x:posX, y:healthBarStartPos.y}, {x:healthBlobWidth, y:this.size.y - this.margin}, color, 0, {x:0, y:1});
         }
@@ -1309,7 +1313,7 @@ class HealthBar extends GameObject {
 }
 
 class Crosshair extends GameObject {
-    constructor(turret) {
+    constructor(turret, color) {
         super(mousePos, {x:0, y:0});
         this.pos = mousePos;
         this.dotRadius = 3;
@@ -1319,7 +1323,7 @@ class Crosshair extends GameObject {
         this.lineOffsetBloomFactor = 3;
         this.showDot = false;
         this.showLines = true;
-        this.color = 'black';
+        this.color = color;
         this.turret = turret;
     }
 
@@ -1341,7 +1345,7 @@ class Crosshair extends GameObject {
             DrawRect({ x: this.pos.x, y: this.pos.y - lineOffsets }, { x: this.lineThickness, y: this.lineLength }, this.color, 0, { x: 0.5, y: 0 });
         }
         if (this.turret.reloadTime > 0 && playing) {
-            DrawRing(this.pos, this.lineOffset - this.lineThickness * 2, this.lineThickness, 'black', this.turret.reloadTime / gunReloadTimeMax);
+            DrawRing(this.pos, this.lineOffset - this.lineThickness * 2, this.lineThickness, this.color, this.turret.reloadTime / gunReloadTimeMax);
         }
     }
 }

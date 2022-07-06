@@ -14,7 +14,6 @@
     <meta property="og:description" content="Dutch game developer">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/scroll.js"></script>
     <script src="./assets/js/gallery.js"></script>
     <script src="./assets/js/game.js"></script>
@@ -27,42 +26,6 @@
 </head>
 
 <body id="home">
-    <nav id="navbar" class="common-bar style-main navbar navbar-fixed-top">
-        <div id="navbarHeader" class="navbar-header">
-            <button id="navbarMenu" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#navbarBody">
-                <span class="glyphicon glyphicon-menu-hamburger"></span>
-            </button>
-        </div>
-
-        <div id="navbarBody" class="navbar-collapse collapse" data-toggle="collapse" data-target=".in">
-            <ul id="navBarBodyLeft" class="nav navbar-nav navbar navbarBodyItem">
-                <li>
-                    <a href="#home">Home</a>
-                </li>
-                <li>
-                    <a href="#projects">Projects</a>
-                </li>
-                <li>
-                    <a href="#resume">Resume</a>
-                </li>
-            </ul>
-
-            <ul id="navbarBodyRight" class="nav navbar-nav navbar-right navbarBodyItem">
-                <li>
-                    <a id="iconSocialEmail" class="iconSocial" href="mailto:ties-vk@hotmail.com" target="_blank">
-                        <img class="icon" src="./assets/img/img_logo_email_white.png">
-                    </a>
-                </li>
-                <li>
-                    <a id="iconSocialSteam" class="iconSocial" href="https://steamcommunity.com/id/dyzalonius"
-                        target="_blank">
-                        <img class="icon" src="./assets/img/img_logo_steam_white.png">
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
     <div id="game">
         <canvas id="gameCanvas"></canvas>
@@ -74,12 +37,23 @@
         </div>
     </div>
 
+    <nav id="navbar" class="common-bar style-main navbar">
+        <ul id="navbarBody" class="nav navbar">
+            <li>
+                <a href="#home">Home</a>
+            </li>
+            <li>
+                <a href="#projects">Projects</a>
+            </li>
+            <li>
+                <a href="#resume">Resume</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="common-bar"></div>
+
     <div id="projects" class="common-container style-main text-center">
-        <div class="common-bar">
-            <a class="scroll" href="#projects">
-                <span class="chevron glyphicon glyphicon-chevron-down"></span>
-            </a>
-        </div>
 
         <div class="project">
             <div class="projectGallery projectOne">
@@ -469,11 +443,7 @@
             </div>
         </div>
 
-        <div id="resume" class="common-bar">
-            <a class="scroll" href="#resume">
-                <span class="chevron glyphicon glyphicon-chevron-down"></span>
-            </a>
-        </div>
+        <div id="resume" class="common-bar"></div>
     </div>
 
     <div id="resumeContainer" class="common-container style-default text-center">
@@ -502,16 +472,6 @@
                     </div>
                 </div>
                 <div class="resumeColumnRight">
-                    <div id="resumePersonalStatement">
-                        <h3>Personal statement</h3>
-                        <hr>
-                        <p>
-                            I always get enthusiastic about projects. I'm self-critical and eager to learn, and I go for
-                            the best results using good communication. I do well independently and as part of a team,
-                            and I have skills in leadership and giving guidance to a team. People know me as a driven,
-                            open and well spoken colleague.
-                        </p>
-                    </div>
                     <div id="resumeExperience">
                         <h3>Experience</h3>
                         <hr>
