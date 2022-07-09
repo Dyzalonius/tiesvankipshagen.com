@@ -1098,6 +1098,10 @@ class Explosion extends GameObject {
     }
 }
 
+function EaseOutCubic(currentTime, start, end, duration) {
+    return (start - end) * Math.pow(1 - currentTime / duration, 3);
+}
+
 class Turret extends Entity {
     constructor(pos, angleMinMax, turretDiameter, hopperOffset, hopperWidth, bulletCapacity, color, healthPointsMax) {
         super(pos, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
@@ -1117,10 +1121,22 @@ class Turret extends Entity {
         this.angleMinMax = angleMinMax;
         this.alpha = 1;
         this.isReloading = false;
+        this.isSpawning = true;
+        this.realHeight = pos.y;
+        this.spawnProgress = 0;
     }
 
     Update() {
         super.Update();
+        if (this.isSpawning) {
+            this.spawnProgress += deltaTime;
+            this.pos.y = EaseOutCubic(this.spawnProgress, this.realHeight - 150, this.realHeight, 1);
+            if (this.pos.y >= this.realHeight) {
+                this.pos.y = this.realHeight;
+                console.log('done');
+                this.isSpawning = false;
+            }
+        }
 
         if (mouseDown && playing) {
             this.CheckFire();

@@ -14,19 +14,9 @@
 a, a:visited, a:hover, a:active {
     color: inherit;
 }
-body {
-    background-color: #F3F3F3;
-}
 html {
     height:100%;
     width:100%;
-}
-body {
-    margin: 0;
-    /* font-family: "Druk Wide Bold"; */
-    font-family: futura-pt, sans-serif;
-    font-weight: 1000;
-    font-style: normal;
 }
 
 /* Styles */
