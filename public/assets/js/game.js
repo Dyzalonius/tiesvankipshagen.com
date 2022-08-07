@@ -308,7 +308,7 @@ class Level {
     }
 
     Draw() {
-        var alpha = this.id == 1 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .1, 0, 1) * .1 : .1;
+        var alpha = this.id == 1 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .2, 0, 1) * .1 : .1;
         DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, alpha);
         DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Arial', 0, "LVL", secondaryColor);
         DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Arial', 0, this.id + "/" + levelID, secondaryColor);
@@ -1143,7 +1143,7 @@ class SpawnAnimation extends GameObject {
         this.delay = delay;
         this.maxRadius = 50;
         this.fadeOutDuration = .1;
-        //this.layer = layerTop;
+        this.layer = layerTop;
     }
 
     Update() {
@@ -1176,7 +1176,7 @@ function EaseOutCubic(currentTime, start, end, duration) {
 
 class Turret extends Entity {
     constructor(pos, angleMinMax, turretDiameter, hopperOffset, hopperWidth, bulletCapacity, color, healthPointsMax) {
-        super(pos, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
+        super({x:pos.x, y:pos.y - 150}, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
         this.color = color;
         this.bulletCapacity = bulletCapacity;
         this.bulletsRemaining = this.bulletCapacity;
