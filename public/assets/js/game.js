@@ -22,7 +22,7 @@ var primaryColor = '#111111';
 var secondaryColor = '#EFEFEF';
 var enemySpawnAnimationDuration = .3;
 var enemySpawnAnimationDelayStep = .1;
-var firstLevelStartDelay = .6;
+var firstLevelStartDelay = 1.2;
 var levelEndDelay = 1.5;
 var layerTop = 2;
 var layerDefault = 1;
@@ -30,7 +30,7 @@ var layerBottom = 0;
 
 // References
 var canvasSize = {x:0, y:0};
-var mousePos = {x:630, y:500};
+var mousePos = {x:130, y:2000};
 var mouseDown = false;
 
 var canvas;
@@ -308,7 +308,8 @@ class Level {
     }
 
     Draw() {
-        DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, 0.1);
+        var alpha = this.id == 1 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .1, 0, 1) * .1 : .1;
+        DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, alpha);
         DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Arial', 0, "LVL", secondaryColor);
         DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Arial', 0, this.id + "/" + levelID, secondaryColor);
     }
