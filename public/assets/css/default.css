@@ -9,7 +9,7 @@
 	outline: 0;
 	padding: 0;
     margin: 0;
-    cursor: url("../img/img_cursor.png"), auto;
+    font-family: 'Albert Sans';
 }
 a, a:visited, a:hover, a:active {
     color: inherit;
@@ -43,21 +43,24 @@ html {
 /* Texts */
 body {
     background-color: var(--colorMain);
-    font: 15px Arial, serif;
     line-height: 1.8;
 	height: 100%;
 }
 h1 {
-    font: bolder 80px Arial, serif;
+    font-weight: bolder;
+    font-size: 80px;
 }
 h2 {
-    font: bolder 40px Arial, serif;
+    font-weight: bolder;
+    font-size: 40px;
 }
 h3 {
-    font: bold 20px Arial, serif;
+    font-weight: bold;
+    font-size: 20px;
 }
 h4, button {
-    font: 20px Arial, serif;
+    font-weight: normal;
+    font-size: 20px;
     line-height: 1.8;
 }
 
@@ -89,6 +92,7 @@ h4, button {
     border-width: 0px;
     position: absolute;
     z-index: 20;
+    font-weight: bolder;
 }
 .navbarBody {
     padding: 1rem 0px;

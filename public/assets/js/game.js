@@ -7,22 +7,30 @@ var bulletMaxTimeAlive = 30; // in seconds
 var bulletSpeed = 1000; // in pixels per second
 var bulletSize = {x:10, y:10};
 var gunBarrelSize = {x:100, y:25};
-var gunFireDelay = 0.02; // in seconds
+var gunFireDelay = 0.01; // in seconds
 var gunFireBloomMin = 0; // in degrees
 var gunFireBloomMax = 20; // in degrees
-var gunFireBloomCurrentStep = 0.1; // in percentages
+var gunFireBloomCurrentStep = 0.04; // in percentages
 var gunFireBloomIncrease = 1; // in degrees per bullet
 var gunFireBloomDecrease = 30; // in degrees per second
 var gunReloadTimeMax = 1; // in seconds
-var bulletCapacity = 90; // in bullets
+var bulletCapacity = 120; // in bullets
 var gravity = 350; // in pixels per second per second
+var introDuration = 1;
 var debugMode = false;
 var primaryColor = '#111111';
 var secondaryColor = '#EFEFEF';
+var enemySpawnAnimationDuration = .3;
+var enemySpawnAnimationDelayStep = .1;
+var firstLevelStartDelay = .6;
+var levelEndDelay = 1.5;
+var layerTop = 2;
+var layerDefault = 1;
+var layerBottom = 0;
 
 // References
 var canvasSize = {x:0, y:0};
-var mousePos = {x:500, y:-100};
+var mousePos = {x:630, y:500};
 var mouseDown = false;
 
 var canvas;
@@ -85,7 +93,7 @@ function Start() {
         Update(0);
     }
 
-    var level = new Level(true);
+    var level = new Level(firstLevelStartDelay);
     var lettercopterword = "welcome";
     var startPos = {x:400, y:500};
     var deltaX = 80;
@@ -149,12 +157,16 @@ function Update(timeStamp) {
         levels[0].Update();
     }
 
+    // Update and draw
     for (var i = behaviours.length - 1; i >= 0; i--) {
         behaviours[i].Update();
     }
-
-    for (var i = behaviours.length - 1; i >= 0; i--) {
-        behaviours[i].Draw();
+    for (var layer = 0; layer < 3; layer++) {
+        for (var i = behaviours.length - 1; i >= 0; i--) {
+            if (behaviours[i].layer == layer) {
+                behaviours[i].Draw();
+            }
+        }
     }
 
     CheckCollision();
@@ -244,6 +256,7 @@ function NextLevel() {
 class Behaviour {
     constructor() {
         behaviours.push(this);
+        this.layer = layerDefault;
     }
 
     Update() {
@@ -263,9 +276,7 @@ class Behaviour {
 }
 
 class Level {
-    constructor(skipIntro = false) {
-        this.skipIntro = skipIntro;
-        this.textTimeLength = 3;
+    constructor(startDelay = 0) {
         levelID++;
         this.id = levelID;
         levels.push(this);
@@ -273,26 +284,33 @@ class Level {
         this.lettercopterword = '';
         this.shootingTargets = [];
         this.helicopters = [];
-        this.megaHelicopters = [];
         this.planes = [];
+        this.enemiesHaveSpawned = false;
+        this.lifeTime = 0;
+        this.startDelay = startDelay;
+        this.endDelay = levelEndDelay;
+        this.endTimer = 0;
     }
 
     Update() {
-        // spawn level text, when over spawn enemies
-        if (this.textTimeLength > 0) {
-            this.textTimeLength -= deltaTime;
-
-            if (this.textTimeLength <= 0 || this.skipIntro) {
-                this.textTimeLength = 0;
-                this.SpawnEnemies();
+        this.lifeTime += deltaTime;
+        if (this.lifeTime >= this.startDelay && !this.enemiesHaveSpawned) {
+            this.SpawnEnemies();
+        }
+        if (this.enemiesHaveSpawned && enemies.length <= 0) {
+            this.endTimer += deltaTime;
+            if (this.endTimer > this.endDelay) {
+                this.Destroy();
             }
         }
 
         this.Draw();
+    }
 
-        if (this.textTimeLength <= 0 && enemies.length <= 0) {
-            this.Destroy();
-        }
+    Draw() {
+        DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, 0.1);
+        DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Arial', 0, "LVL", secondaryColor);
+        DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Arial', 0, this.id + "/" + levelID, secondaryColor);
     }
 
     AddLettercopter(pos) {
@@ -311,36 +329,30 @@ class Level {
         this.helicopters.push(pos);
     }
 
-    AddMegaHelicopter(pos) {
-        this.megaHelicopters.push(pos);
-    }
-
     AddPlane(pos) {
         this.planes.push(pos);
     }
 
     SpawnEnemies() {
+        var enemyCount = this.lettercopters.length + this.shootingTargets.length + this.helicopters.length + this.planes.length;
+        var enemyIndices = [];
+        for (var i = 0; i < enemyCount; i++) {
+            enemyIndices.push(i);
+        }
+
         for (var i = 0; i < this.lettercopters.length; i++) {
-            new Lettercopter(this.lettercopters[i], 5, {x:0, y:40}, primaryColor, this.lettercopterword[i]);
+            new Lettercopter(this.lettercopters[i], 5, {x:0, y:40}, RemoveRandom(enemyIndices), primaryColor, this.lettercopterword[i]);
         }
         for (var i = 0; i < this.shootingTargets.length; i++) {
-            new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, 'red', 'rgb(230,230,230)');
+            new ShootingTarget(this.shootingTargets[i], {x:100, y:100}, 25, RemoveRandom(enemyIndices), 'red', 'rgb(230,230,230)');
         }
         for (var i = 0; i < this.helicopters.length; i++) {
-            new Helicopter(this.helicopters[i], 50, {x:0, y:30}, primaryColor);
-        }
-        for (var i = 0; i < this.megaHelicopters.length; i++) {
-            new MegaHelicopter(this.megaHelicopters[i], 100, {x:0, y:50}, primaryColor);
+            new Helicopter(this.helicopters[i], 50, {x:0, y:30}, RemoveRandom(enemyIndices), primaryColor);
         }
         for (var i = 0; i < this.planes.length; i++) {
-            new Plane(this.planes[i], {x:120, y:30}, 50, {x:0, y:-30}, primaryColor);
+            new Plane(this.planes[i], {x:120, y:30}, 50, {x:0, y:-30}, RemoveRandom(enemyIndices), primaryColor);
         }
-    }
-
-    Draw() {
-        if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Level ' + this.id, primaryColor);
-        }
+        this.enemiesHaveSpawned = true;
     }
 
     Destroy() {
@@ -420,14 +432,18 @@ class GameObject extends Behaviour {
         this.pos = pos;
         this.velocity = velocity;
         this.enableGravity = enableGravity;
+        this.lifeTime = 0;
+        this.pauseMovement = false;
     }
 
     Update() {
         super.Update();
 
+        this.lifeTime += deltaTime;
+
+        if (this.pauseMovement) { return; }
         this.pos.x += this.velocity.x * deltaTime;
         this.pos.y += this.velocity.y * deltaTime;
-
         if (this.enableGravity) {
             this.velocity.y -= gravity * deltaTime;
         }
@@ -589,20 +605,33 @@ class Entity extends GameObject {
 }
 
 class Enemy extends Entity {
-    constructor(pos, velocity, enableGravity, size, colliderType, healthPointsMax, healthPosOffset = {x:0, y:10}) {
+    constructor(pos, velocity, enableGravity, size, colliderType, hasSpawnAnimation, enemyIndex, healthPointsMax, healthPosOffset = {x:0, y:10}) {
         super(pos, velocity, enableGravity, size, colliderType, healthPointsMax);
         this.healthPosOffset = healthPosOffset;
+        this.enemyIndex = enemyIndex;
         enemies.push(this);
+
+        this.isSpawning = hasSpawnAnimation;
+        if (hasSpawnAnimation) {
+            this.pauseMovement = true;
+            new SpawnAnimation({x:this.pos.x, y:this.pos.y}, enemySpawnAnimationDuration, enemyIndex * enemySpawnAnimationDelayStep);
+        }
     }
 
     Update() {
         super.Update();
         this.collider.pos = this.pos;
+
+        if (this.isSpawning && this.lifeTime >= enemySpawnAnimationDuration + this.enemyIndex * enemySpawnAnimationDelayStep) {
+            this.isSpawning = false;
+            this.pauseMovement = false;
+        }
     }
 
     Draw() {
         super.Draw();
 
+        if (this.isSpawning) { return; }
         // Only draw health bar if health is not at max
         if (this.healthPoints < this.healthPointsMax) {
             var healthPos = { x: this.pos.x + this.healthPosOffset.x, y: this.pos.y + this.size.x / 2 + this.healthPosOffset.y };
@@ -624,8 +653,8 @@ class Enemy extends Entity {
 }
 
 class ShootingTarget extends Enemy {
-    constructor(pos, size, healthPointsMax, color1, color2) {
-        super(pos, {x:0, y:0}, false, size, 1, healthPointsMax);
+    constructor(pos, size, healthPointsMax, enemyIndex, color1, color2) {
+        super(pos, {x:0, y:0}, false, size, 1, true, enemyIndex, healthPointsMax);
         this.color1 = color1;
         this.color2 = color2;
     }
@@ -635,6 +664,7 @@ class ShootingTarget extends Enemy {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         DrawCircle(this.pos, this.size.x / 2, this.color1);
         DrawCircle(this.pos, this.size.x / 2 * 0.8, this.color2);
         DrawCircle(this.pos, this.size.x / 2 * 0.6, this.color1);
@@ -646,8 +676,8 @@ class ShootingTarget extends Enemy {
 }
 
 class Helicopter extends Enemy {
-    constructor(pos, healthPointsMax, healthPosOffset, color) {
-        super(pos, {x:0, y:0}, false, {x:80, y:80}, 1, healthPointsMax, healthPosOffset);
+    constructor(pos, healthPointsMax, healthPosOffset, enemyIndex, color) {
+        super(pos, {x:0, y:0}, false, {x:80, y:80}, 1, true, enemyIndex, healthPointsMax, healthPosOffset);
         this.color = color;
         this.barrelAngle = -90;
         this.barrelAngleMin = -200;
@@ -725,6 +755,7 @@ class Helicopter extends Enemy {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         if (debugMode) {
             //var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
             //var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
@@ -748,8 +779,8 @@ class Helicopter extends Enemy {
 }
 
 class Lettercopter extends Enemy {
-    constructor(pos, healthPointsMax, healthPosOffset, color, letter) {
-        super(pos, {x:0, y:0}, false, {x:60, y:60}, 0, healthPointsMax, healthPosOffset);
+    constructor(pos, healthPointsMax, healthPosOffset, enemyIndex, color, letter) {
+        super(pos, {x:0, y:0}, false, {x:60, y:60}, 0, true, enemyIndex, healthPointsMax, healthPosOffset);
         this.color = color;
         this.letter = letter;
         this.rotorWidthMax = 80;
@@ -782,6 +813,7 @@ class Lettercopter extends Enemy {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         if (debugMode) {
             //var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
             //var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
@@ -807,8 +839,8 @@ class Lettercopter extends Enemy {
 }
 
 class Plane extends Enemy {
-    constructor(pos, size, healthPointsMax, healthPosOffset, color) {
-        super(pos, {x:0, y:0}, false, size, 0, healthPointsMax, healthPosOffset);
+    constructor(pos, size, healthPointsMax, healthPosOffset, enemyIndex, color) {
+        super(pos, {x:0, y:0}, false, size, 0, true, enemyIndex, healthPointsMax, healthPosOffset);
         this.color = color;
         this.angle = 180;
         this.barrelAngle = -90;
@@ -881,6 +913,7 @@ class Plane extends Enemy {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         // Draw plane
         var scale = this.angle < 90 || this.angle > 270 ? {x:1, y:-1} : {x:1, y:1};
         var minAngle = Math.min(this.angle % 180, 180 - (this.angle % 180));
@@ -918,7 +951,7 @@ class Plane extends Enemy {
 
 class Projectile extends Enemy {
     constructor(pos, velocity, enableGravity, size, healthPointsMax) {
-        super(pos, velocity, enableGravity, size, 1, healthPointsMax);
+        super(pos, velocity, enableGravity, size, 1, false, -1, healthPointsMax);
         projectiles.push(this);
     }
 
@@ -932,6 +965,7 @@ class Projectile extends Enemy {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         super.Draw();
     }
 
@@ -995,6 +1029,7 @@ class Rocket extends Projectile {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         super.Draw();
         if (this.src != '') {
             DrawImage(this.pos, this.size, this.angle, this.image);
@@ -1040,6 +1075,7 @@ class Bomb extends Projectile {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         super.Draw();
         if (this.src != '') {
             DrawImage(this.pos, this.size, this.rotation, this.image);
@@ -1083,6 +1119,7 @@ class Explosion extends GameObject {
     }
 
     Draw() {
+        if (this.isSpawning) { return; }
         super.Draw();
         var alpha = Math.cos(this.timeAlive / this.maxTimeAlive * Math.PI * 0.5);
         DrawCircle(this.pos, this.radius, this.color, alpha);
@@ -1094,6 +1131,40 @@ class Explosion extends GameObject {
             explosions.splice(index, 1);
         }
         this.collider.Destroy();
+        super.Destroy();
+    }
+}
+
+class SpawnAnimation extends GameObject {
+    constructor(pos, duration, delay) {
+        super(pos, {x:0, y:0}, false);
+        this.duration = duration;
+        this.delay = delay;
+        this.maxRadius = 50;
+        this.fadeOutDuration = .1;
+        //this.layer = layerTop;
+    }
+
+    Update() {
+        super.Update();
+        if (this.lifeTime >= this.duration + this.delay + this.fadeOutDuration) {
+            this.Destroy();
+        }
+    }
+
+    Draw() {
+        super.Draw();
+        var radius = 0;
+        if (this.lifeTime <= this.duration + this.delay) {
+            radius = Clamp(((1-Math.cos(Math.max(this.lifeTime - this.delay, 0) / this.duration * Math.PI * 0.5)) + Math.abs(Math.sin(this.lifeTime * 30) * .2)) * this.maxRadius, 0, 10000);
+        } else {
+            radius = Math.cos((this.lifeTime - this.duration - this.delay) / this.fadeOutDuration * Math.PI * 0.25) * this.maxRadius;
+        }
+        var alpha = Math.cos(Math.max(this.lifeTime - this.delay - this.duration, 0) / this.fadeOutDuration * Math.PI * 0.5);
+        DrawCircle(this.pos, radius, primaryColor, alpha);
+    }
+
+    Destroy() {
         super.Destroy();
     }
 }
@@ -1117,23 +1188,24 @@ class Turret extends Entity {
         this.reloadTime = 0;
         this.currentBloom = 0;
         this.currentBloomMax = 0;
-        this.barrelAngle = 0;
+        this.targetBarrelAngle = 45;
+        this.barrelAngle = 45;
         this.angleMinMax = angleMinMax;
         this.alpha = 1;
         this.isReloading = false;
         this.isSpawning = true;
         this.realHeight = pos.y;
         this.spawnProgress = 0;
+        this.layer = layerTop;
     }
 
     Update() {
         super.Update();
         if (this.isSpawning) {
             this.spawnProgress += deltaTime;
-            this.pos.y = EaseOutCubic(this.spawnProgress, this.realHeight - 150, this.realHeight, 1);
+            this.pos.y = EaseOutCubic(this.spawnProgress, this.realHeight - 150, this.realHeight, introDuration);
             if (this.pos.y >= this.realHeight) {
                 this.pos.y = this.realHeight;
-                console.log('done');
                 this.isSpawning = false;
             }
         }
@@ -1187,7 +1259,8 @@ class Turret extends Entity {
         super.Draw();
         this.hopper.Draw();
         // Calculate barrel angle
-        this.barrelAngle = VectorToAngle(mousePos, this.pos, false);
+        this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, VectorToAngle(mousePos, this.pos, false), 2);
+        this.barrelAngle = this.targetBarrelAngle;
         this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
         this.barrelAngle += this.currentBloom;
         this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
@@ -1205,26 +1278,21 @@ class Turret extends Entity {
         DrawRect(this.pos, gunBarrelSize, this.color, this.barrelAngle, {x:0, y:0.5}, this.alpha);
     }
 
-    CheckFire(text = '') {
+    CheckFire() {
         if (this.bulletsRemaining > 0 && this.fireDelay == 0) {
             var pos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
-            this.Fire(this.barrelAngle, pos, text);
+            this.Fire(this.barrelAngle, pos);
             return true;
         }
         return false;
     }
 
-    Fire(angle, pos, text) {
+    Fire(angle, pos) {
         var color = this.color;
         var finalAngle = angle;
         var velocity = AngleToVector(finalAngle, bulletSpeed);
         var size = { x: bulletSize.x, y: bulletSize.y };
-
-        if (text != '') {
-            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive, finalAngle, '', text);
-        } else {
-            new Bullet(pos, velocity, size, color, bulletMaxTimeAlive);
-        }
+        new Bullet(pos, velocity, size, color, bulletMaxTimeAlive);
 
         this.fireDelay = gunFireDelay;
         this.bulletsRemaining--;
@@ -1273,6 +1341,7 @@ class Hopper extends GameObject {
         this.ammoRadius = 2;
         this.spacing = { x: 6, y: 6 };
         this.size = { x: width, y: this.spacing.y * (this.rowCount + 1) };
+        this.layer = layerTop;
     }
 
     Update() {
@@ -1315,7 +1384,7 @@ class HealthBar extends GameObject {
 
     Draw() {
         super.Draw();
-        DrawRect(this.pos, this.size, this.color, 0, {x:0.5, y:1});
+        DrawRect(this.pos, this.size, primaryColor, 0, {x:0.5, y:1});
         var healthBarStartPos = {x:this.pos.x - this.size.x / 2 + this.margin, y:this.pos.y};
         var healthBarWidth = this.size.x - 2 * this.margin;
         var healthBlobWidth = (healthBarWidth - (this.padding * (this.turret.healthPointsMax - 1))) / this.turret.healthPointsMax; // single health blob
@@ -1341,6 +1410,7 @@ class Crosshair extends GameObject {
         this.showLines = true;
         this.color = color;
         this.turret = turret;
+        this.layer = layerTop;
     }
 
     Update() {
@@ -1712,4 +1782,33 @@ function GetMousePos(canvas, event) {
 
 function ConvertPosition(pos) {
     return {x:pos.x, y:canvasSize.y - pos.y};
+}
+
+function RemoveRandom(array) {
+    var enemyIndex = array[Math.floor(Math.random() * array.length)];
+    var index = array.indexOf(enemyIndex);
+    if (index != -1) {
+        array.splice(index, 1);
+    }
+
+    return enemyIndex;
+}
+
+function Lerp(value, towards, factor) {
+    return value + (towards - value) * factor;
+}
+
+function MoveTowards(value, target, step) {
+    if (value < target) {
+        value += Math.abs(step);
+        if (value > target) {
+            value = target;
+        }
+    } else {
+        value -= Math.abs(step);
+        if (value < target) {
+            value = target;
+        }
+    }
+    return value;
 }
