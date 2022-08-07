@@ -310,8 +310,8 @@ class Level {
     Draw() {
         var alpha = this.id == 1 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .2, 0, 1) * .1 : .1;
         DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, alpha);
-        DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Arial', 0, "LVL", secondaryColor);
-        DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Arial', 0, this.id + "/" + levelID, secondaryColor);
+        DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Trebuchet MS', 0, "LVL", secondaryColor);
+        DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Trebuchet MS', 0, this.id + "/" + levelID, secondaryColor);
     }
 
     AddLettercopter(pos) {
@@ -383,7 +383,7 @@ class Outro {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'You win!', this.color);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'You win!', this.color);
             DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
@@ -417,7 +417,7 @@ class GameOver {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Arial', 0, 'Game over', this.color);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'Game over', this.color);
             DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
@@ -515,12 +515,10 @@ class Bullet extends GameObject {
     Draw() {
         super.Draw();
         if (this.text != '') {
-            DrawText(this.pos, 'bold 30px Arial', VectorToAngle(this.velocity, {x:0, y:0}), this.text, this.color);
-        }
-        else if (this.src != '') {
+            DrawText(this.pos, 'bold 30px Trebuchet MS', VectorToAngle(this.velocity, {x:0, y:0}), this.text, this.color);
+        } else if (this.src != '') {
             DrawImage(this.pos, this.size, this.angle, this.image);
-        }
-        else {
+        } else {
             DrawCircle(this.pos, this.size.x / 2, this.color);
         }
     }
@@ -545,18 +543,23 @@ class Bullet extends GameObject {
 }
 
 class Particle extends GameObject {
-    constructor(pos, velocity, size, color, maxTimeAlive, startAlpha, enableGravity) {
+    constructor(pos, velocity, size, color, maxTimeAlive, startAlpha, enableGravity, nerfXVelocity = false) {
         super(pos, velocity, enableGravity);
         this.size = size;
         this.color = color;
         this.maxTimeAlive = maxTimeAlive;
         this.timeAlive = 0;
         this.alphaMax = startAlpha;
+        this.nerfXVelocity = nerfXVelocity;
     }
 
     Update() {
         super.Update();
         this.timeAlive += deltaTime;
+
+        if (this.nerfXVelocity) {
+            this.velocity.x = Lerp(this.velocity.x, 0, 0.1);
+        }
 
         // Destroy fragment if over maxTimeAlive
         if (this.timeAlive > this.maxTimeAlive) {
@@ -828,7 +831,7 @@ class Lettercopter extends Enemy {
         DrawRect({x:this.pos.x, y:this.pos.y + this.rotorHeight - 1}, {x:this.rotorWidth, y:this.rotorThickness}, this.color, 0, {x:0.5, y:1});
         DrawRect(this.pos, {x:this.size.x, y:this.size.x}, this.color, 0);
         DrawRect(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, secondaryColor, 0);
-        DrawText(this.pos, 'bold 30px Arial', 0, this.letter, this.color);
+        DrawText(this.pos, 'bold 30px Trebuchet MS', 0, this.letter, this.color);
 
         super.Draw();
     }
@@ -1198,6 +1201,10 @@ class Turret extends Entity {
         this.realHeight = pos.y;
         this.spawnProgress = -0.5;
         this.layer = layerTop;
+        this.wind = 0;
+        this.windAcceleration = 0;
+        this.timeSinceLastBullet = 0;
+        this.timeSpentFiring = 0;
     }
 
     Update() {
@@ -1209,6 +1216,25 @@ class Turret extends Entity {
                 this.pos.y = this.realHeight;
                 this.isSpawning = false;
             }
+        }
+
+        this.timeSinceLastBullet += deltaTime;
+        this.windAcceleration += (Math.random() - 0.5) * 2;
+        if (this.windAcceleration < -50 || this.windAcceleration > 50) {
+            this.windAcceleration = 0;
+        }
+        this.windAcceleration = Clamp(this.windAcceleration, -50, 50);
+        this.wind += this.windAcceleration;
+        if (this.wind <= -50 || this.wind >= 50) {
+            this.windAcceleration = 0;
+            this.wind = Clamp(this.wind, -50, 50);
+        }
+        if (this.timeSinceLastBullet > .7 && this.timeSpentFiring > 0) {
+            this.timeSpentFiring -= deltaTime * 2;
+        }
+        if (this.timeSpentFiring > 2) {
+            var pos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 4) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
+            new Particle(pos, {x:this.wind, y:150}, {x:10, y:10}, this.color, 1, Clamp(this.timeSpentFiring - 2, 0, 1) * 0.05, false, true);
         }
 
         if (mouseDown && playing) {
@@ -1289,6 +1315,11 @@ class Turret extends Entity {
     }
 
     Fire(angle, pos) {
+        this.timeSinceLastBullet = 0;
+        if (this.timeSinceLastBullet < 0.1 && this.timeSpentFiring < 3) {
+            this.timeSpentFiring += deltaTime;
+        }
+
         var color = this.color;
         var finalAngle = angle;
         var velocity = AngleToVector(finalAngle, bulletSpeed);
