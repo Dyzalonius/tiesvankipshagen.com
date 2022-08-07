@@ -1195,7 +1195,7 @@ class Turret extends Entity {
         this.isReloading = false;
         this.isSpawning = true;
         this.realHeight = pos.y;
-        this.spawnProgress = 0;
+        this.spawnProgress = -0.5;
         this.layer = layerTop;
     }
 
@@ -1203,7 +1203,7 @@ class Turret extends Entity {
         super.Update();
         if (this.isSpawning) {
             this.spawnProgress += deltaTime;
-            this.pos.y = EaseOutCubic(this.spawnProgress, this.realHeight - 150, this.realHeight, introDuration);
+            this.pos.y = EaseOutCubic(Clamp(this.spawnProgress, 0, 1), this.realHeight - 150, this.realHeight, introDuration);
             if (this.pos.y >= this.realHeight) {
                 this.pos.y = this.realHeight;
                 this.isSpawning = false;
