@@ -1,0 +1,29 @@
+@media screen and (max-width: 1400px) {
+
+    /* GENERAL */
+    .margins1 {
+        width: 100%;
+        border-left: 0px;
+    }
+    .margins2 {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+
+    /* PROJECTS */
+    .projectOne {
+        float: none;
+        margin-right: 0%;
+    }
+    .projectTwo {
+        float: none;
+    }
+    .projectGallery {
+        width: 100%;
+    }
+    .projectText {
+        width: 100%;
+    }
+
+}

@@ -1,0 +1,32 @@
+
+{{#projects}}
+    {{^featured}}
+    <div class="project">
+        <div class="project-image-container">
+            <img class="project-image" src="{{image}}">
+        </div>
+        <div class="project-info-container">
+            <h4 class="project-title">{{name}}</h4>
+            <div class="project-subtitle">
+                {{#platforms}}
+                    <span>{{platform}}</span>
+                    <span class="project-platform-icon {{platform-icon}}"></span>
+                {{/platforms}}
+                {{#platforms}}
+                    <span> - </span>
+                {{/platforms}}
+                {{#tags}}
+                    <span>{{tag}}{{^last}}, {{/last}}</span>
+                {{/tags}}
+                <span> - </span>
+                <span>({{date}})</span>
+            </div>
+        </div>
+        <div class="project-buttons">
+            {{#links}}
+                <a class="featured-button" href="{{link}}" target="_blank">{{label}}</a>
+            {{/links}}
+        </div>
+    </div>
+    {{/featured}}
+{{/projects}}

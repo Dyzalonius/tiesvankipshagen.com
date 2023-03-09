@@ -1,0 +1,50 @@
+{{#projects}}
+    {{#featured}}
+    <div class="featured">
+        <div class="featured-gallery featured-two">
+            <div class="featured-gallery-main-wrapper">
+                <div class="featured-gallery-main">
+                    {{#video}}
+                    <iframe class="gallery-video" src="{{video}}" allowfullscreen loading="lazy"></iframe>
+                    {{/video}}
+                    {{^video}}
+                    <img class="gallery-display" alt="Screenshot" src="{{image}}">
+                    {{/video}}
+                </div>
+            </div>
+            <div class="featured-gallery-item-wrapper">
+                {{#videos}}
+                    <img class="gallery-item gallery-item-video {{#first}}current{{/first}}" src="{{image}}" videoSource={{video}} loading="lazy">
+                {{/videos}}
+                {{#images}}
+                    <img class="gallery-item {{#first}}current{{/first}}" src="{{image}}" loading="lazy">
+                {{/images}}
+            </div>
+        </div>
+        <div class="featured-text featured-one">
+            <h2 class="featured-title">{{name}}</h2>
+            <div class="project-subtitle">
+                {{#platforms}}
+                    <span>{{platform}}</span>
+                    <span class="{{platform-icon}}"></span>
+                    {{#last}}
+                        <span> - </span>
+                    {{/last}}
+                {{/platforms}}
+                {{#tags}}
+                    <span>{{tag}}{{^last}}, {{/last}}</span>
+                {{/tags}}
+                <span> - </span>
+                <span>({{date}})</span>
+            </div>
+            <p>{{description}}</p>
+            <p class="featured-subtext">{{contribution}}</p>
+            <div class="featured-buttons">
+                {{#links}}
+                    <a class="featured-button" href="{{link}}" target="_blank">{{label}}</a>
+                {{/links}}
+            </div>
+        </div>
+    </div>
+    {{/featured}}
+{{/projects}}

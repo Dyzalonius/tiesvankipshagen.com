@@ -1,0 +1,367 @@
+html {
+    height:100%;
+    width:100%;
+}
+
+/* COLORS */
+:root {
+    --color-background: #ece8e1;
+    --color-background-two: #dfdbd3;
+    --color-primary: #0f1923;
+    --color-secondary: #768079;
+    --color-tertiary: #BDBCB7;
+    --color-accent: #4169E1;
+    --color-link: #d0a867;
+    --dark-mode-icon: "🌕";
+}
+.dark-mode {
+    --color-background: #0f1923;
+    --color-background-two: #162433;
+    --color-primary: #ece8e1;
+    --color-secondary: #768079;
+    --color-tertiary: #BDBCB7;
+    --color-accent: #4169E1;
+    --color-link: #d0a867;
+    --dark-mode-icon: "🌑";
+}
+
+
+
+/* GENERAL */
+body {
+    font-family: 'Albert Sans';
+    font-weight: 400;
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    line-height: 1.5;
+    height: 100%;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+.spacer {
+    width: 100%;
+    height: 80px;
+}
+.margins1 {
+    margin: 0 auto;
+    width: 1400px;
+    border-left: 1px solid var(--color-secondary);
+}
+.margins2 {
+    width: 1200px;
+    margin: 0 auto;
+}
+.header {
+    height: 120px;
+}
+h1 {
+    color: var(--color-accent);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 5em;
+}
+h2 {
+    color: var(--color-primary);
+    font-weight: 800;
+    font-size: 3em;
+}
+
+
+/* GAME */
+#game {
+    background-color: var(--color-background);
+    height: calc(100% - 80px);
+}
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+}
+.noCursor {
+    cursor: none;
+}
+
+
+
+/* NAVBAR */
+#navbar {
+    position: absolute;
+    background-color: var(--color-primary);
+    z-index: 20;
+    font-weight: 800;
+    border-bottom: 1px solid var(--color-secondary);
+}
+#navbar-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.navbar-element {
+    margin-right: 10px;
+}
+.navbar-fix {
+    position: fixed !important;
+    background-color: var(--color-background) !important;
+    width: 100%;
+    top: 0;
+}
+.navbar-button {
+    color: var(--color-link);
+    text-decoration: none;
+    padding: 5px;
+}
+.navbar-button:first-child {
+    margin-left: calc(.5rem - 5px);
+}
+.navbar-button:hover {
+    text-decoration: underline;
+}
+
+
+
+/* DARKMODE BUTTON */
+#dark-mode-button {
+    background-color: transparent;
+    border: none;
+}
+#dark-mode-button span {
+    display: none;
+}
+#dark-mode-button:before {
+    content: var(--dark-mode-icon);
+}
+#dark-mode-button:hover:before {
+    content: "🌓";
+}
+
+
+
+/* FEATURED */
+#featured-list {
+    width: 100%;
+}
+.featured-title {
+    margin: 0;
+}
+.featured-spacer {
+    height: 120px;
+    padding: 0px calc(50% - 600px);
+}
+.featured {
+    display: block;
+    overflow: hidden;
+}
+.featured:not(:last-child) {
+    margin-bottom: 160px;
+}
+.featured-one {
+    float: left;
+    margin-right: 5%;
+}
+.featured-two {
+    float: right;
+}
+.featured-gallery {
+    width: 40%;
+}
+.featured-gallery-main-wrapper {
+    width: 100%;
+}
+.featured-gallery-main {
+    position: relative;
+    height: unset;
+    padding-top: 56.25%;
+}
+.gallery-display {
+    position:absolute;
+    top: 0;
+    left: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--color-primary);
+    width: 100%;
+    height: 100%;
+    float: right;
+}
+.gallery-video {
+    position:absolute;
+    top: 0;
+    left: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--color-primary);
+    width: 100%;
+    height: 100%;
+}
+.featured-gallery-item-wrapper {
+    width: 480px;
+    text-align: left;
+}
+.featured-gallery-item-wrapper .current {
+    border-color: var(--color-primary);
+}
+.gallery-item {
+    width: 25%;
+    margin-top: 4px;
+    margin-left: 0px;
+    margin-right: -4px;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 4px;
+}
+.featured-text {
+    width: 55%;
+    text-align: left;
+}
+.featured-buttons {
+    height: 50px;
+}
+.featured-button {
+    appearance: none;
+    background-color: var(--color-background);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    text-decoration: none;
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    list-style: none;
+    padding: 6px 16px;
+    position: relative;
+    transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    word-wrap: break-word;
+}
+.featured-button:hover {
+  background-color: var(--color-background-two);
+  text-decoration: underline;
+  transition-duration: 0.1s;
+}
+
+
+/* PROJECTS */
+#project-list {
+    width: 100%;
+}
+.project {
+    height: 54px;
+    display: block;
+    overflow: hidden;
+    color: var(--color-primary);
+    background-color: var(--color-background-two);
+}
+.project:not(:last-child) {
+    margin-bottom: .5rem;
+}
+.project-image-container {
+    height: 54px;
+    width: 96px;
+    float: left;
+    overflow: hidden;
+}
+.project-image {
+    height: 100%;
+}
+.project-info-container {
+    margin-left: 20px;
+    height: 100%;
+    float: left;
+}
+.project-info-container > * {
+    height: 27px;
+}
+.project-title {
+    font-weight: normal;
+    margin: 0;
+}
+.project-subtitle {
+    color: var(--color-secondary);
+}
+.project-platform-icon {
+    height: 100%;
+}
+.project-buttons {
+    float: right;
+    margin-right: 20px;
+    vertical-align: middle;
+    height: 100%;
+    padding: 10px 0;
+}
+
+
+
+/* FOOTER */
+#footer {
+    background-color: var(--color-background);
+    border-top: 1px solid var(--color-secondary);
+    font-weight: 800;
+}
+#footer-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#footer-list {
+    width: 1200px;
+    margin: 0 auto;
+}
+.footer-element {
+    margin-right: 10px;
+}
+.footer-element:first-child {
+    margin-left: .5rem;
+}
+
+
+
+/* Slide */
+.slideanim {
+    visibility: hidden;
+}
+.slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+}
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}
+
+
+
+/* EXTRA ICONS */
+.icon-switch:before {
+    content: url('https://api.iconify.design/mdi/nintendo-switch.svg?color=white');
+}

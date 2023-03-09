@@ -1,6 +1,6 @@
 $(document).ready(function ()
 {
-    $(".galleryItem").click(function ()
+    $(".gallery-item").click(function ()
     {
         // exit if already current
         if ($(this).hasClass("current"))
@@ -11,15 +11,15 @@ $(document).ready(function ()
         $(this).addClass("current");
 
         // set display
-        var isVideo = $(this).hasClass("galleryItemVideo");
+        var isVideo = $(this).hasClass("gallery-item-video");
         if (isVideo)
         {
             // video
             var source = $(this).attr("videoSource");
             var gallery = $(this).parent().parent();
-            var galleryMain = gallery.find(".projectGalleryMain");
-            $(galleryMain).html("<iframe class='galleryVideo' allowfullscreen></iframe>");
-            var galleryVideo = galleryMain.find(".galleryVideo");
+            var galleryMain = gallery.find(".featured-gallery-main");
+            $(galleryMain).html("<iframe class='gallery-video' allowfullscreen></iframe>");
+            var galleryVideo = galleryMain.find(".gallery-video");
             galleryVideo.attr("src", source);
         }
         else
@@ -30,9 +30,9 @@ $(document).ready(function ()
                 // gif
                 var source = $(this).attr("gifSource");
                 var gallery = $(this).parent().parent();
-                var galleryMain = gallery.find(".projectGalleryMain");
-                $(galleryMain).html("<img class='galleryDisplay' alt='Gif'>");
-                var galleryImage = galleryMain.find(".galleryDisplay");
+                var galleryMain = gallery.find(".featured-gallery-main");
+                $(galleryMain).html("<img class='gallery-display' alt='Gif'>");
+                var galleryImage = galleryMain.find(".gallery-display");
                 $(galleryImage).attr("src", source);
             }
             else
@@ -40,9 +40,9 @@ $(document).ready(function ()
                 // image
                 var source = $(this).attr("src");
                 var gallery = $(this).parent().parent();
-                var galleryMain = gallery.find(".projectGalleryMain");
-                $(galleryMain).html("<img class='galleryDisplay' alt='Screenshot'>");
-                var galleryImage = galleryMain.find(".galleryDisplay");
+                var galleryMain = gallery.find(".featured-gallery-main");
+                $(galleryMain).html("<img class='gallery-display' alt='Screenshot'>");
+                var galleryImage = galleryMain.find(".gallery-display");
                 $(galleryImage).attr("src", source);
             }
         }
