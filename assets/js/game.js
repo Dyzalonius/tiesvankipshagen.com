@@ -1341,6 +1341,13 @@ class Turret extends Entity {
             }
         }
 
+        // Calculate barrel angle
+        this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, VectorToAngle(mousePos, this.pos, false), deltaTime * 270);
+        this.barrelAngle = this.targetBarrelAngle;
+        this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
+        this.barrelAngle += this.currentBloom;
+        this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
+
         this.timeSinceLastBullet += deltaTime;
         this.windAcceleration += (Math.random() - 0.5) * 2;
         if (this.windAcceleration < -50 || this.windAcceleration > 50) {
@@ -1408,12 +1415,7 @@ class Turret extends Entity {
     Draw() {
         super.Draw();
         this.hopper.Draw();
-        // Calculate barrel angle
-        this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, VectorToAngle(mousePos, this.pos, false), 2);
-        this.barrelAngle = this.targetBarrelAngle;
-        this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
-        this.barrelAngle += this.currentBloom;
-        this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
+
         // draw
         if (debugMode) {
             var maxBloomMax = VectorToAngle(mousePos, this.pos) + this.currentBloomMax;
