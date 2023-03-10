@@ -161,7 +161,7 @@
                 {"tag": "Chaotic"},
                 {"tag": "Organisation"},
                 {"tag": "Unity"},
-                {"tag": "Personal project", "last": true}
+                {"tag": "Side project", "last": true}
             ],
             "links": [
                 {
@@ -186,7 +186,7 @@
                 {"tag": "Sidescroller"},
                 {"tag": "Pixel art"},
                 {"tag": "Unity"},
-                {"tag": "Personal project", "last": true}
+                {"tag": "Side project", "last": true}
             ],
             "links": [
                 {
@@ -230,7 +230,7 @@
             "tags": [
                 {"tag": "Organisation"},
                 {"tag": "Unity"},
-                {"tag": "Personal project", "last": true}
+                {"tag": "Side project", "last": true}
             ],
             "links": [
                 {
@@ -272,7 +272,7 @@
                 {"tag": "Multiplayer"},
                 {"tag": "Military"},
                 {"tag": "Unity"},
-                {"tag": "Personal project", "last": true}
+                {"tag": "Side project", "last": true}
             ],
             "description": "Map commander is a multiplayer real-time strategy game prototype. The idea is a massive world (128x128km), with lots of military units. Outside of combat, it would also include things like logistics, engineering and reconnaisance. The terrain can change during gameplay by players, which is shared over the network. The player can raise/lower terrain, or plant/remove forests. This is a pet project that I will work more on in the future. I worked on this prototype alone for 6 weeks for a school project.",
             "contribution": ""
@@ -354,7 +354,7 @@
                 {"tag": "Naval combat"},
                 {"tag": "1v1"},
                 {"tag": "JavaScript"},
-                {"tag": "Personal project", "last": true}
+                {"tag": "Side project", "last": true}
             ],
             "description": "Ports and Swords is a online multiplayer game inspired by Pong and Chess that I made for fun. To win, you need to either destroy both enemy ships, or enter their port. Every turn, a player gets to choose the wind direction, and then needs to move their ships according to that wind direction. The game is based on a board game which was made for a schoolproject.",
             "contribution": ""
