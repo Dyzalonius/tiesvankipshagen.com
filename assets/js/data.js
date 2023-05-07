@@ -1,4 +1,4 @@
-{
+projectData = {
     "projects": [
         {
             "name": "Moonlight Peaks",
