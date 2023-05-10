@@ -274,6 +274,12 @@ projectData = {
                 {"tag": "Unity"},
                 {"tag": "Side project", "last": true}
             ],
+            "links": [
+                {
+                    "label": "Research",
+                    "link": "https://docs.google.com/document/d/1-9IMg6cZ-qpDjl54botLK99bb1J2epDRKYgkmnlw7kM/edit#heading=h.20b0an72fqhe"
+                }
+            ],
             "description": "Map commander is a multiplayer real-time strategy game prototype. The idea is a massive world (128x128km), with lots of military units. Outside of combat, it would also include things like logistics, engineering and reconnaisance. The terrain can change during gameplay by players, which is shared over the network. The player can raise/lower terrain, or plant/remove forests. This is a pet project that I will work more on in the future. I worked on this prototype alone for 6 weeks for a school project.",
             "contribution": ""
         },
