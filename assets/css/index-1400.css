@@ -12,6 +12,9 @@
 
 
     /* PROJECTS */
+    #project-list {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
     .projectOne {
         float: none;
         margin-right: 0%;

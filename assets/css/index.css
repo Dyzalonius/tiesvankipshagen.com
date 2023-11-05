@@ -7,22 +7,26 @@ html {
 :root {
     --color-background: #ece8e1;
     --color-background-two: #dfdbd3;
+    --color-background-three: #0f1923;
     --color-primary: #0f1923;
     --color-secondary: #768079;
     --color-tertiary: #BDBCB7;
     --color-accent: #4169E1;
     --color-link: #d0a867;
     --dark-mode-icon: "🌕";
+    --image-alpha: 1;
 }
 .dark-mode {
     --color-background: #0f1923;
     --color-background-two: #162433;
+    --color-background-three: #000000;
     --color-primary: #ece8e1;
     --color-secondary: #768079;
     --color-tertiary: #BDBCB7;
     --color-accent: #4169E1;
     --color-link: #d0a867;
     --dark-mode-icon: "🌑";
+    --image-alpha: .3;
 }
 
 
@@ -87,7 +91,7 @@ h2 {
 /* NAVBAR */
 #navbar {
     position: absolute;
-    background-color: var(--color-primary);
+    background-color: var(--color-background-three);
     z-index: 20;
     font-weight: 800;
     border-bottom: 1px solid var(--color-secondary);
@@ -234,6 +238,7 @@ h2 {
     line-height: 20px;
     list-style: none;
     padding: 6px 16px;
+    margin: 2px;
     position: relative;
     transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
     user-select: none;
@@ -253,33 +258,28 @@ h2 {
 /* PROJECTS */
 #project-list {
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 1rem;
+    row-gap: 1rem;
 }
 .project {
-    height: 54px;
     display: block;
     overflow: hidden;
     color: var(--color-primary);
     background-color: var(--color-background-two);
-}
-.project:not(:last-child) {
-    margin-bottom: .5rem;
+    border-radius: 20px;
+    box-shadow: 3px 3px 5px #00000030;
 }
 .project-image-container {
-    height: 54px;
-    width: 96px;
-    float: left;
+    width: 100%;
     overflow: hidden;
 }
 .project-image {
-    height: 100%;
+    width: 100%;
 }
 .project-info-container {
-    margin-left: 20px;
-    height: 100%;
-    float: left;
-}
-.project-info-container > * {
-    height: 27px;
+    margin: 0 20px;
 }
 .project-title {
     font-weight: normal;
@@ -292,11 +292,7 @@ h2 {
     height: 100%;
 }
 .project-buttons {
-    float: right;
-    margin-right: 20px;
-    vertical-align: middle;
-    height: 100%;
-    padding: 10px 0;
+    padding: 10px;
 }
 
 

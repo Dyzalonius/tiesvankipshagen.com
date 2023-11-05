@@ -27,6 +27,7 @@ var layerDefault = 1;
 var layerBottom = 0;
 var primaryColor = '#111111';
 var secondaryColor = '#EFEFEF';
+var imageAlpha = 1;
 
 // References
 var canvasSize = {x:0, y:0};
@@ -199,8 +200,9 @@ function UpdateCanvasSize() {
 }
 
 function UpdateColors() {
-    primaryColor = computedStyle.getPropertyValue('--color-primary');
+    primaryColor = computedStyle.getPropertyValue('--color-background-three');
     secondaryColor = computedStyle.getPropertyValue('--color-background');
+    imageAlpha = computedStyle.getPropertyValue('--image-alpha')
 }
 
 function CheckCollision() {
@@ -950,7 +952,7 @@ class Imagecopter extends Enemy {
 
         //image
         DrawRect(this.pos, {x:this.size.x, y:this.size.x}, primaryColor, 0);
-        DrawImage(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, 0, this.image);
+        DrawImage(this.pos, {x:this.size.x - 5, y:this.size.x - 5}, 0, this.image, {x:.5, y:.5}, {x:1, y:1}, imageAlpha);
 
         super.Draw();
     }
