@@ -74,7 +74,7 @@ projectData = {
         },
         {
             "name": "Blitz GT",
-            "featured": true,
+            "featured": false,
             "date": "2022",
             "video": "https://www.youtube.com/embed/NM63Jk8_u8E",
             "videos": [
