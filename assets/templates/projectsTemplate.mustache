@@ -1,5 +1,6 @@
 
 {{#projects}}
+    {{^hidden}}
     <div class="project">
         <div class="project-image-container">
             <img class="project-image" src="{{image}}">
@@ -10,9 +11,9 @@
                 {{#platforms}}
                     <span>{{platform}}</span>
                     <span class="project-platform-icon {{platform-icon}}"></span>
-                {{/platforms}}
-                {{#platforms}}
-                    <span> - </span>
+                    {{#last}}
+                        <span> - </span>
+                    {{/last}}
                 {{/platforms}}
                 {{#tags}}
                     <span>{{tag}}{{^last}}, {{/last}}</span>
@@ -27,4 +28,5 @@
             {{/links}}
         </div>
     </div>
+    {{/hidden}}
 {{/projects}}

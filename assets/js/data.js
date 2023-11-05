@@ -3,6 +3,7 @@ projectData = {
         {
             "name": "Moonlight Peaks",
             "featured": true,
+            "hidden": false,
             "date": "2022 - 2023",
             "image": "./assets/img/moonlightpeaks_0.jpg",
             "images": [
@@ -36,7 +37,8 @@ projectData = {
         },
         {
             "name": "REKT2",
-            "featured": true,
+            "featured": false,
+            "hidden": true,
             "date": "2023",
             "image": "./assets/img/rekt2_0.jpg",
             "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
@@ -73,9 +75,19 @@ projectData = {
             "contribution": "I haven't worked on this title myself yet, but I still want to feature this game my colleagues are working on!"
         },
         {
+            "name": "Footy",
+            "hidden": true,
+        },
+        {
+            "name": "Kingdom's Fate",
+            "hidden": true,
+        },
+        {
             "name": "Blitz GT",
             "featured": false,
+            "hidden": false,
             "date": "2022",
+            "image": "./assets/img/blitzgt_0.jpg",
             "video": "https://www.youtube.com/embed/NM63Jk8_u8E",
             "videos": [
                 {
@@ -84,7 +96,6 @@ projectData = {
                     "first": true
                 }
             ],
-            "image": "./assets/img/blitzgt_0.jpg",
             "images": [
                 {
                     "image": "./assets/img/blitzgt_1.jpg"
@@ -121,9 +132,10 @@ projectData = {
         },
         {
             "name": "Jungle Heroes",
-            "image": "./assets/img/jungleheroes_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2021",
+            "image": "./assets/img/jungleheroes_0.jpg",
             "platforms": [
                 {"platform-icon": "fa-solid fa-mobile-screen", "last": true}
             ],
@@ -154,9 +166,10 @@ projectData = {
         },
         {
             "name": "I Lost My Luggage",
-            "image": "./assets/img/ilostmyluggage_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2021",
+            "image": "./assets/img/ilostmyluggage_0.jpg",
             "tags": [
                 {"tag": "Chaotic"},
                 {"tag": "Organisation"},
@@ -178,9 +191,10 @@ projectData = {
         },
         {
             "name": "Emerald",
-            "image": "./assets/img/emerald_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2021",
+            "image": "./assets/img/emerald_0.jpg",
             "tags": [
                 {"tag": "Story"},
                 {"tag": "Sidescroller"},
@@ -199,9 +213,10 @@ projectData = {
         },
         {
             "name": "Hero's Crucible",
-            "image": "./assets/img/heroscrucible_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2020-2021",
+            "image": "./assets/img/heroscrucible_0.jpg",
             "tags": [
                 {"tag": "RTS"},
                 {"tag": "Battle Royale"},
@@ -224,9 +239,10 @@ projectData = {
         },
         {
             "name": "Extreme Luggage Operator VR",
-            "image": "./assets/img/extremeluggageoperatorvr_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2020",
+            "image": "./assets/img/extremeluggageoperatorvr_0.jpg",
             "tags": [
                 {"tag": "Organisation"},
                 {"tag": "Unity"},
@@ -243,9 +259,10 @@ projectData = {
         },
         {
             "name": "Decay",
-            "image": "./assets/img/decay_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2020",
+            "image": "./assets/img/decay_0.jpg",
             "tags": [
                 {"tag": "Horror"},
                 {"tag": "Dementia"},
@@ -264,9 +281,10 @@ projectData = {
         },
         {
             "name": "Map Commander",
-            "image": "./assets/img/mapcommander_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2020",
+            "image": "./assets/img/mapcommander_0.jpg",
             "tags": [
                 {"tag": "RTS"},
                 {"tag": "Multiplayer"},
@@ -285,9 +303,10 @@ projectData = {
         },
         {
             "name": "PIT",
-            "image": "./assets/img/pit_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2019-2020",
+            "image": "./assets/img/pit_0.jpg",
             "tags": [
                 {"tag": "RTS"},
                 {"tag": "Dynamic terrain"},
@@ -299,9 +318,10 @@ projectData = {
         },
         {
             "name": "Path of Tribes",
-            "image": "./assets/img/pathoftribes_0.jpg",
             "featured": false,
+            "hidden": false,
             "date": "2018-2019",
+            "image": "./assets/img/pathoftribes_0.jpg",
             "tags": [
                 {"tag": "Action"},
                 {"tag": "RPG"},
@@ -319,9 +339,9 @@ projectData = {
         },
         {
             "name": "Sugondese",
-            "image": "./assets/img/sugondese_0.png",
             "featured": false,
             "date": "2018",
+            "image": "./assets/img/sugondese_0.png",
             "tags": [
                 {"tag": "Dodgeball"},
                 {"tag": "Multiplayer"},
@@ -333,9 +353,10 @@ projectData = {
         },
         {
             "name": "Extreme Luggage Operator",
-            "image": "./assets/img/extremeluggageoperator_0.png",
             "featured": false,
+            "hidden": false,
             "date": "2017",
+            "image": "./assets/img/extremeluggageoperator_0.png",
             "tags": [
                 {"tag": "Chaotic"},
                 {"tag": "Organisation"},
@@ -353,9 +374,10 @@ projectData = {
         },
         {
             "name": "Ports and Swords",
-            "image": "./assets/img/portsandswords_0.png",
             "featured": false,
+            "hidden": false,
             "date": "2018",
+            "image": "./assets/img/portsandswords_0.png",
             "tags": [
                 {"tag": "Naval combat"},
                 {"tag": "1v1"},
