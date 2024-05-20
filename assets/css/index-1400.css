@@ -47,7 +47,6 @@
 
 @media screen and (max-width: 800px) {
     h1 {
-        font-size: 4em;
         overflow: hidden;
     }
     .project-list {
