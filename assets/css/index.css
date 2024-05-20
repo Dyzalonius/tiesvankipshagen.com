@@ -226,6 +226,9 @@ h3 {
   text-decoration: underline;
   transition-duration: 0.1s;
 }
+.featured-subtext {
+    margin-left: 2rem;
+}
 
 
 /* PROJECTS */

@@ -24,18 +24,15 @@
         <div class="featured-text featured-one">
             <h2 class="featured-title">{{name}}</h2>
             <div class="project-subtitle">
+                <span>{{date}}, </span>
+                {{#tags}}
+                    <span>{{tag}}, </span>
+                {{/tags}}
                 {{#platforms}}
                     <span>{{platform}}</span>
                     <span class="{{platform-icon}}"></span>
-                    {{#last}}
-                        <span> - </span>
-                    {{/last}}
+                    <span>{{^last}}, {{/last}}</span>
                 {{/platforms}}
-                {{#tags}}
-                    <span>{{tag}}{{^last}}, {{/last}}</span>
-                {{/tags}}
-                <span> - </span>
-                <span>({{date}})</span>
             </div>
             <p>{{description}}</p>
             <p class="featured-subtext">{{contribution}}</p>

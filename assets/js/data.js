@@ -4,7 +4,7 @@ projectData = {
             "name": "Moonlight Peaks",
             "featured": true,
             "hidden": false,
-            "date": "2022 - current",
+            "date": "2022-current",
             "image": "./assets/img/moonlightpeaks_0.jpg",
             "images": [
                 {"image": "./assets/img/moonlightpeaks_0.jpg", "first": true},
@@ -31,7 +31,7 @@ projectData = {
                     "link": "https://moonlightpeaks.com/"
                 }
             ],
-            "description": "Experience life as a vampire in Moonlight Peaks! Master the art of potion-making and spell-casting, tend to your supernatural farm, and make your mark on the magical town. Befriend the local werewolves, witches and mermaids, and maybe even find eternal love along the way.",
+            "description": "Live the vampire life in the magical town of Moonlight Peaks! Master the art of potions and spells, manage your supernatural farm, and leave your mark on the magical town. Make friends with the local werewolves, witches, and mermaids, and find your eternal love in the supernatural dating scene.",
             "contribution": ""
         },
         {
@@ -41,7 +41,7 @@ projectData = {
             "date": "2023",
             "image": "./assets/img/rektparty_0.png",
             "platforms": [
-                {"platform-icon": "fa-brands fa-steam"}
+                {"platform-icon": "fa-brands fa-steam", "last": true}
             ],
             "tags": [
                 {"tag": "Action"},
