@@ -14,7 +14,7 @@
     #navbar,
     #spacer-top,
     #projects,
-    #featured-list,
+    #projects-featured-list,
     #featured,
     #featured-header {
         display: none;
@@ -22,7 +22,7 @@
 
 
     /* PROJECTS */
-    #project-list {
+    .project-list {
         grid-template-columns: repeat(2, 1fr);
     }
     .projectOne {
@@ -50,7 +50,7 @@
         font-size: 4em;
         overflow: hidden;
     }
-    #project-list {
+    .project-list {
         grid-template-columns: repeat(1, 1fr);
     }
 }

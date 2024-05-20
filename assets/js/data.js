@@ -4,7 +4,7 @@ projectData = {
             "name": "Moonlight Peaks",
             "featured": true,
             "hidden": false,
-            "date": "2022 - 2023",
+            "date": "2022 - current",
             "image": "./assets/img/moonlightpeaks_0.jpg",
             "images": [
                 {"image": "./assets/img/moonlightpeaks_0.jpg", "first": true},
@@ -36,23 +36,13 @@ projectData = {
             "contribution": ""
         },
         {
-            "name": "REKT2",
+            "name": "REKT Party",
             "featured": false,
-            "hidden": true,
+            "hidden": false,
             "date": "2023",
-            "image": "./assets/img/rekt2_0.jpg",
-            "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
-            "videos": [
-                {
-                    "image": "./assets/img/rekt2_0.jpg",
-                    "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
-                    "first": true
-                }
-            ],
+            "image": "./assets/img/rektparty_0.png",
             "platforms": [
-                {"platform-icon": "fa-brands fa-steam"},
-                {"platform-icon": "fa-solid fa-mobile-screen"},
-                {"platform-icon": "bi bi-nintendo-switch", "last": true}
+                {"platform-icon": "fa-brands fa-steam"}
             ],
             "tags": [
                 {"tag": "Action"},
@@ -69,6 +59,10 @@ projectData = {
                 {
                     "label": "Website",
                     "link": "https://www.rekt2.com/"
+                },
+                {
+                    "label": "Trailer (old)",
+                    "link": "https://www.youtube.com/embed/xMI5-VBH5KM"
                 }
             ],
             "description": "What if your car was a skateboard?! Join with up to 16 players and jump, grind and kickflip your car as you try not to get REKT! Building upon the success of the original, REKT 2 offers new arenas, more game modes, more cars and customization options!",
@@ -83,16 +77,20 @@ projectData = {
             "hidden": true,
         },
         {
+            "name": "Mr. City",
+            "hidden": true,
+        },
+        {
             "name": "Blitz GT",
             "featured": false,
             "hidden": false,
             "date": "2022",
-            "image": "./assets/img/blitzgt_0.jpg",
-            "video": "https://www.youtube.com/embed/NM63Jk8_u8E",
+            "image": "./assets/img/blitzgt_0.png",
+            "video": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7",
             "videos": [
                 {
-                    "image": "./assets/img/blitzgt_0.jpg",
-                    "video": "https://www.youtube.com/embed/NM63Jk8_u8E",
+                    "image": "./assets/img/blitzgt_0.png",
+                    "video": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7",
                     "first": true
                 }
             ],
@@ -102,13 +100,7 @@ projectData = {
                 },
                 {
                     "image": "./assets/img/blitzgt_2.jpg"
-                },
-                {
-                    "image": "./assets/img/blitzgt_3.jpg"
                 }
-            ],
-            "platforms": [
-                {"platform-icon": "fa-brands fa-steam", "last": true}
             ],
             "tags": [
                 {"tag": "Combat racing"},
@@ -119,12 +111,8 @@ projectData = {
             ],
             "links": [
                 {
-                    "label": "Steam",
-                    "link": "https://store.steampowered.com/app/2057950/Blitz_GT/"
-                },
-                {
-                    "label": "Website",
-                    "link": "https://blitzgt.com/"
+                    "label": "Trailer",
+                    "link": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7"
                 }
             ],
             "description": "Blitz GT is a vehicular battle game. Battle 4v4 with unique characters and abilities to score points, take down opponents and secure the win.",
@@ -205,10 +193,10 @@ projectData = {
             "links": [
                 {
                     "label": "Gameplay",
-                    "link": "https://www.youtube.com/embed/V4cXif_f_F8"
+                    "link": "https://www.youtube.com/embed/rUlxoDQKZ9c?si=sHDxzu0fgItZwxO1"
                 }
             ],
-            "description": "Emerald was an anniversary-gift for my girlfriend. It's a simple story game that breaks the fourth wall. It has a bunch of inside jokes and a sweet message. The art is emulated from Celeste.",
+            "description": "Emerald was an anniversary-gift for my ex girlfriend. It's a simple story game that breaks the fourth wall. It has a bunch of inside jokes and a sweet message. The art is emulated from Celeste.",
             "contribution": "During the project I gained experience with 2d, making pixel art, dialogue systems, and using audio for a rhythm game."
         },
         {
@@ -347,6 +335,12 @@ projectData = {
                 {"tag": "Multiplayer"},
                 {"tag": "Unity"},
                 {"tag": "School project", "last": true}
+            ],
+            "links": [
+                {
+                    "label": "Gameplay",
+                    "link": "https://www.youtube.com/embed/eMLEAC1TDtk?si=JXseliF83zn-2ikE"
+                }
             ],
             "description": "Sugondese is a multiplayer game in which 2 players battle eachother in a game of dodgeball. Rounds are fast paced, and there are different ball types, such as curveballs, bounceballs, waterballs, electricityballs, and more. The game was made for a solo schoolproject in roughly 4 weeks in 2018, and continued in 2020 to research and implement  online multiplayer.",
             "contribution": "During the project I gained experience with networking, implementing methods for synchronization, hit detection and lag compensation."

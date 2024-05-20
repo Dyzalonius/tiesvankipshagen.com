@@ -3,18 +3,18 @@ $(document).ready(function() {
 });
 
 function loadMustache() {
-    fetch('assets/templates/featuredTemplate.mustache')
+    fetch('assets/templates/templateProjectsFeatured.mustache')
         .then((response) => response.text())
         .then((template) => {
             const rendered = Mustache.render(template, projectData);
-            $("#featured-list").html(rendered);
+            $("#projects-featured-list").html(rendered);
         }).then(() => initializeGallery());
 
-    fetch('assets/templates/projectsTemplate.mustache')
+    fetch('assets/templates/templateProjects.mustache')
         .then((response) => response.text())
         .then((template) => {
             const rendered = Mustache.render(template, projectData);
-            $("#project-list").html(rendered);
+            $("#projects-list").html(rendered);
         });
 }
 
