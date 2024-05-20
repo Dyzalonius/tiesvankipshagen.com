@@ -674,7 +674,6 @@ class Helicopter extends Enemy {
         this.barrelSize = {x:60, y:40};
         this.bombSize = {x:50, y:50};
         this.minPos = {x:400, y:400};
-        this.maxPosMax = {x:2000, y:1000};
         this.maxPos = {x:1800, y:700};
         this.waypoint = this.pos;
         this.verticalWiggleOffset = Math.random() * Math.PI * 2;
@@ -695,11 +694,6 @@ class Helicopter extends Enemy {
                 this.fireDelayCurrent = 0;
                 this.Fire();
             }
-        }
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, false)) {
-            this.Destroy();
         }
     }
 
@@ -737,9 +731,9 @@ class Helicopter extends Enemy {
     Draw() {
         if (this.isSpawning) { return; }
         if (debugMode) {
-            //var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
-            //var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
-            //DrawRect(pos, size, 'green', 0);
+            var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
+            var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
+            DrawRect(pos, size, 'green', 0);
 
             DrawCircle(this.waypoint, {x:25, y:25}, 'red', 1);
         }
@@ -785,11 +779,6 @@ class Lettercopter extends Enemy {
         this.rotorWidth = Math.abs(Math.sin((oldTimeStamp + this.sinOffset) / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
 
         this.Move();
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, false)) {
-            this.Destroy();
-        }
     }
 
     Move() {
@@ -847,11 +836,6 @@ class Lettercoptersling extends Enemy {
     Update() {
         super.Update();
         this.Move();
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, false)) {
-            this.Destroy();
-        }
     }
 
     Move() {
@@ -922,11 +906,6 @@ class Imagecopter extends Enemy {
         this.rotorWidth = Math.abs(Math.sin((oldTimeStamp + this.sinOffset) / this.rotorWidthTime)) * (this.rotorWidthMax - this.rotorWidthMin) + this.rotorWidthMin;
 
         this.Move();
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, false)) {
-            this.Destroy();
-        }
     }
 
     Move() {
@@ -1021,11 +1000,6 @@ class Plane extends Enemy {
         else {
             this.isTurning = false;
         }
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, false)) {
-            this.Destroy();
-        }
     }
 
     Fire() {
@@ -1097,11 +1071,6 @@ class Projectile extends Enemy {
 
     Update() {
         super.Update();
-
-        // Destroy if off canvas
-        if (IsOffCanvas(this.pos, this.size, true)) {
-            this.Destroy();
-        }
     }
 
     Draw() {
@@ -1159,11 +1128,6 @@ class Rocket extends Projectile {
         this.angle -= rotation;
         this.angle = ClampAngle(this.angle);
         this.velocity = AngleToVector(this.angle, this.speed);
-
-        // Destroy rocket if off-canvas
-        if (IsOffCanvas(this.pos, this.size)) {
-            this.Destroy();
-        }
     }
 
     Draw() {
@@ -1201,11 +1165,6 @@ class Bomb extends Projectile {
 
         // Rotate bomb
         this.angle += this.rotationSpeed * deltaTime;
-
-        // Destroy rocket if off-canvas
-        if (IsOffCanvas(this.pos, this.size)) {
-            this.Destroy();
-        }
     }
 
     Draw() {

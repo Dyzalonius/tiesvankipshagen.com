@@ -18,8 +18,7 @@ projectData = {
             ],
             "tags": [
                 {"tag": "Lifesim"},
-                {"tag": "RPG"},
-                {"tag": "Simulation"},
+                {"tag": "Unity"},
                 {"tag": "Professional", "last": true}
             ],
             "links": [
@@ -111,7 +110,7 @@ projectData = {
             ],
             "links": [
                 {
-                    "label": "Trailer",
+                    "label": "Trailer (old)",
                     "link": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7"
                 }
             ],

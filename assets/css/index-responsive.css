@@ -1,21 +1,22 @@
 @media screen and (max-width: 1400px) {
+    .project-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 1000px) {
 
     /* GENERAL */
     .margins1 {
         width: 100%;
-        border-left: 0px;
-    }
-    .margins2 {
-        width: 100%;
-        padding: 0 10px;
+        padding: 20px;
     }
 
     #game,
-    #navbar,
-    #spacer-top,
-    #projects,
+    #game-bottom-bar,
+    #spacer-featured,
+    #spacer-projects,
     #projects-featured-list,
-    #featured,
     #featured-header {
         display: none;
     }

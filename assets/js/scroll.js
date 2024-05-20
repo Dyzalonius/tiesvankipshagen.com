@@ -27,12 +27,12 @@ $(document).ready(function () {
             }
         });
 
-        var height = $('#game').height(); + $('.common-bar').height();
+        /*var height = $('#game').height(); + $('.common-bar').height();
         var width = $('#game').width();
         if ($(this).scrollTop() > height && width > 1400) {
             $('#navbar').addClass('navbar-fix');
         } else {
             $('#navbar').removeClass('navbar-fix');
-        }
+        }*/
     });
 });

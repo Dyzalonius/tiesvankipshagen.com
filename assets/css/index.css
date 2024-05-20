@@ -46,37 +46,38 @@ ul {
 }
 .spacer {
     width: 100%;
-    height: 80px;
+    height: 6rem;
 }
 .margins1 {
     margin: 0 auto;
-    width: 1400px;
-}
-.margins2 {
-    width: 1200px;
-    margin: 0 auto;
+    width: 80%;
 }
 .header {
-    margin-bottom: 20px;
+    margin-bottom: 3em;
     border-bottom: 2px solid;
 }
 h1 {
     color: var(--color-accent);
     font-weight: 900;
     text-transform: uppercase;
-    font-size: 1em;
+    font-size: 1rem;
 }
 h2 {
     color: var(--color-primary);
     font-weight: 800;
-    font-size: 3em;
+    font-size: 3rem;
+}
+h3 {
+    color: var(--color-primary);
+    font-weight: 800;
+    font-size: 1.5rem;
 }
 
 
 /* GAME */
 #game {
     background-color: var(--color-background);
-    height: calc(100% - 80px);
+    height: calc(100% - 3rem);
 }
 #gameCanvas {
     width: 100%;
@@ -85,42 +86,11 @@ h2 {
 .noCursor {
     cursor: none;
 }
-
-
-
-/* NAVBAR */
-#navbar {
-    position: absolute;
+#game-bottom-bar {
     background-color: var(--color-background-three);
     z-index: 20;
-    font-weight: 800;
-    border-bottom: 1px solid var(--color-secondary);
-}
-#navbar-container {
-    height: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-.navbar-element {
-    margin-right: 10px;
-}
-.navbar-fix {
-    position: fixed !important;
-    background-color: var(--color-background) !important;
     width: 100%;
-    top: 0;
-}
-.navbar-button {
-    color: var(--color-link);
-    text-decoration: none;
-    padding: 5px;
-}
-.navbar-button:first-child {
-    margin-left: calc(.5rem - 5px);
-}
-.navbar-button:hover {
-    text-decoration: underline;
+    height: 3rem;
 }
 
 
@@ -129,6 +99,7 @@ h2 {
 #dark-mode-button {
     background-color: transparent;
     border: none;
+    padding: 0;
 }
 #dark-mode-button span {
     display: none;
@@ -182,9 +153,10 @@ h2 {
     position:absolute;
     top: 0;
     left: 0;
-    border-width: 2px;
+    border-width: 3px;
     border-style: solid;
     border-color: var(--color-primary);
+    border-radius: 5px;
     width: 100%;
     height: 100%;
     float: right;
@@ -193,18 +165,19 @@ h2 {
     position:absolute;
     top: 0;
     left: 0;
-    border-width: 2px;
+    border-width: 3px;
     border-style: solid;
     border-color: var(--color-primary);
+    border-radius: 5px;
     width: 100%;
     height: 100%;
 }
 .featured-gallery-item-wrapper {
-    width: 480px;
     text-align: left;
 }
 .featured-gallery-item-wrapper .current {
     border-color: var(--color-primary);
+    border-radius: 5px;
 }
 .gallery-item {
     width: 25%;
@@ -213,7 +186,7 @@ h2 {
     margin-right: -4px;
     border-style: solid;
     border-color: transparent;
-    border-width: 4px;
+    border-width: 3px;
 }
 .featured-text {
     width: 55%;
@@ -260,15 +233,16 @@ h2 {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 1rem;
-    row-gap: 1rem;
+    column-gap: 3rem;
+    row-gap: 3rem;
 }
 .project {
     display: block;
     overflow: hidden;
     color: var(--color-primary);
-    background-color: var(--color-background-two);
-    border-radius: 20px;
+    background-color: var(--color-background);
+    border-radius: 5px;
+    border: 1px solid var(--color-background-two);
     box-shadow: 3px 3px 5px #00000030;
 }
 .project-image-container {
@@ -282,7 +256,7 @@ h2 {
     margin: 0 20px;
 }
 .project-title {
-    font-weight: normal;
+    font-weight: bold;
     margin: 0;
 }
 .project-subtitle {
@@ -302,6 +276,7 @@ h2 {
     background-color: var(--color-background);
     border-top: 1px solid var(--color-secondary);
     font-weight: 800;
+    height: 3rem;
 }
 #footer-container {
     height: 100%;
@@ -309,15 +284,18 @@ h2 {
     justify-content: flex-start;
     align-items: center;
 }
-#footer-list {
-    width: 1200px;
-    margin: 0 auto;
+#footer-container > * {
+    padding: 0 5px;
 }
-.footer-element {
-    margin-right: 10px;
+.footer-button {
+    color: var(--color-link);
+    text-decoration: none;
 }
-.footer-element:first-child {
-    margin-left: .5rem;
+.footer-button:first-child {
+    margin-left: calc(.5rem - 5px);
+}
+.footer-button:hover {
+    text-decoration: underline;
 }
 
 
