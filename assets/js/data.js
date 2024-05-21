@@ -12,14 +12,14 @@ projectData = {
                 {"image": "./assets/img/moonlightpeaks_2.jpg"},
                 {"image": "./assets/img/moonlightpeaks_3.jpg"}
             ],
-            "platforms": [
-                {"platform-icon": "fa-brands fa-steam"},
-                {"platform-icon": "bi bi-nintendo-switch", "last": true}
-            ],
             "tags": [
                 {"tag": "Lifesim"},
                 {"tag": "Unity"},
-                {"tag": "Professional", "last": true}
+                {"tag": "Professional"}
+            ],
+            "platforms": [
+                {"platform-icon": "fa-brands fa-steam"},
+                {"platform-icon": "bi bi-nintendo-switch", "last": true}
             ],
             "links": [
                 {
@@ -40,15 +40,15 @@ projectData = {
             "hidden": false,
             "date": "2023",
             "image": "./assets/img/rektparty_0.png",
-            "platforms": [
-                {"platform-icon": "fa-brands fa-steam", "last": true}
-            ],
             "tags": [
                 {"tag": "Action"},
                 {"tag": "Racing"},
                 {"tag": "Multiplayer"},
                 {"tag": "Unity"},
-                {"tag": "Professional", "last": true}
+                {"tag": "Professional"}
+            ],
+            "platforms": [
+                {"platform-icon": "fa-brands fa-steam", "last": true}
             ],
             "links": [
                 {
@@ -123,12 +123,12 @@ projectData = {
             "hidden": false,
             "date": "2021",
             "image": "./assets/img/jungleheroes_0.jpg",
-            "platforms": [
-                {"platform-icon": "fa-solid fa-mobile-screen", "last": true}
-            ],
             "tags": [
                 {"tag": "Unity"},
-                {"tag": "Professional", "last": true}
+                {"tag": "Professional"}
+            ],
+            "platforms": [
+                {"platform-icon": "fa-solid fa-mobile-screen", "last": true}
             ],
             "links": [
                 {

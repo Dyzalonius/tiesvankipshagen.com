@@ -10,7 +10,7 @@
             <div class="project-subtitle">
                 <span>{{date}}, </span>
                 {{#tags}}
-                    <span>{{tag}}, </span>
+                    <span>{{tag}}{{^last}}, {{/last}}</span>
                 {{/tags}}
                 {{#platforms}}
                     <span>{{platform}}</span>
