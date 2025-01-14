@@ -1295,6 +1295,7 @@ class Turret extends Entity {
         this.alpha = 1;
         this.isReloading = false;
         this.isSpawning = true;
+        this.canFire = false;
         this.realHeight = pos.y;
         this.spawnProgress = -2;
         this.layer = layerTop;
@@ -1311,6 +1312,9 @@ class Turret extends Entity {
             this.pos.y = EaseOutCubic(Clamp(this.spawnProgress, 0, introDuration), this.realHeight - 150, this.realHeight, introDuration);
             if (!enableCursor && this.spawnProgress > introDuration - 1) {
                 EnableCursor();
+            }
+            if (!this.canFire && this.spawnProgress > introDuration - 0.5) {
+                this.canFire = true;
             }
             if (this.pos.y >= this.realHeight) {
                 this.pos.y = this.realHeight;
@@ -1344,7 +1348,7 @@ class Turret extends Entity {
             new Particle(pos, {x:this.wind, y:150}, {x:10, y:10}, 1, Clamp(this.timeSpentFiring - 1, 0, 1) * 0.05, false, true);
         }
 
-        if (!this.isSpawning && mouseDown && playing) {
+        if (this.canFire && mouseDown && playing) {
             this.CheckFire();
         }
 
