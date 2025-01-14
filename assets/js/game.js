@@ -19,8 +19,8 @@ var gravity = 350; // in pixels per second per second
 var introDuration = 1;
 var debugMode = false;
 var enemySpawnAnimationDuration = .5;
-var enemySpawnAnimationDelayStep = .1;
-var firstLevelStartDelay = 1.2;
+var enemySpawnAnimationDelayStep = .05;
+var firstLevelStartDelay = .5;
 var levelEndDelay = 1.5;
 var layerTop = 2;
 var layerDefault = 1;
@@ -32,7 +32,11 @@ var imageAlpha = 1;
 // References
 var canvasSize = {x:0, y:0};
 var mousePos = {x:130, y:2000};
+var mouseDocPos = {x: 130, y:2000};
+var scrollPos = {x:0, y:0};
+var scrollPosAtLastMouseMove = {x:0, y:0};
 var mouseDown = false;
+var enableCursor = false;
 
 var canvas;
 var ctx;
@@ -64,10 +68,11 @@ $(document).ready(function () {
     canvas = document.getElementById("gameCanvas");
     ctx = canvas.getContext("2d");
     computedStyle = getComputedStyle(document.body);
-    $("#gameCanvas").addClass("noCursor");
-    document.addEventListener('mousemove', MouseMove);
+    document.addEventListener('mousemove', OnMouseMove);
+    document.addEventListener('scroll', OnMouseScroll);
     canvas.addEventListener("mousedown", MouseDown);
     canvas.addEventListener("mouseup", MouseUp);
+    canvas.addEventListener("mouseMove", OnMouseMove);
     document.addEventListener('keydown',KeyDown,false);
     loop = false;
     oldTimeStamp = 0;
@@ -99,12 +104,12 @@ function Start() {
     var level = new Level(firstLevelStartDelay);
     var startX = 300;
     var deltaX = 80;
+    level.AddImageCopter({x:900 , y:500}, './assets/img/img_portrait.png');
+    level.AddLettercopter({x:1200, y: 525}, "Ties van Kipshagen", "Game designer");
     var word = "HELLO!";
     for (var i = 0; i < word.length; i++) {
         level.AddLettercopter({x:startX + deltaX * i, y:500}, word[i]);
     }
-    level.AddImageCopter({x:900 , y:500}, './assets/img/img_portrait.png');
-    level.AddLettercopter({x:1200, y: 525}, "Ties van Kipshagen", "Game designer");
     level = new Level();
     level.AddPlane({x:1800, y:500});
     level = new Level();
@@ -1283,7 +1288,7 @@ class Turret extends Entity {
         this.isReloading = false;
         this.isSpawning = true;
         this.realHeight = pos.y;
-        this.spawnProgress = -0.5;
+        this.spawnProgress = -2;
         this.layer = layerTop;
         this.wind = 0;
         this.windAcceleration = 0;
@@ -1295,7 +1300,10 @@ class Turret extends Entity {
         super.Update();
         if (this.isSpawning) {
             this.spawnProgress += deltaTime;
-            this.pos.y = EaseOutCubic(Clamp(this.spawnProgress, 0, 1), this.realHeight - 150, this.realHeight, introDuration);
+            this.pos.y = EaseOutCubic(Clamp(this.spawnProgress, 0, introDuration), this.realHeight - 150, this.realHeight, introDuration);
+            if (!enableCursor && this.spawnProgress > introDuration - 0.5) {
+                EnableCursor();
+            }
             if (this.pos.y >= this.realHeight) {
                 this.pos.y = this.realHeight;
                 this.isSpawning = false;
@@ -1328,7 +1336,7 @@ class Turret extends Entity {
             new Particle(pos, {x:this.wind, y:150}, {x:10, y:10}, 1, Clamp(this.timeSpentFiring - 1, 0, 1) * 0.05, false, true);
         }
 
-        if (mouseDown && playing) {
+        if (!this.isSpawning && mouseDown && playing) {
             this.CheckFire();
         }
 
@@ -1536,6 +1544,7 @@ class Crosshair extends GameObject {
 
     Draw() {
         super.Draw();
+        if (!enableCursor) {return;}
         if (this.showDot) {
             DrawCircle(this.pos, {x:this.dotRadius, y:this.dotRadius}, primaryColor);
         }
@@ -1894,8 +1903,20 @@ function KeyDown(event) {
     }
 }
 
-function MouseMove() {
-    mousePos = GetMousePos(canvas, event);
+function OnMouseMove() {
+    mouseDocPos = GetMousePos(canvas, event);
+    scrollPosAtLastMouseMove = {x:window.scrollX, y:window.scrollY};
+    scrollPos = {x:0, y:0};
+    UpdateMousePos();
+}
+
+function OnMouseScroll() {
+    scrollPos = {x:window.scrollX - scrollPosAtLastMouseMove.x, y:window.scrollY - scrollPosAtLastMouseMove.y};
+    UpdateMousePos();
+}
+
+function UpdateMousePos() {
+    mousePos = {x:mouseDocPos.x - scrollPos.x, y:mouseDocPos.y - scrollPos.y};
 }
 
 function GetMousePos(canvas, event) {
@@ -1904,6 +1925,11 @@ function GetMousePos(canvas, event) {
         x: event.clientX - rect.left,
         y: canvasSize.y - (event.clientY - rect.top)
     };
+}
+
+function EnableCursor() {
+    $("#gameCanvas").addClass("noCursor");
+    enableCursor = true;
 }
 
 function ConvertPosition(pos) {
