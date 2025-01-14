@@ -1267,6 +1267,14 @@ function EaseOutCubic(currentTime, start, end, duration) {
     return (start - end) * Math.pow(1 - currentTime / duration, 3);
 }
 
+function EaseInCubic(currentTime, start, end, duration) {
+    return (end - start) * Math.pow(1 - currentTime / duration, 3);
+}
+
+function EaseInOutCubic(x) {
+    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+}
+
 class Turret extends Entity {
     constructor(pos, angleMinMax, turretDiameter, hopperOffset, hopperWidth, bulletCapacity, healthPointsMax) {
         super({x:pos.x, y:pos.y - 150}, {x:0, y:0}, false, {x:turretDiameter, y:turretDiameter}, 1, healthPointsMax);
@@ -1301,7 +1309,7 @@ class Turret extends Entity {
         if (this.isSpawning) {
             this.spawnProgress += deltaTime;
             this.pos.y = EaseOutCubic(Clamp(this.spawnProgress, 0, introDuration), this.realHeight - 150, this.realHeight, introDuration);
-            if (!enableCursor && this.spawnProgress > introDuration - 0.5) {
+            if (!enableCursor && this.spawnProgress > introDuration - 1) {
                 EnableCursor();
             }
             if (this.pos.y >= this.realHeight) {
@@ -1535,28 +1543,37 @@ class Crosshair extends GameObject {
         this.showLines = true;
         this.turret = turret;
         this.layer = layerTop;
+        this.timeSinceEnable = 0;
     }
 
     Update() {
         super.Update();
         this.pos = mousePos;
+        if (enableCursor) {
+            this.timeSinceEnable += deltaTime;
+        }
     }
 
     Draw() {
         super.Draw();
         if (!enableCursor) {return;}
+
+        var lineLengthPlusOffset = EaseInOutCubic(Lerp(0, 1, Clamp(this.timeSinceEnable * 4.5, 0, 1))) * (this.lineLength + this.lineOffset);
+        var lineOffset = EaseInOutCubic(Lerp(0, 1, Clamp(this.timeSinceEnable * 3, 0, 1))) * this.lineOffset;
+        var lineLength = lineLengthPlusOffset - lineOffset;
+
         if (this.showDot) {
             DrawCircle(this.pos, {x:this.dotRadius, y:this.dotRadius}, primaryColor);
         }
         if (this.showLines) {
-            var lineOffsets = this.lineOffset + this.lineOffsetBloomFactor * this.turret.currentBloomMax;
-            DrawRect({ x: this.pos.x - lineOffsets, y: this.pos.y }, { x: this.lineLength, y: this.lineThickness }, primaryColor, 0, { x: 1, y: 0.5 });
-            DrawRect({ x: this.pos.x + lineOffsets, y: this.pos.y }, { x: this.lineLength, y: this.lineThickness }, primaryColor, 0, { x: 0, y: 0.5 });
-            DrawRect({ x: this.pos.x, y: this.pos.y + lineOffsets }, { x: this.lineThickness, y: this.lineLength }, primaryColor, 0, { x: 0.5, y: 1 });
-            DrawRect({ x: this.pos.x, y: this.pos.y - lineOffsets }, { x: this.lineThickness, y: this.lineLength }, primaryColor, 0, { x: 0.5, y: 0 });
+            var lineOffsets = lineOffset + this.lineOffsetBloomFactor * this.turret.currentBloomMax;
+            DrawRect({ x: this.pos.x - lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 1, y: 0.5 });
+            DrawRect({ x: this.pos.x + lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 0, y: 0.5 });
+            DrawRect({ x: this.pos.x, y: this.pos.y + lineOffsets }, { x: this.lineThickness, y: lineLength }, primaryColor, 0, { x: 0.5, y: 1 });
+            DrawRect({ x: this.pos.x, y: this.pos.y - lineOffsets }, { x: this.lineThickness, y: lineLength }, primaryColor, 0, { x: 0.5, y: 0 });
         }
         if (this.turret.reloadTime > 0 && playing) {
-            DrawRing(this.pos, this.lineOffset - this.lineThickness * 2, this.lineThickness, primaryColor, this.turret.reloadTime / gunReloadTimeMax);
+            DrawRing(this.pos, lineOffset - this.lineThickness * 2, this.lineThickness, primaryColor, this.turret.reloadTime / gunReloadTimeMax);
         }
     }
 }
@@ -1946,8 +1963,8 @@ function RemoveRandom(array) {
     return enemyIndex;
 }
 
-function Lerp(value, towards, factor) {
-    return value + (towards - value) * factor;
+function Lerp(start, stop, progress) {
+    return start + (stop - start) * progress;
 }
 
 function MoveTowards(value, target, step) {
