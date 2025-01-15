@@ -1322,8 +1322,22 @@ class Turret extends Entity {
             }
         }
 
+        // Ideal barrel angle calculation
+        var bulletSpawnPos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
+        var barrelAngleIdeal = VectorToAngle(mousePos, this.pos, false);
+        var distanceToCrosshair = {x:mousePos.x - bulletSpawnPos.x, y:mousePos.y - bulletSpawnPos.y};
+        var speedSquared = bulletSpeed * bulletSpeed;
+        var discriminant = speedSquared * speedSquared - gravity * (gravity * distanceToCrosshair.x * distanceToCrosshair.x + 2 * distanceToCrosshair.y * speedSquared);
+        if (discriminant > 0) {
+            var root = Math.sqrt(discriminant);
+            var candidateAngle = Math.atan((speedSquared - root) / (gravity * distanceToCrosshair.x));
+            if (candidateAngle > 0) {
+                barrelAngleIdeal = ToDeg(candidateAngle);
+            }
+        }
+
         // Calculate barrel angle
-        this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, VectorToAngle(mousePos, this.pos, false), deltaTime * 270);
+        this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, barrelAngleIdeal, deltaTime * 270);
         this.barrelAngle = this.targetBarrelAngle;
         this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
         this.barrelAngle += this.currentBloom;
