@@ -1303,6 +1303,7 @@ class Turret extends Entity {
         this.windAcceleration = 0;
         this.timeSinceLastBullet = 0;
         this.timeSpentFiring = 0;
+        this.bulletSpawnPos = {x:0, y:0};
     }
 
     Update() {
@@ -1331,7 +1332,8 @@ class Turret extends Entity {
         if (discriminant > 0) {
             var root = Math.sqrt(discriminant);
             var candidateAngle = Math.atan((speedSquared - root) / (gravity * distanceToCrosshair.x));
-            if (candidateAngle > 0) {
+            var distanceToTurretBase = Math.sqrt(Math.pow(this.pos.x - mousePos.x, 2) + Math.pow(this.pos.y - mousePos.y, 2));
+            if (candidateAngle > 0 && mousePos.y >= 0 && distanceToTurretBase > 200) {
                 barrelAngleIdeal = ToDeg(candidateAngle);
             }
         }
