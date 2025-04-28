@@ -36,10 +36,18 @@ projectData = {
         },
         {
             "name": "REKT Party",
-            "featured": false,
+            "featured": true,
             "hidden": false,
             "date": "2023",
             "image": "./assets/img/rektparty_0.png",
+            "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
+            "videos": [
+                {
+                    "image": "./assets/img/rektparty_0.png",
+                    "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
+                    "first": true
+                }
+            ],
             "tags": [
                 {"tag": "Action"},
                 {"tag": "Racing"},
@@ -65,23 +73,26 @@ projectData = {
                 }
             ],
             "description": "What if your car was a skateboard?! Join with up to 16 players and jump, grind and kickflip your car as you try not to get REKT! Building upon the success of the original, REKT 2 offers new arenas, more game modes, more cars and customization options!",
-            "contribution": "I haven't worked on this title myself yet, but I still want to feature this game my colleagues are working on!"
+            "contribution": ""
         },
         {
             "name": "Footy",
+            "featured": false,
             "hidden": true,
         },
         {
             "name": "Kingdom's Fate",
+            "featured": false,
             "hidden": true,
         },
         {
             "name": "Mr. City",
+            "featured": false,
             "hidden": true,
         },
         {
             "name": "Blitz GT",
-            "featured": false,
+            "featured": true,
             "hidden": false,
             "date": "2022",
             "image": "./assets/img/blitzgt_0.png",
@@ -119,7 +130,7 @@ projectData = {
         },
         {
             "name": "Jungle Heroes",
-            "featured": false,
+            "featured": true,
             "hidden": false,
             "date": "2021",
             "image": "./assets/img/jungleheroes_0.jpg",
@@ -327,6 +338,7 @@ projectData = {
         {
             "name": "Sugondese",
             "featured": false,
+            "hidden": false,
             "date": "2018",
             "image": "./assets/img/sugondese_0.png",
             "tags": [

@@ -50,7 +50,7 @@ ul {
 }
 .margins1 {
     margin: 0 auto;
-    width: 80%;
+    width: 60%;
 }
 .header {
     margin-bottom: 3em;
@@ -71,6 +71,9 @@ h3 {
     color: var(--color-primary);
     font-weight: 800;
     font-size: 1.5rem;
+}
+.hidden {
+    display: none !important;
 }
 
 
@@ -129,7 +132,7 @@ h3 {
     overflow: hidden;
 }
 .featured:not(:last-child) {
-    margin-bottom: 160px;
+    margin-bottom: 80px;
 }
 .featured-one {
     float: left;
@@ -236,8 +239,8 @@ h3 {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 3rem;
-    row-gap: 3rem;
+    column-gap: 2rem;
+    row-gap: 2rem;
 }
 .project {
     display: block;
@@ -272,6 +275,9 @@ h3 {
 .project-buttons {
     padding-top: 10px;
     margin: 0 20px 20px 20px;
+}
+#container-button-older-projects {
+    text-align: center;
 }
 
 

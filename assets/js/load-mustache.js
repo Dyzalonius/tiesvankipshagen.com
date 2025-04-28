@@ -9,12 +9,19 @@ function loadMustache() {
             const rendered = Mustache.render(template, projectData);
             $("#projects-featured-list").html(rendered);
         }).then(() => initializeGallery());
+}
 
+function loadOlderProjects() {
     fetch('assets/templates/templateProjects.mustache')
         .then((response) => response.text())
         .then((template) => {
             const rendered = Mustache.render(template, projectData);
             $("#projects-list").html(rendered);
+        })
+        .then(() => {
+            $("#header-older-projects").removeClass("hidden");
+            $("#button-older-projects").addClass("hidden");
+            $("#spacer-older-projects").addClass("hidden");
         });
 }
 
