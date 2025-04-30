@@ -78,7 +78,7 @@ projectData = {
         },
         {
             "name": "Footy",
-            "featured": false,
+            "featured": true,
             "hidden": true,
         },
         {
@@ -88,7 +88,7 @@ projectData = {
         },
         {
             "name": "Mr. City",
-            "featured": false,
+            "featured": true,
             "hidden": true,
         },
         {
