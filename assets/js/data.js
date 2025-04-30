@@ -5,9 +5,9 @@ projectData = {
             "featured": true,
             "hidden": false,
             "date": "2022-current",
-            "image": "./assets/img/moonlightpeaks_0.jpg",
+            "image": "./assets/img/moonlightpeaks_0.png",
             "images": [
-                {"image": "./assets/img/moonlightpeaks_0.jpg", "first": true},
+                {"image": "./assets/img/moonlightpeaks_0.png", "first": true},
                 {"image": "./assets/img/moonlightpeaks_1.jpg"},
                 {"image": "./assets/img/moonlightpeaks_2.jpg"},
                 {"image": "./assets/img/moonlightpeaks_3.jpg"}
@@ -38,15 +38,20 @@ projectData = {
             "name": "REKT Party",
             "featured": true,
             "hidden": false,
-            "date": "2023",
+            "date": "2023-2024",
             "image": "./assets/img/rektparty_0.png",
-            "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
+            "video": "https://video.fastly.steamstatic.com/store_trailers/256965917/movie480_vp9.webm?t=1728907514",
             "videos": [
                 {
                     "image": "./assets/img/rektparty_0.png",
-                    "video": "https://www.youtube.com/embed/xMI5-VBH5KM",
+                    "video": "https://video.fastly.steamstatic.com/store_trailers/256965917/movie480_vp9.webm?t=1728907514",
                     "first": true
                 }
+            ],
+            "images": [
+                {"image": "./assets/img/rektparty_1.jpg"},
+                {"image": "./assets/img/rektparty_2.jpg"},
+                {"image": "./assets/img/rektparty_3.jpg"},
             ],
             "tags": [
                 {"tag": "Action"},
@@ -101,12 +106,9 @@ projectData = {
                 }
             ],
             "images": [
-                {
-                    "image": "./assets/img/blitzgt_1.jpg"
-                },
-                {
-                    "image": "./assets/img/blitzgt_2.jpg"
-                }
+                {"image": "./assets/img/blitzgt_1.jpg"},
+                {"image": "./assets/img/blitzgt_2.png"},
+                {"image": "./assets/img/blitzgt_3.jpg"}
             ],
             "tags": [
                 {"tag": "Combat racing"},
@@ -131,6 +133,11 @@ projectData = {
                     "video": "https://www.youtube.com/embed/r2u82f7VCEE",
                     "first": true
                 }
+            ],
+            "images": [
+                {"image": "./assets/img/jungleheroes_1.jpg"},
+                {"image": "./assets/img/jungleheroes_2.jpg"},
+                {"image": "./assets/img/jungleheroes_3.jpg"}
             ],
             "tags": [
                 {"tag": "Unity"},
