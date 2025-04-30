@@ -50,7 +50,7 @@ ul {
 }
 .margins1 {
     margin: 0 auto;
-    width: 60%;
+    width: 900px;
 }
 .header {
     margin-bottom: 3em;
@@ -132,7 +132,9 @@ h3 {
     overflow: hidden;
 }
 .featured:not(:last-child) {
-    margin-bottom: 80px;
+    padding-bottom: 5em;
+    margin-bottom: 3em;
+    border-bottom: 2px solid var(--color-accent);
 }
 .featured-one {
     float: left;
@@ -177,19 +179,32 @@ h3 {
 }
 .featured-gallery-item-wrapper {
     text-align: left;
+    display: flex;
 }
 .featured-gallery-item-wrapper .current {
     border-color: var(--color-primary);
 }
 .gallery-item {
+    position: relative;
     width: 25%;
     margin-top: 4px;
     margin-left: 0px;
-    margin-right: -4px;
     border-style: solid;
     border-color: transparent;
     border-width: 3px;
     border-radius: 10px;
+    overflow: hidden;
+}
+.gallery-item-video img {
+    width: 100%;
+    display: block;
+}
+.gallery-item-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30% !important;
+    transform: translate(-50%, -50%);
 }
 .featured-text {
     width: 55%;

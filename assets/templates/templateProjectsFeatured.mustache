@@ -14,7 +14,10 @@
             </div>
             <div class="featured-gallery-item-wrapper">
                 {{#videos}}
-                    <img class="gallery-item gallery-item-video {{#first}}current{{/first}}" src="{{image}}" videoSource={{video}} loading="lazy">
+                    <div class="gallery-item gallery-item-video {{#first}}current{{/first}}" videoSource={{video}}>
+                        <img src="{{image}}" loading="lazy">
+                        <img class="gallery-item-overlay" src="./assets/img/img_play.png" loading="lazy">
+                    </div>
                 {{/videos}}
                 {{#images}}
                     <img class="gallery-item {{#first}}current{{/first}}" src="{{image}}" loading="lazy">

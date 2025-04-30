@@ -23,12 +23,12 @@ projectData = {
             ],
             "links": [
                 {
-                    "label": "Steam",
-                    "link": "https://store.steampowered.com/app/2209900/Moonlight_Peaks/"
-                },
-                {
                     "label": "Website",
                     "link": "https://moonlightpeaks.com/"
+                },
+                {
+                    "label": "Steam",
+                    "link": "https://store.steampowered.com/app/2209900/Moonlight_Peaks/"
                 }
             ],
             "description": "Live the vampire life in the magical town of Moonlight Peaks! Master the art of potions and spells, manage your supernatural farm, and leave your mark on the magical town. Make friends with the local werewolves, witches, and mermaids, and find your eternal love in the supernatural dating scene.",
@@ -60,16 +60,12 @@ projectData = {
             ],
             "links": [
                 {
+                    "label": "Website",
+                    "link": "https://www.rektparty.com/"
+                },
+                {
                     "label": "Steam",
                     "link": "https://store.steampowered.com/app/2222090/REKT_2/"
-                },
-                {
-                    "label": "Website",
-                    "link": "https://www.rekt2.com/"
-                },
-                {
-                    "label": "Trailer (old)",
-                    "link": "https://www.youtube.com/embed/xMI5-VBH5KM"
                 }
             ],
             "description": "What if your car was a skateboard?! Join with up to 16 players and jump, grind and kickflip your car as you try not to get REKT! Building upon the success of the original, REKT 2 offers new arenas, more game modes, more cars and customization options!",
@@ -119,12 +115,6 @@ projectData = {
                 {"tag": "Unity"},
                 {"tag": "Professional", "last": true}
             ],
-            "links": [
-                {
-                    "label": "Trailer (old)",
-                    "link": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7"
-                }
-            ],
             "description": "Blitz GT is a vehicular battle game. Battle 4v4 with unique characters and abilities to score points, take down opponents and secure the win.",
             "contribution": ""
         },
@@ -134,6 +124,14 @@ projectData = {
             "hidden": false,
             "date": "2021",
             "image": "./assets/img/jungleheroes_0.jpg",
+            "video": "https://www.youtube.com/embed/r2u82f7VCEE",
+            "videos": [
+                {
+                    "image": "./assets/img/jungleheroes_0.jpg",
+                    "video": "https://www.youtube.com/embed/r2u82f7VCEE",
+                    "first": true
+                }
+            ],
             "tags": [
                 {"tag": "Unity"},
                 {"tag": "Professional"}
@@ -153,10 +151,6 @@ projectData = {
                 {
                     "label": "Appstore",
                     "link": "https://apps.apple.com/nl/app/jungle-heroes/id1523046437"
-                },
-                {
-                    "label": "Trailer",
-                    "link": "https://www.youtube.com/embed/r2u82f7VCEE"
                 }
             ],
             "description": "",
