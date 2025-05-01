@@ -2,48 +2,52 @@
     {{^hidden}}
     {{#featured}}
     <div class="featured">
-        <div class="featured-gallery featured-two">
-            <div class="featured-gallery-main-wrapper">
-                <div class="featured-gallery-main">
-                    {{#video}}
-                    <iframe class="gallery-video" src="{{video}}" allowfullscreen loading="lazy"></iframe>
-                    {{/video}}
-                    {{^video}}
-                    <img class="gallery-display" alt="Screenshot" src="{{image}}">
-                    {{/video}}
+        <div class="featured-container">
+            <h2 class="featured-title featured-left">{{name}}</h2>
+            <div class="featured-date featured-right">{{date}}</div>
+        </div>
+        <div class="featured-container">
+            <div class="featured-right">
+                <div class="featured-gallery-main-wrapper">
+                    <div class="featured-gallery-main">
+                        {{#video}}
+                        <iframe class="gallery-video" src="{{video}}" allowfullscreen loading="lazy"></iframe>
+                        {{/video}}
+                        {{^video}}
+                        <img class="gallery-display" alt="Screenshot" src="{{image}}">
+                        {{/video}}
+                    </div>
+                </div>
+                <div class="featured-gallery-item-wrapper">
+                    {{#videos}}
+                        <div class="gallery-item gallery-item-video {{#first}}current{{/first}}" videoSource={{video}}>
+                            <img src="{{image}}" loading="lazy">
+                            <img class="gallery-item-overlay" src="./assets/img/img_play.png" loading="lazy">
+                        </div>
+                    {{/videos}}
+                    {{#images}}
+                        <img class="gallery-item {{#first}}current{{/first}}" src="{{image}}" loading="lazy">
+                    {{/images}}
                 </div>
             </div>
-            <div class="featured-gallery-item-wrapper">
-                {{#videos}}
-                    <div class="gallery-item gallery-item-video {{#first}}current{{/first}}" videoSource={{video}}>
-                        <img src="{{image}}" loading="lazy">
-                        <img class="gallery-item-overlay" src="./assets/img/img_play.png" loading="lazy">
-                    </div>
-                {{/videos}}
-                {{#images}}
-                    <img class="gallery-item {{#first}}current{{/first}}" src="{{image}}" loading="lazy">
-                {{/images}}
-            </div>
-        </div>
-        <div class="featured-text featured-one">
-            <h2 class="featured-title">{{name}}</h2>
-            <div class="project-subtitle">
-                <span>{{date}}, </span>
-                {{#tags}}
-                    <span>{{tag}}{{^last}}, {{/last}}</span>
-                {{/tags}}
-                {{#platforms}}
-                    <span>{{platform}}</span>
-                    <span class="{{platform-icon}}"></span>
-                    <span>{{^last}}, {{/last}}</span>
-                {{/platforms}}
-            </div>
-            <p>{{description}}</p>
-            <p class="featured-subtext">{{contribution}}</p>
-            <div class="featured-buttons">
-                {{#links}}
-                    <a class="featured-button" href="{{link}}" target="_blank">{{label}}</a>
-                {{/links}}
+            <div class="featured-left">
+                <div class="project-subtitle">
+                    {{#tags}}
+                        <span>{{tag}}{{^last}}, {{/last}}</span>
+                    {{/tags}}
+                    {{#platforms}}
+                        <span>{{platform}}</span>
+                        <span class="{{platform-icon}}"></span>
+                        <span>{{^last}}, {{/last}}</span>
+                    {{/platforms}}
+                </div>
+                <p>{{description}}</p>
+                <p class="featured-subtext">{{contribution}}</p>
+                <div class="featured-buttons">
+                    {{#links}}
+                        <a class="featured-button" href="{{link}}" target="_blank">{{label}}</a>
+                    {{/links}}
+                </div>
             </div>
         </div>
     </div>

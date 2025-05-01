@@ -33,18 +33,20 @@
     }
 
     /* FEATURED */
-    .featured-one {
+    .featured-left {
         float: none;
+        width: 100%;
         margin-right: 0%;
     }
-    .featured-two {
+    .featured-right {
         float: none;
-    }
-    .featured-gallery {
         width: 100%;
     }
-    .featured-text {
-        width: 100%;
+    .featured-date {
+        margin-top: 0;
+    }
+    .project-subtitle {
+        margin-top: 0.8rem;
     }
 
     /* PROJECTS */
