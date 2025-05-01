@@ -1,55 +1,53 @@
 @media screen and (max-width: 1400px) {
-    .project-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media screen and (max-width: 1000px) {
-
     /* GENERAL */
-    .margins1 {
-        width: 100%;
-        padding: 20px;
-    }
 
+    /* GAME */
     #game,
-    #game-bottom-bar,
-    #spacer-featured,
-    #spacer-projects,
-    #projects-featured-list,
-    #featured-header {
+    #game-bottom-bar {
         display: none;
     }
 
+    /* FEATURED */
+    #spacer-featured {
+        height: 3rem;
+    }
 
     /* PROJECTS */
     .project-list {
         grid-template-columns: repeat(2, 1fr);
     }
-    .projectOne {
-        float: none;
-        margin-right: 0%;
-    }
-    .projectTwo {
-        float: none;
-    }
-    .projectGallery {
-        width: 100%;
-    }
-    .projectText {
-        width: 100%;
-    }
-
-    #footer-container {
-        margin: 0 10px;
-    }
-
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 940px) {
+    /* GENERAL */
+    .margins1 {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+@media screen and (max-width: 740px) {
+    /* GENERAL */
     h1 {
         overflow: hidden;
     }
+
+    /* FEATURED */
+    .featured-one {
+        float: none;
+        margin-right: 0%;
+    }
+    .featured-two {
+        float: none;
+    }
+    .featured-gallery {
+        width: 100%;
+    }
+    .featured-text {
+        width: 100%;
+    }
+
+    /* PROJECTS */
     .project-list {
         grid-template-columns: repeat(1, 1fr);
     }
