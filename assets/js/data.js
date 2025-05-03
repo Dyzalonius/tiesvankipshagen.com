@@ -40,13 +40,13 @@ projectData = {
         },
         {
             "title": "REKT Party",
-            "subtitle": "Skate Car Party Game",
+            "subtitle": "A Skate-Car-Party Game",
             "featured": true,
             "hidden": false,
             "date": "2023-2024",
             "role": "Game Designer",
             "status": "In Development",
-            "teamsize": "~5",
+            "teamsize": "~6",
             "engine": "Unity",
             "image": "./assets/img/rektparty_0.png",
             "video": "https://video.fastly.steamstatic.com/store_trailers/256965917/movie480_vp9.webm?t=1728907514",
@@ -85,32 +85,46 @@ projectData = {
             "description": "What if your car was a skateboard?! Join with up to 16 players and jump, grind and kickflip your car as you try not to get REKT! Building upon the success of the original, REKT 2 offers new arenas, more game modes, more cars and customization options!",
         },
         {
-            "title": "Footy",
-            "featured": true,
-            "hidden": true,
-            "date": "?",
-            "role": "Product Owner, Game Developer",
-            "engine": "Unity",
-        },
-        {
-            "title": "Kingdom's Fate",
-            "featured": false,
-            "hidden": true,
-            "date": "?",
-            "role": "Game Designer, Game Developer",
-            "engine": "Unity",
-        },
-        {
             "title": "Mr. City",
+            "subtitle": "A Multiplayer City Builder",
             "featured": true,
-            "hidden": true,
-            "date": "?",
+            "hidden": false,
+            "date": "2023-2024",
             "role": "Game Designer",
+            "status": "Released",
+            "teamsize": "~6",
             "engine": "Unity",
+            "image": "./assets/img/mrcity_0.jpg",
+            "video": "https://www.youtube.com/embed/0_q20qtblZ8?si=bJwSMdBU7jcZj6dk&amp;start=4",
+            "videos": [
+                {
+                    "image": "./assets/img/mrcity_0.jpg",
+                    "video": "https://www.youtube.com/embed/0_q20qtblZ8?si=bJwSMdBU7jcZj6dk&amp;start=4",
+                    "first": true
+                }
+            ],
+            "images": [
+                {"image": "./assets/img/mrcity_1.png"},
+                {"image": "./assets/img/mrcity_2.png"},
+                {"image": "./assets/img/mrcity_3.png"},
+            ],
+            "tags": [
+                {"tag": "Idle"},
+            ],
+            "platforms": [
+                {"platform-icon": "fa-solid fa-mobile-screen", "last": true}
+            ],
+            "links": [
+                {
+                    "label": "Website",
+                    "link": "_"
+                },
+            ],
+            "description": "Team up with players around the world to build a bustling city together. Compete for the top jobs, manage your crew, and specialize your skills to stand out. Whether you're racing to meet deadlines or outbidding rivals, every project is a chance to build, win, and grow."
         },
         {
             "title": "Blitz GT",
-            "subtitle": "Competitive Vehicular Combat",
+            "subtitle": "A Competitive Combat Racing Game",
             "featured": true,
             "hidden": false,
             "date": "2022",
@@ -127,9 +141,6 @@ projectData = {
                     "first": true
                 }
             ],
-            "platforms": [
-                {"platform-icon": "fa-brands fa-steam", "last": true}
-            ],
             "images": [
                 {"image": "./assets/img/blitzgt_1.jpg"},
                 {"image": "./assets/img/blitzgt_2.png"},
@@ -142,11 +153,14 @@ projectData = {
                 {"tag": "Unity"},
                 {"tag": "Professional", "last": true}
             ],
+            "platforms": [
+                {"platform-icon": "fa-brands fa-steam", "last": true}
+            ],
             "description": "Blitz GT is a vehicular battle game. Battle 4v4 with unique characters and abilities to score points, take down opponents and secure the win.",
         },
         {
             "title": "Jungle Heroes",
-            "subtitle": "Reforestation Idle Game",
+            "subtitle": "A Reforestation Idle Game",
             "featured": true,
             "hidden": false,
             "date": "2021",
