@@ -12,6 +12,8 @@ html {
     --color-secondary: #8993a9;
     --color-tertiary: #BDBCB7;
     --color-accent: #4169E1;
+    --color-game-primary: #0f1923;
+    --color-game-secondary: #ece8e1;
     --dark-mode-icon: "🌕";
     --image-alpha: 1;
 }
@@ -23,8 +25,10 @@ html {
     --color-secondary: #8993a9;
     --color-tertiary: #BDBCB7;
     --color-accent: #4169E1;
+    --color-game-primary: #495f92;
+    --color-game-secondary: #0f1923;
     --dark-mode-icon: "🌑";
-    --image-alpha: .3;
+    --image-alpha: 1;
 }
 
 
@@ -88,7 +92,7 @@ h3 {
     cursor: none;
 }
 #game-bottom-bar {
-    background-color: var(--color-background-three);
+    background-color: var(--color-game-primary);
     z-index: 20;
     width: 100%;
     height: 3rem;

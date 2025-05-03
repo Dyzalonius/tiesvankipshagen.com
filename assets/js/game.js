@@ -205,8 +205,8 @@ function UpdateCanvasSize() {
 }
 
 function UpdateColors() {
-    primaryColor = computedStyle.getPropertyValue('--color-background-three');
-    secondaryColor = computedStyle.getPropertyValue('--color-background');
+    primaryColor = computedStyle.getPropertyValue('--color-game-primary');
+    secondaryColor = computedStyle.getPropertyValue('--color-game-secondary');
     imageAlpha = computedStyle.getPropertyValue('--image-alpha')
 }
 
