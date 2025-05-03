@@ -41,12 +41,10 @@
     .featured-right {
         float: none;
         width: 100%;
+        margin-bottom: 0.8rem;
     }
     .featured-date {
         margin-top: 0;
-    }
-    .project-subtitle {
-        margin-top: 0.8rem;
     }
 
     /* PROJECTS */

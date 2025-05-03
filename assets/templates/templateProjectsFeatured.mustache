@@ -3,7 +3,7 @@
     {{#featured}}
     <div class="featured">
         <div class="featured-container">
-            <h2 class="featured-title featured-left">{{name}}</h2>
+            <h2 class="featured-title featured-left">{{title}}</h2>
             <div class="featured-date featured-right">{{date}}</div>
         </div>
         <div class="featured-container">
@@ -31,18 +31,21 @@
                 </div>
             </div>
             <div class="featured-left">
-                <div class="project-subtitle">
-                    {{#tags}}
-                        <span>{{tag}}{{^last}}, {{/last}}</span>
-                    {{/tags}}
-                    {{#platforms}}
-                        <span>{{platform}}</span>
-                        <span class="{{platform-icon}}"></span>
-                        <span>{{^last}}, {{/last}}</span>
-                    {{/platforms}}
-                </div>
+                <h3 class="featured-subtitle">{{subtitle}}</h3>
                 <p>{{description}}</p>
-                <p class="featured-subtext">{{contribution}}</p>
+                <ul class="featured-subtext">
+                    <li><b>Role:</b> {{role}}</li>
+                    <li><b>Status:</b> {{status}}</li>
+                    <li><b>Team size:</b> {{teamsize}}</li>
+                    <li><b>Platform:</b>
+                        {{#platforms}}
+                            <span>{{platform}}</span>
+                            <span class="{{platform-icon}}"></span>
+                            <span>{{^last}}, {{/last}}</span>
+                        {{/platforms}}
+                    </li>
+                    <li><b>Engine:</b> {{engine}}</li>
+                </ul>
                 <div class="featured-buttons">
                     {{#links}}
                         <a class="featured-button" href="{{link}}" target="_blank">{{label}}</a>
