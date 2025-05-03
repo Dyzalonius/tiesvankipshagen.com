@@ -31,6 +31,9 @@
     h1 {
         overflow: hidden;
     }
+    h2 {
+        font-size: 1.5rem;
+    }
 
     /* FEATURED */
     .featured-left {
@@ -45,6 +48,17 @@
     }
     .featured-date {
         margin-top: 0;
+    }
+    .featured-subtitle{
+        font-size: 1.25rem;
+    }
+    .featured:not(:last-child) {
+        padding-bottom: 0;
+        margin-bottom: 4rem;
+        border-bottom: unset;
+    }
+    .featured-subtext {
+        margin-left: 0;
     }
 
     /* PROJECTS */
