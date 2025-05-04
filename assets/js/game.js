@@ -72,7 +72,6 @@ $(document).ready(function () {
     document.addEventListener('scroll', OnMouseScroll);
     canvas.addEventListener("mousedown", MouseDown);
     canvas.addEventListener("mouseup", MouseUp);
-    canvas.addEventListener("mouseMove", OnMouseMove);
     document.addEventListener('keydown',KeyDown,false);
     loop = false;
     oldTimeStamp = 0;
