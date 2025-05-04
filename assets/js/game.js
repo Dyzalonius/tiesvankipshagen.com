@@ -103,7 +103,7 @@ function Start() {
     var level = new Level(firstLevelStartDelay);
     var startX = 300;
     var deltaX = 80;
-    level.AddImageCopter({x:900 , y:500}, './assets/img/img_portrait.png');
+    level.AddImageCopter({x:900 , y:500}, "./assets/img/portrait.jpeg");
     level.AddLettercopter({x:1200, y: 525}, "Ties van Kipshagen", "Game designer");
     var word = "HELLO!";
     for (var i = 0; i < word.length; i++) {
