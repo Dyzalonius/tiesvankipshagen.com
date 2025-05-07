@@ -20,7 +20,7 @@ var introDuration = 1;
 var debugMode = false;
 var enemySpawnAnimationDuration = .5;
 var enemySpawnAnimationDelayStep = .05;
-var firstLevelStartDelay = .5;
+var firstLevelStartDelay = 0;
 var levelEndDelay = 1.5;
 var layerTop = 2;
 var layerDefault = 1;
@@ -204,9 +204,8 @@ function UpdateCanvasSize() {
 }
 
 function UpdateColors() {
-    primaryColor = computedStyle.getPropertyValue('--color-game-primary');
-    secondaryColor = computedStyle.getPropertyValue('--color-game-secondary');
-    imageAlpha = computedStyle.getPropertyValue('--image-alpha')
+    primaryColor = computedStyle.getPropertyValue('--color-background');
+    secondaryColor = computedStyle.getPropertyValue('--color-primary');
 }
 
 function CheckCollision() {
@@ -325,7 +324,8 @@ class Level {
     }
 
     Draw() {
-        var alpha = this.id == 1 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .2, 0, 1) * .1 : .1;
+        if (this.id < 2) { return; }
+        var alpha = this.id == 2 ? Clamp((this.lifeTime - firstLevelStartDelay * 2) / .2, 0, 1) * .1 : .1;
         DrawRect({x:40, y:canvasSize.y - 40}, {x:50,y:50}, primaryColor, 0, {x:0.5, y:0.5}, alpha);
         DrawText({x:40, y:canvasSize.y - 30}, 'bold 15px Trebuchet MS', 0, "LVL", secondaryColor);
         DrawText({x:40, y:canvasSize.y - 50}, 'bold 15px Trebuchet MS', 0, this.id + "/" + levelID, secondaryColor);
