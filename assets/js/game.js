@@ -8,11 +8,11 @@ var bulletSpeed = 1000; // in pixels per second
 var bulletSize = {x:10, y:10};
 var gunBarrelSize = {x:100, y:25};
 var gunFireDelay = 0.01; // in seconds
-var gunFireBloomMin = 0; // in degrees
-var gunFireBloomMax = 20; // in degrees
-var gunFireBloomCurrentStep = 0.04; // in percentages
-var gunFireBloomIncrease = 1; // in degrees per bullet
-var gunFireBloomDecrease = 30; // in degrees per second
+var gunFireBloomMin = 2; // in degrees
+var gunFireBloomMax = 10; // in degrees
+var gunFireBloomCurrentStep = 0.1; // in percentages
+var gunFireBloomIncrease = .1; // in degrees per bullet
+var gunFireBloomDecrease = 8; // in degrees per second
 var gunReloadTimeMax = 1; // in seconds
 var bulletCapacity = 120; // in bullets
 var gravity = 350; // in pixels per second per second
@@ -153,6 +153,116 @@ function Start() {
     level.AddHelicopter({x:1500, y:700});
     level.AddHelicopter({x:1600, y:600});
     level.AddHelicopter({x:1800, y:300});
+    level = new Level();
+    level.AddPlane({x:1450, y:350});
+    level.AddPlane({x:1600, y:450});
+    level.AddPlane({x:1750, y:550});
+    level.AddPlane({x:1900, y:650});
+    level.AddPlane({x:1750, y:350});
+    level.AddPlane({x:1900, y:450});
+    level.AddPlane({x:2050, y:550});
+    level.AddPlane({x:2200, y:650});
+    level = new Level();
+    level.AddHelicopter({x:800, y:700});
+    level.AddHelicopter({x:1200, y:700});
+    level.AddHelicopter({x:1600, y:700});
+    level.AddHelicopter({x:1000, y:800});
+    level.AddHelicopter({x:1400, y:800});
+    level.AddHelicopter({x:1800, y:800});
+    level = new Level();
+    level.AddPlane({x:1000, y:650});
+    level.AddPlane({x:1200, y:550});
+    level.AddPlane({x:1400, y:650});
+    level.AddPlane({x:1600, y:550});
+    level.AddPlane({x:1800, y:650});
+    level.AddPlane({x:2000, y:550});
+    level.AddHelicopter({x:1700, y:800});
+    level.AddHelicopter({x:1800, y:350});
+    level = new Level();
+    level.AddPlane({x:1000, y:650});
+    level.AddPlane({x:1000, y:450});
+    level.AddPlane({x:1200, y:550});
+    level.AddPlane({x:1400, y:650});
+    level.AddPlane({x:1400, y:450});
+    level.AddPlane({x:1600, y:550});
+    level.AddPlane({x:1800, y:650});
+    level.AddPlane({x:1800, y:450});
+    level.AddPlane({x:2000, y:550});
+    level.AddPlane({x:2200, y:650});
+    level.AddPlane({x:2200, y:450});
+    level.AddPlane({x:2400, y:550});
+    level = new Level();
+    level.AddHelicopter({x:400, y:700});
+    level.AddHelicopter({x:800, y:700});
+    level.AddHelicopter({x:1200, y:700});
+    level.AddHelicopter({x:1600, y:700});
+    level.AddHelicopter({x:200, y:800});
+    level.AddHelicopter({x:600, y:800});
+    level.AddHelicopter({x:1000, y:800});
+    level.AddHelicopter({x:1400, y:800});
+    level.AddHelicopter({x:1800, y:800});
+    level = new Level();
+    level.AddPlane({x:800, y:650});
+    level.AddPlane({x:1000, y:550});
+    level.AddPlane({x:1200, y:450});
+    level.AddPlane({x:1400, y:350});
+    level.AddPlane({x:1600, y:650});
+    level.AddPlane({x:1800, y:550});
+    level.AddPlane({x:2000, y:450});
+    level.AddPlane({x:2200, y:350});
+    level.AddHelicopter({x:1400, y:800});
+    level.AddHelicopter({x:1600, y:800});
+    level.AddHelicopter({x:1800, y:800});
+    level = new Level();
+    level.AddPlane({x:800, y:550});
+    level.AddPlane({x:1050, y:625});
+    level.AddPlane({x:1050, y:475});
+    level.AddPlane({x:1300, y:550});
+    level.AddPlane({x:1550, y:625});
+    level.AddPlane({x:1550, y:475});
+    level.AddPlane({x:1800, y:550});
+    level.AddPlane({x:2050, y:625});
+    level.AddPlane({x:2050, y:475});
+    level.AddPlane({x:2300, y:550});
+    level.AddPlane({x:2550, y:625});
+    level.AddPlane({x:2550, y:475});
+    level.AddPlane({x:2800, y:550});
+    level.AddPlane({x:3050, y:625});
+    level.AddPlane({x:3050, y:475});
+    level.AddPlane({x:3300, y:550});
+    level.AddPlane({x:3300, y:625});
+    level = new Level();
+    level.AddHelicopter({x:600, y:200});
+    level.AddHelicopter({x:1000, y:200});
+    level.AddHelicopter({x:1400, y:200});
+    level.AddHelicopter({x:1800, y:200});
+    level.AddHelicopter({x:200, y:500});
+    level.AddHelicopter({x:600, y:500});
+    level.AddHelicopter({x:1000, y:500});
+    level.AddHelicopter({x:1400, y:500});
+    level.AddHelicopter({x:1800, y:500});
+    level.AddHelicopter({x:200, y:800});
+    level.AddHelicopter({x:600, y:800});
+    level.AddHelicopter({x:1000, y:800});
+    level.AddHelicopter({x:1400, y:800});
+    level.AddHelicopter({x:1800, y:800});
+    level = new Level();
+    level.AddPlane({x:800, y:350});
+    level.AddPlane({x:800, y:450});
+    level.AddPlane({x:800, y:550});
+    level.AddPlane({x:800, y:650});
+    level.AddPlane({x:1350, y:350});
+    level.AddPlane({x:1350, y:450});
+    level.AddPlane({x:1350, y:550});
+    level.AddPlane({x:1350, y:650});
+    level.AddPlane({x:1900, y:350});
+    level.AddPlane({x:1900, y:450});
+    level.AddPlane({x:1900, y:550});
+    level.AddPlane({x:1900, y:650});
+    level.AddHelicopter({x:1200, y:800});
+    level.AddHelicopter({x:1400, y:800});
+    level.AddHelicopter({x:1600, y:800});
+    level.AddHelicopter({x:1800, y:800});
     new Outro(5);
 }
 
@@ -358,7 +468,7 @@ class Level {
         }
 
         for (var i = 0; i < this.lettercopters.length; i++) {
-            new Lettercopter(this.lettercopters[i], 5 + this.lettercopterwords[i].length, {x:0, y:40}, RemoveRandom(enemyIndices), this.lettercopterwords[i], this.lettercopterwords2[i]);
+            new Lettercopter(this.lettercopters[i], 10, {x:0, y:40}, RemoveRandom(enemyIndices), this.lettercopterwords[i], this.lettercopterwords2[i]);
         }
         for (var i = 0; i < this.imagecopters.length; i++) {
             new Imagecopter(this.imagecopters[i], 50, {x:0, y:40}, RemoveRandom(enemyIndices), this.imagecoptersources[i]);
@@ -737,7 +847,7 @@ class Helicopter extends Enemy {
         if (debugMode) {
             var pos = {x:(this.maxPos.x - this.minPos.x) / 2 + this.minPos.x, y:(this.maxPos.y - this.minPos.y) / 2 + this.minPos.y};
             var size = {x:this.maxPos.x - this.minPos.x, y:this.maxPos.y - this.minPos.y};
-            DrawRect(pos, size, 'green', 0);
+            DrawRect(pos, size, 'green', 0, {x:0.5, y:0.5}, .1);
 
             DrawCircle(this.waypoint, {x:25, y:25}, 'red', 1);
         }
@@ -1303,6 +1413,7 @@ class Turret extends Entity {
         this.timeSinceLastBullet = 0;
         this.timeSpentFiring = 0;
         this.bulletSpawnPos = {x:0, y:0};
+        this.distanceToCrosshair = 0;
     }
 
     Update() {
@@ -1325,12 +1436,12 @@ class Turret extends Entity {
         // Ideal barrel angle calculation
         var bulletSpawnPos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
         var barrelAngleIdeal = VectorToAngle(mousePos, this.pos, false);
-        var distanceToCrosshair = {x:mousePos.x - bulletSpawnPos.x, y:mousePos.y - bulletSpawnPos.y};
+        this.distanceToCrosshair = {x:mousePos.x - bulletSpawnPos.x, y:mousePos.y - bulletSpawnPos.y};
         var speedSquared = bulletSpeed * bulletSpeed;
-        var discriminant = speedSquared * speedSquared - gravity * (gravity * distanceToCrosshair.x * distanceToCrosshair.x + 2 * distanceToCrosshair.y * speedSquared);
+        var discriminant = speedSquared * speedSquared - gravity * (gravity * this.distanceToCrosshair.x * this.distanceToCrosshair.x + 2 * this.distanceToCrosshair.y * speedSquared);
         if (discriminant > 0) {
             var root = Math.sqrt(discriminant);
-            var candidateAngle = Math.atan((speedSquared - root) / (gravity * distanceToCrosshair.x));
+            var candidateAngle = Math.atan((speedSquared - root) / (gravity * this.distanceToCrosshair.x));
             var distanceToTurretBase = Math.sqrt(Math.pow(this.pos.x - mousePos.x, 2) + Math.pow(this.pos.y - mousePos.y, 2));
             if (candidateAngle > 0 && mousePos.y >= 0 && distanceToTurretBase > 200) {
                 barrelAngleIdeal = ToDeg(candidateAngle);
@@ -1340,8 +1451,6 @@ class Turret extends Entity {
         // Calculate barrel angle
         this.targetBarrelAngle = MoveTowards(this.targetBarrelAngle, barrelAngleIdeal, deltaTime * 270);
         this.barrelAngle = this.targetBarrelAngle;
-        this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
-        this.barrelAngle += this.currentBloom;
         this.barrelAngle = Clamp(this.barrelAngle, this.angleMinMax.min, this.angleMinMax.max);
 
         this.timeSinceLastBullet += deltaTime;
@@ -1429,7 +1538,7 @@ class Turret extends Entity {
     CheckFire() {
         if (this.bulletsRemaining > 0 && this.fireDelay == 0) {
             var pos = { x: this.pos.x + (gunBarrelSize.x - bulletSize.x / 2) * Math.cos(ToRad(this.barrelAngle)), y: this.pos.y + (gunBarrelSize.x - bulletSize.y / 2) * Math.sin(ToRad(this.barrelAngle)) };
-            this.Fire(this.barrelAngle, pos);
+            this.Fire(this.barrelAngle + this.currentBloom, pos);
             return true;
         }
         return false;
@@ -1555,9 +1664,10 @@ class Crosshair extends GameObject {
         this.pos = mousePos;
         this.dotRadius = 3;
         this.lineThickness = 3;
-        this.lineLength = 20;
-        this.lineOffset = 16;
-        this.lineOffsetBloomFactor = 3;
+        this.lineLength = 25;
+        this.lineOffset = 4;
+        this.ringRadius = 6;
+        this.lineOffsetBloomFactor = .5;
         this.showDot = false;
         this.showLines = true;
         this.turret = turret;
@@ -1585,14 +1695,16 @@ class Crosshair extends GameObject {
             DrawCircle(this.pos, {x:this.dotRadius, y:this.dotRadius}, primaryColor);
         }
         if (this.showLines) {
-            var lineOffsets = lineOffset + this.lineOffsetBloomFactor * this.turret.currentBloomMax;
+            var bloomOffsetAtCursor = Math.tan(ToRad(this.turret.currentBloomMax)) * GetMagnitude(this.turret.distanceToCrosshair);
+            console.log(GetMagnitude(this.turret.distanceToCrosshair));
+            var lineOffsets = lineOffset + this.lineOffsetBloomFactor * bloomOffsetAtCursor;
             DrawRect({ x: this.pos.x - lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 1, y: 0.5 });
             DrawRect({ x: this.pos.x + lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 0, y: 0.5 });
             DrawRect({ x: this.pos.x, y: this.pos.y + lineOffsets }, { x: this.lineThickness, y: lineLength }, primaryColor, 0, { x: 0.5, y: 1 });
             DrawRect({ x: this.pos.x, y: this.pos.y - lineOffsets }, { x: this.lineThickness, y: lineLength }, primaryColor, 0, { x: 0.5, y: 0 });
         }
         if (this.turret.reloadTime > 0 && playing) {
-            DrawRing(this.pos, lineOffset - this.lineThickness * 2, this.lineThickness, primaryColor, this.turret.reloadTime / gunReloadTimeMax);
+            DrawRing(this.pos, this.ringRadius, this.lineThickness, primaryColor, this.turret.reloadTime / gunReloadTimeMax);
         }
     }
 }
