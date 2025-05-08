@@ -49,7 +49,10 @@ projectData = {
             "teamsize": "~6",
             "engine": "Unity",
             "image": "./assets/img/rektparty_0.png",
-            "video": "https://video.fastly.steamstatic.com/store_trailers/256965917/movie480_vp9.webm?t=1728907514",
+            "video": {
+                "video": "https://video.fastly.steamstatic.com/store_trailers/256965917/movie480_vp9.webm?t=1728907514",
+                "use-iframe": false
+            },
             "videos": [
                 {
                     "image": "./assets/img/rektparty_0.png",
@@ -95,7 +98,10 @@ projectData = {
             "teamsize": "~6",
             "engine": "Unity",
             "image": "./assets/img/mrcity_0.jpg",
-            "video": "https://www.youtube.com/embed/0_q20qtblZ8?si=bJwSMdBU7jcZj6dk&amp;start=4",
+            "video": {
+                "video": "https://www.youtube.com/embed/0_q20qtblZ8?si=bJwSMdBU7jcZj6dk&amp;start=4",
+                "use-iframe": true
+            },
             "videos": [
                 {
                     "image": "./assets/img/mrcity_0.jpg",
@@ -133,7 +139,10 @@ projectData = {
             "teamsize": "~20",
             "engine": "Unity",
             "image": "./assets/img/blitzgt_0.png",
-            "video": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7",
+            "video": {
+                "video": "https://www.youtube.com/embed/N4_Bf3oYerU?si=11bXnNt5gvHfDkH7",
+                "use-iframe": true
+            },
             "videos": [
                 {
                     "image": "./assets/img/blitzgt_0.png",
@@ -169,7 +178,10 @@ projectData = {
             "teamsize": "~5",
             "engine": "Unity",
             "image": "./assets/img/jungleheroes_0.jpg",
-            "video": "https://www.youtube.com/embed/r2u82f7VCEE",
+            "video": {
+                "video": "https://www.youtube.com/embed/r2u82f7VCEE",
+                "use-iframe": true
+            },
             "videos": [
                 {
                     "image": "./assets/img/jungleheroes_0.jpg",

@@ -11,7 +11,14 @@
                 <div class="featured-gallery-main-wrapper">
                     <div class="featured-gallery-main">
                         {{#video}}
-                        <iframe class="gallery-video" src="{{video}}" allowfullscreen loading="lazy"></iframe>
+                        {{#use-iframe}}
+                            <iframe class="gallery-video" src="{{video}}" allowfullscreen loading="lazy"></iframe>
+                        {{/use-iframe}}
+                        {{^use-iframe}}
+                            <video class="gallery-video" controls preload="metadata" playsinline muted>
+                                <source src="{{video}}">
+                            </video>
+                        {{/use-iframe}}
                         {{/video}}
                         {{^video}}
                         <img class="gallery-display" alt="Screenshot" src="{{image}}">
