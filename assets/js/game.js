@@ -49,6 +49,7 @@ var explosions;
 var obstacles;
 var levels;
 var levelID;
+var currentLevelId;
 var crosshair;
 var turret;
 var loop;
@@ -461,6 +462,7 @@ class Level {
     }
 
     SpawnEnemies() {
+        currentLevelId = this.id;
         var enemyCount = this.lettercopters.length + this.helicopters.length + this.planes.length + this.imagecopters.length;
         var enemyIndices = [];
         for (var i = 0; i < enemyCount; i++) {
@@ -509,8 +511,9 @@ class Outro {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'You win!', this.color);
-            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'Game Over', primaryColor);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2 - 40}, 'bold 24px Trebuchet MS', 0, 'You win!', primaryColor);
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 50}, 12, 8, primaryColor, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -543,8 +546,9 @@ class GameOver {
 
     Draw() {
         if (this.textTimeLength > 0) {
-            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'Game over', this.color);
-            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 40}, 12, 8, this.color, -this.textTimeLength / this.textTimeLengthMax);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2}, 'bold 30px Trebuchet MS', 0, 'Game Over', primaryColor);
+            DrawText({x:canvasSize.x / 2, y:canvasSize.y / 2 - 40}, 'bold 24px Trebuchet MS', 0, 'Reached level ' + currentLevelId + '/' + levelID, primaryColor);
+            DrawRing({x:canvasSize.x / 2, y:canvasSize.y / 2 + 50}, 12, 8, primaryColor, -this.textTimeLength / this.textTimeLengthMax);
         }
     }
 
@@ -1696,7 +1700,6 @@ class Crosshair extends GameObject {
         }
         if (this.showLines) {
             var bloomOffsetAtCursor = Math.tan(ToRad(this.turret.currentBloomMax)) * GetMagnitude(this.turret.distanceToCrosshair);
-            console.log(GetMagnitude(this.turret.distanceToCrosshair));
             var lineOffsets = lineOffset + this.lineOffsetBloomFactor * bloomOffsetAtCursor;
             DrawRect({ x: this.pos.x - lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 1, y: 0.5 });
             DrawRect({ x: this.pos.x + lineOffsets, y: this.pos.y }, { x: lineLength, y: this.lineThickness }, primaryColor, 0, { x: 0, y: 0.5 });
